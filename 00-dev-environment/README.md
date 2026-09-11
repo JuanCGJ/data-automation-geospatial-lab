@@ -12,7 +12,7 @@ Control de versiones (git/github), terminal básica, qué es Docker y por qué s
 
 - [x] **0.1** — Teoría de git/github/Docker explicada. Evidencia: n/a (conceptual)
 - [x] **0.2** — Git instalado (`git version 2.55.0`). Evidencia: `evidence/0.2-git-instalado.png`
-- [ ] **0.3** — Docker Desktop instalado
+- [x] **0.3** — Docker Desktop instalado (`Docker version 29.7.2`). Evidencia: `evidence/0.3-docker-desktop-instalado.png`
 - [x] **0.4** — Repo clonado en `D:\Proyectos\data-automation-geospatial-lab` con estructura completa. Evidencia: `evidence/0.4-clone-y-estructura.png`
 - [ ] **0.5** — PostgreSQL+PostGIS y n8n levantados con docker-compose
 - [ ] **0.6** — Conexión a PostgreSQL desde DBeaver/pgAdmin

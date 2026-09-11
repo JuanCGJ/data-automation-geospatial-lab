@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Docker
+*.log
+
+# QGIS
+*.qgs~
+*.qgz~
+*.gpkg-shm
+*.gpkg-wal
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Entornos / secretos
+.env

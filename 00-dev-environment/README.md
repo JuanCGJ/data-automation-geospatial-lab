@@ -1,6 +1,6 @@
 # Proyecto 0 — Entorno de desarrollo
 
-> Estado: en progreso
+> Estado: completado ✅
 
 ## Objective
 Dejar listo el entorno de trabajo: Git, GitHub, VS Code, Docker Desktop, y el repo clonado localmente con PostgreSQL/PostGIS y n8n corriendo en contenedores.
@@ -15,7 +15,7 @@ Control de versiones (git/github), terminal básica, qué es Docker y por qué s
 - [x] **0.3** — Docker Desktop instalado (`Docker version 29.7.2`). Evidencia: `evidence/0.3-docker-desktop-instalado.png`
 - [x] **0.4** — Repo clonado en `D:\Proyectos\data-automation-geospatial-lab` con estructura completa. Evidencia: `evidence/0.4-clone-y-estructura.png`
 - [x] **0.5** — PostgreSQL+PostGIS y n8n levantados con docker-compose. Evidencia: `evidence/0.5-docker-ps-contenedores.png`, `evidence/0.5-n8n-interfaz.png`
-- [ ] **0.6** — Conexión a PostgreSQL desde DBeaver/pgAdmin
+- [x] **0.6** — Conexión a PostgreSQL desde DBeaver confirmada (PostgreSQL 16.4). Evidencia: `evidence/0.6-dbeaver-conectado.png`
 
 ## Requirements
 Git, Docker Desktop, VS Code, cuenta de GitHub.

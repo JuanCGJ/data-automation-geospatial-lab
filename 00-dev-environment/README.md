@@ -14,7 +14,7 @@ Control de versiones (git/github), terminal básica, qué es Docker y por qué s
 - [x] **0.2** — Git instalado (`git version 2.55.0`). Evidencia: `evidence/0.2-git-instalado.png`
 - [x] **0.3** — Docker Desktop instalado (`Docker version 29.7.2`). Evidencia: `evidence/0.3-docker-desktop-instalado.png`
 - [x] **0.4** — Repo clonado en `D:\Proyectos\data-automation-geospatial-lab` con estructura completa. Evidencia: `evidence/0.4-clone-y-estructura.png`
-- [ ] **0.5** — PostgreSQL+PostGIS y n8n levantados con docker-compose
+- [x] **0.5** — PostgreSQL+PostGIS y n8n levantados con docker-compose. Evidencia: `evidence/0.5-docker-ps-contenedores.png`, `evidence/0.5-n8n-interfaz.png`
 - [ ] **0.6** — Conexión a PostgreSQL desde DBeaver/pgAdmin
 
 ## Requirements

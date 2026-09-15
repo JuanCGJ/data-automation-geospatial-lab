@@ -27,6 +27,10 @@ Capa exportada con el nuevo campo calculado.
 4. Exportar la selección filtrada como una nueva capa.
 
 ## Progreso (checklist)
+- [ ] **4.1** — Consultar y escribir qué tipos de dato existen en la tabla de atributos de QGIS (entero, texto, decimal, fecha, etc.). Evidencia: pendiente
+- [ ] **4.2** — Abrir la calculadora de campos y crear un campo nuevo calculado (ej. densidad = población / área). Evidencia: pendiente
+- [ ] **4.3** — Usar el panel de selección por expresión para filtrar entidades según una condición (ej. densidad mayor a un valor dado). Evidencia: pendiente
+- [ ] **4.4** — Exportar la selección filtrada como una nueva capa. Evidencia: pendiente
 
 ## Qué aprendí
 

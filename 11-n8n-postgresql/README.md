@@ -25,6 +25,10 @@ Workflow exportado (JSON) + captura de los datos guardados en la tabla.
 4. Ejecutar el workflow y verificar en DBeaver que los datos se guardaron correctamente.
 
 ## Progreso (checklist)
+- [ ] **11.1** — Configurar en n8n las credenciales de conexión a PostgreSQL. Evidencia: pendiente
+- [ ] **11.2** — Crear un workflow con un trigger schedule (ej. cada hora) que llame a una API pública (ej. clima de tu ciudad). Evidencia: pendiente
+- [ ] **11.3** — Agregar un nodo de PostgreSQL que inserte automáticamente los datos recibidos en una tabla. Evidencia: pendiente
+- [ ] **11.4** — Ejecutar el workflow y verificar en DBeaver que los datos se guardaron correctamente. Evidencia: pendiente
 
 ## Qué aprendí
 

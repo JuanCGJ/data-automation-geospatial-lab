@@ -30,6 +30,11 @@ El mismo dataset en shapefile, GeoJSON y GeoPackage, más capturas de cada conve
 5. Tomar una captura de pantalla de cada formato cargado en QGIS.
 
 ## Progreso (checklist)
+- [ ] **2.1** — Consultar y escribir en tus palabras qué son y para qué se usa cada uno de estos formatos: shapefile, GeoJSON, KML/KMZ, GeoPackage, CSV con coordenadas. Evidencia: pendiente
+- [ ] **2.2** — Descargar un dataset abierto de tu ciudad (ej. barrios o comunas) en formato shapefile. Evidencia: pendiente
+- [ ] **2.3** — En QGIS, convertir ese shapefile a GeoJSON y a GeoPackage (exportar capa como). Evidencia: pendiente
+- [ ] **2.4** — Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos. Evidencia: pendiente
+- [ ] **2.5** — Tomar una captura de pantalla de cada formato cargado en QGIS. Evidencia: pendiente
 
 ## Qué aprendí
 

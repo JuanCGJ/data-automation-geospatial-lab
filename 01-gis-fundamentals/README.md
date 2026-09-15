@@ -32,6 +32,11 @@ README con el glosario propio de términos GIS + el diagrama capa–atributo–g
 5. Hacer un diagrama simple de cómo se relacionan capa–atributo–geometría–CRS.
 
 ## Progreso (checklist)
+- [ ] **1.1** — En un documento, consultar y escribir en tus palabras qué son los siguientes términos: dato espacial vs no espacial, capa, atributo, coordenadas. Evidencia: pendiente
+- [ ] **1.2** — En el mismo documento, consultar y escribir qué son y para qué sirven: CRS, EPSG, WGS84. Evidencia: pendiente
+- [ ] **1.3** — Consultar y escribir la diferencia entre geometría de tipo punto, línea y polígono, y la diferencia entre datos vector y raster. Evidencia: pendiente
+- [ ] **1.4** — Escribir un glosario propio, en tus palabras, de todos los términos vistos (guardarlo en `docs/`). Evidencia: pendiente
+- [ ] **1.5** — Hacer un diagrama simple de cómo se relacionan capa–atributo–geometría–CRS. Evidencia: pendiente
 
 ## Qué aprendí
 

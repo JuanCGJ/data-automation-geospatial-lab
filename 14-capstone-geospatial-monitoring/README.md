@@ -23,6 +23,10 @@ Repo completo + video corto (1-2 min) mostrando el flujo funcionando de principi
 4. Recopilar en `docs/interview-questions.md` 2-3 preguntas de entrevista por proyecto, con respuestas ya practicadas.
 
 ## Progreso (checklist)
+- [ ] **14.1** — Diseñar el diagrama de arquitectura completo del flujo: API/CSV → n8n → PostgreSQL/PostGIS → QGIS. Evidencia: pendiente
+- [ ] **14.2** — Implementar el flujo integrando los workflows, tablas y capas construidos en los proyectos anteriores. Evidencia: pendiente
+- [ ] **14.3** — Grabar un video corto (1-2 min) mostrando el flujo funcionando de principio a fin. Evidencia: pendiente
+- [ ] **14.4** — Recopilar en `docs/interview-questions.md` 2-3 preguntas de entrevista por proyecto, con respuestas ya practicadas. Evidencia: pendiente
 
 ## Qué aprendí
 

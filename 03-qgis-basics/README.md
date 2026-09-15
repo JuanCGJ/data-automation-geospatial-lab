@@ -25,6 +25,10 @@ Captura del proyecto con las 3 capas cargadas + notas sobre qué pasó al cambia
 4. Cambiar el CRS del proyecto (Propiedades del proyecto → CRS) y anotar qué cambia visualmente en las capas.
 
 ## Progreso (checklist)
+- [ ] **3.1** — Explorar la interfaz de QGIS: identificar el panel de capas, la tabla de atributos y la barra de herramientas. Evidencia: pendiente
+- [ ] **3.2** — Crear un nuevo proyecto en QGIS y cargar las 3 capas del Proyecto 2 (shapefile, GeoJSON, GeoPackage). Evidencia: pendiente
+- [ ] **3.3** — Abrir la tabla de atributos de cada capa y revisar sus columnas. Evidencia: pendiente
+- [ ] **3.4** — Cambiar el CRS del proyecto (Propiedades del proyecto → CRS) y anotar qué cambia visualmente en las capas. Evidencia: pendiente
 
 ## Qué aprendí
 

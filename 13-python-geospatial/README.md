@@ -2,26 +2,26 @@
 
 > Estado: pendiente
 
-## Objective
+## Objetivo
 
-## Requirements
+## Requisitos
 
-## Deliverable
+## Entregable
 
-## Concepts
+## Conceptos
 
-## Exercises
+## Ejercicios
 1. **13.1** — Repasar la teoría: geopandas, shapely, psycopg.
 2. **13.2** — Leer una capa con geopandas y calcular área/centroides.
 3. **13.3** — Escribir los resultados a PostgreSQL/PostGIS desde Python.
 
 ## Progreso (checklist)
 
-## What I learned
+## Qué aprendí
 
-## Problems encountered & solution
+## Problemas encontrados y solución
 
-## Interview questions
+## Preguntas de entrevista
 
-## Evidence
+## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.

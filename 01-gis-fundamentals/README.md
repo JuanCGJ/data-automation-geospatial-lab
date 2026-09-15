@@ -1,16 +1,16 @@
-# Proyecto 1 — Fundamentos GIS (teoria)
+# Proyecto 1 — Fundamentos GIS (teoría)
 
 > Estado: pendiente
 
-## Objective
+## Objetivo
 
-## Requirements
+## Requisitos
 
-## Deliverable
+## Entregable
 
-## Concepts
+## Conceptos
 
-## Exercises
+## Ejercicios
 1. **1.1** — Repasar la teoría: dato espacial vs no espacial, capas, atributos, coordenadas.
 2. **1.2** — Repasar la teoría: CRS, EPSG, WGS84.
 3. **1.3** — Repasar la teoría: geometría (point/line/polygon) y vector vs raster.
@@ -19,11 +19,11 @@
 
 ## Progreso (checklist)
 
-## What I learned
+## Qué aprendí
 
-## Problems encountered & solution
+## Problemas encontrados y solución
 
-## Interview questions
+## Preguntas de entrevista
 
-## Evidence
+## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.

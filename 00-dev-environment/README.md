@@ -23,7 +23,7 @@ Captura de `docker ps` con ambos contenedores corriendo + este README actualizad
 **VS Code:** editor de código donde se escriben y organizan todos los archivos del proyecto (Markdown, SQL, Python, docker-compose.yml, etc.). Se usa aquí porque integra terminal, control de versiones (Git) y extensiones (Docker, SQL, Python) en un mismo lugar, evitando saltar entre programas distintos.
 
 ## Ejercicios
-1. **0.1** — Repasar la teoría: control de versiones (git/github), terminal básica, variables de entorno, `.gitignore`, y qué es Docker y por qué se usa.
+1. **0.1** — En un documento (`docs/`), consultar y escribir en tus palabras qué son: control de versiones (git/github), la terminal, las variables de entorno, `.gitignore`, y qué es Docker y para qué se usa aquí.
 2. **0.2** — Instalar Docker Desktop.
 3. **0.3** — Instalar Git, crear cuenta de GitHub e instalar VS Code.
 4. **0.4** — Crear el repo `data-automation-geospatial-lab` con la estructura de carpetas completa.

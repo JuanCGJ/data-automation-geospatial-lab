@@ -2,15 +2,15 @@
 
 > Estado: pendiente
 
-## Objective
+## Objetivo
 
-## Requirements
+## Requisitos
 
-## Deliverable
+## Entregable
 
-## Concepts
+## Conceptos
 
-## Exercises
+## Ejercicios
 1. **12.1** — Simular datos GPS (CSV o script simple en Python).
 2. **12.2** — Crear un webhook en n8n que reciba la coordenada.
 3. **12.3** — Validar contra PostGIS si la coordenada está dentro de una zona (`ST_Contains`).
@@ -18,11 +18,11 @@
 
 ## Progreso (checklist)
 
-## What I learned
+## Qué aprendí
 
-## Problems encountered & solution
+## Problemas encontrados y solución
 
-## Interview questions
+## Preguntas de entrevista
 
-## Evidence
+## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.

@@ -25,6 +25,10 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 4. Escribir los resultados calculados a una tabla de PostgreSQL/PostGIS usando psycopg.
 
 ## Progreso (checklist)
+- [ ] **13.1** — Consultar y escribir qué son y para qué sirven las librerías geopandas, shapely y psycopg. Evidencia: pendiente
+- [ ] **13.2** — Instalar las librerías necesarias en un entorno virtual de Python. Evidencia: pendiente
+- [ ] **13.3** — Escribir un script que lea una capa (de proyectos anteriores) con geopandas y calcule el área y el centroide de cada entidad. Evidencia: pendiente
+- [ ] **13.4** — Escribir los resultados calculados a una tabla de PostgreSQL/PostGIS usando psycopg. Evidencia: pendiente
 
 ## Qué aprendí
 

@@ -28,6 +28,11 @@ Capa editada + capturas antes/después.
 5. Tomar una captura del resultado después de la edición.
 
 ## Progreso (checklist)
+- [ ] **5.1** — Consultar y escribir cómo funcionan las herramientas de crear, mover y eliminar puntos, y de editar vértices de líneas y polígonos en QGIS. Evidencia: pendiente
+- [ ] **5.2** — Activar el modo edición y crear una capa nueva de puntos desde cero (ej. "activos" ficticios de tu ciudad: postes, cámaras, etc.). Evidencia: pendiente
+- [ ] **5.3** — Tomar una captura del polígono existente antes de editarlo. Evidencia: pendiente
+- [ ] **5.4** — Usar la herramienta de dividir entidades (split features) para dividir un polígono existente en dos. Evidencia: pendiente
+- [ ] **5.5** — Tomar una captura del resultado después de la edición. Evidencia: pendiente
 
 ## Qué aprendí
 

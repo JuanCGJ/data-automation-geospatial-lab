@@ -2,26 +2,26 @@
 
 > Estado: pendiente
 
-## Objective
+## Objetivo
 
-## Requirements
+## Requisitos
 
-## Deliverable
+## Entregable
 
-## Concepts
+## Conceptos
 
-## Exercises
+## Ejercicios
 1. **10.1** — Repasar la teoría: workflow, node, trigger, HTTP request, webhook, JSON, expressions, IF.
 2. **10.2** — Crear el workflow "Hello n8n" (schedule → HTTP request a una API pública tipo Open-Meteo → transformar el JSON).
 3. **10.3** — Crear un workflow con un webhook que reciba datos y responda.
 
 ## Progreso (checklist)
 
-## What I learned
+## Qué aprendí
 
-## Problems encountered & solution
+## Problemas encontrados y solución
 
-## Interview questions
+## Preguntas de entrevista
 
-## Evidence
+## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.

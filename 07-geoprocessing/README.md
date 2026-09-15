@@ -31,6 +31,10 @@ Capa resultado de la intersección + explicación escrita de qué hace cada herr
 4. Escribir una explicación corta de qué hizo cada herramienta usada en el ejercicio.
 
 ## Progreso (checklist)
+- [ ] **7.1** — Consultar y escribir en tus palabras qué hace cada una de estas herramientas: buffer, clip, dissolve, intersect, union, spatial join. Evidencia: pendiente
+- [ ] **7.2** — Crear un buffer de 1 km alrededor de un punto (ej. un hospital). Evidencia: pendiente
+- [ ] **7.3** — Intersectar ese buffer con otra capa (ej. colegios) para identificar cuáles quedan dentro. Evidencia: pendiente
+- [ ] **7.4** — Escribir una explicación corta de qué hizo cada herramienta usada en el ejercicio. Evidencia: pendiente
 
 ## Qué aprendí
 

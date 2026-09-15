@@ -2,15 +2,15 @@
 
 > Estado: pendiente
 
-## Objective
+## Objetivo
 
-## Requirements
+## Requisitos
 
-## Deliverable
+## Entregable
 
-## Concepts
+## Conceptos
 
-## Exercises
+## Ejercicios
 1. **9.1** — Repasar la teoría: geometry vs geography, SRID, índices espaciales.
 2. **9.2** — Repasar la teoría de las funciones espaciales: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`.
 3. **9.3** — Agregar una columna `geometry` a una tabla e insertar puntos.
@@ -18,11 +18,11 @@
 
 ## Progreso (checklist)
 
-## What I learned
+## Qué aprendí
 
-## Problems encountered & solution
+## Problemas encontrados y solución
 
-## Interview questions
+## Preguntas de entrevista
 
-## Evidence
+## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.

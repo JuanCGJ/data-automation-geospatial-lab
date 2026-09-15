@@ -29,6 +29,10 @@ Mapa exportado como imagen usando el diseñador de impresión (layout) de QGIS.
 4. Usar el diseñador de impresión (layout) de QGIS para exportar el mapa como imagen.
 
 ## Progreso (checklist)
+- [ ] **6.1** — Consultar y escribir la diferencia entre simbología de símbolo único, categorizado y graduado. Evidencia: pendiente
+- [ ] **6.2** — Simbolizar una capa por categoría (ej. por tipo de uso de suelo o por comuna). Evidencia: pendiente
+- [ ] **6.3** — Simbolizar otra capa (o la misma con otro campo) por valor graduado, y agregar etiquetas con el nombre o valor de cada entidad. Evidencia: pendiente
+- [ ] **6.4** — Usar el diseñador de impresión (layout) de QGIS para exportar el mapa como imagen. Evidencia: pendiente
 
 ## Qué aprendí
 

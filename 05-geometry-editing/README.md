@@ -1,27 +1,27 @@
-# Proyecto 5 — Edicion de geometrias
+# Proyecto 5 — Edición de geometrías
 
 > Estado: pendiente
 
-## Objective
+## Objetivo
 
-## Requirements
+## Requisitos
 
-## Deliverable
+## Entregable
 
-## Concepts
+## Conceptos
 
-## Exercises
+## Ejercicios
 1. **5.1** — Repasar la teoría: crear/mover/eliminar puntos; editar vértices de líneas y polígonos; dividir/unir geometrías.
 2. **5.2** — Crear una capa de puntos desde cero (ej. "activos" ficticios de tu ciudad).
 3. **5.3** — Editar un polígono existente dividiéndolo en dos.
 
 ## Progreso (checklist)
 
-## What I learned
+## Qué aprendí
 
-## Problems encountered & solution
+## Problemas encontrados y solución
 
-## Interview questions
+## Preguntas de entrevista
 
-## Evidence
+## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.

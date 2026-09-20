@@ -11,3 +11,13 @@ Un **atributo** es la información no geométrica asociada a una entidad de una 
 
 ## Coordenadas
 Las **coordenadas** son los valores numéricos que ubican un punto en el espacio. En geografía se suelen expresar como (latitud, longitud) — un sistema angular basado en la posición sobre la esfera terrestre — o como (x, y) en sistemas proyectados (metros, por ejemplo). Toda geometría en un GIS (punto, línea o polígono) está definida, en el fondo, por una o varias coordenadas.
+
+## CRS (Coordinate Reference System)
+Un **CRS** es el sistema que define cómo un conjunto de coordenadas se relaciona con ubicaciones reales sobre la superficie de la Tierra. Sin un CRS, un par de números (x, y) no significa nada — el CRS es el que le da contexto geográfico a esos números (qué forma de la Tierra se asume, qué unidad se usa, dónde está el origen). Dos capas con el mismo dato pero distinto CRS no se van a alinear correctamente en un mapa hasta que se reproyecten a un CRS en común.
+
+## EPSG
+**EPSG** es un catálogo estándar de códigos numéricos que identifican de forma única cada CRS (ej. EPSG:4326, EPSG:3116). En vez de describir manualmente todos los parámetros de un sistema de coordenadas, basta con referenciar su código EPSG para que cualquier software GIS sepa exactamente de qué sistema se trata.
+
+## WGS84
+**WGS84** (World Geodetic System 1984, EPSG:4326) es el sistema de referencia geográfico más usado a nivel mundial. Es el sistema que usa el GPS, y por eso es el estándar por defecto cuando se trabaja con coordenadas de latitud/longitud sin especificar otra cosa.
+

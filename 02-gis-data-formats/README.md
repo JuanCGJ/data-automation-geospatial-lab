@@ -22,19 +22,23 @@ El mismo dataset en shapefile, GeoJSON y GeoPackage, más capturas de cada conve
 
 **CSV con coordenadas:** un archivo tabular normal que incluye columnas de latitud/longitud, lo que permite cargarlo como capa de puntos en un GIS.
 
+**QGIS: LTR vs versión "latest":** QGIS tiene dos ramas de lanzamiento. La **LTR (Long Term Release)** es la versión con soporte extendido, más estable y probada — la recomendada para trabajo real. La versión **"latest"** trae las funciones más nuevas, pero con menos tiempo de prueba y más posibilidad de bugs. En este curso usamos LTR, priorizando estabilidad sobre features de punta.
+
 ## Ejercicios
-1. Consultar y escribir en tus palabras qué son y para qué se usa cada uno de estos formatos: shapefile, GeoJSON, KML/KMZ, GeoPackage, CSV con coordenadas.
-2. Descargar un dataset abierto de tu ciudad (ej. barrios o comunas) en formato shapefile.
-3. En QGIS, convertir ese shapefile a GeoJSON y a GeoPackage (exportar capa como).
-4. Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos.
-5. Tomar una captura de pantalla de cada formato cargado en QGIS.
+1. Instalar QGIS.
+2. Consultar y escribir en tus palabras qué son y para qué se usa cada uno de estos formatos: shapefile, GeoJSON, KML/KMZ, GeoPackage, CSV con coordenadas.
+3. Descargar un dataset abierto de tu ciudad (ej. barrios o comunas) en formato shapefile.
+4. En QGIS, convertir ese shapefile a GeoJSON y a GeoPackage (exportar capa como).
+5. Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos.
+6. Tomar una captura de pantalla de cada formato cargado en QGIS.
 
 ## Progreso (checklist)
-- [ ] **2.1** — Consultar y escribir en tus palabras qué son y para qué se usa cada uno de estos formatos: shapefile, GeoJSON, KML/KMZ, GeoPackage, CSV con coordenadas. Evidencia: pendiente
-- [ ] **2.2** — Descargar un dataset abierto de tu ciudad (ej. barrios o comunas) en formato shapefile. Evidencia: pendiente
-- [ ] **2.3** — En QGIS, convertir ese shapefile a GeoJSON y a GeoPackage (exportar capa como). Evidencia: pendiente
-- [ ] **2.4** — Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos. Evidencia: pendiente
-- [ ] **2.5** — Tomar una captura de pantalla de cada formato cargado en QGIS. Evidencia: pendiente
+- [ ] **2.1** — Instalar QGIS. Evidencia: pendiente (captura de pantalla al finalizar la instalación)
+- [ ] **2.2** — Consultar y escribir en tus palabras qué son y para qué se usa cada uno de estos formatos: shapefile, GeoJSON, KML/KMZ, GeoPackage, CSV con coordenadas. Evidencia: pendiente
+- [ ] **2.3** — Descargar un dataset abierto de tu ciudad (ej. barrios o comunas) en formato shapefile. Evidencia: pendiente
+- [ ] **2.4** — En QGIS, convertir ese shapefile a GeoJSON y a GeoPackage (exportar capa como). Evidencia: pendiente
+- [ ] **2.5** — Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos. Evidencia: pendiente
+- [ ] **2.6** — Tomar una captura de pantalla de cada formato cargado en QGIS. Evidencia: pendiente
 
 ## Qué aprendí
 

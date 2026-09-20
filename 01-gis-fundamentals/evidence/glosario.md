@@ -38,3 +38,33 @@ Un **CRS** es el sistema que define cómo un conjunto de coordenadas se relacion
 ## WGS84
 **WGS84** (World Geodetic System 1984, EPSG:4326) es el sistema de referencia geográfico más usado a nivel mundial. Es el sistema que usa el GPS, y por eso es el estándar por defecto cuando se trabaja con coordenadas de latitud/longitud sin especificar otra cosa.
 
+## Geometría: punto, línea y polígono
+Toda entidad geográfica en un GIS se representa con uno de estos tres tipos de geometría (vector):
+- **Punto:** una ubicación única (x, y). Ej. un hospital, un poste de luz, una cámara.
+- **Línea:** una secuencia de puntos conectados que forman un trazado. Ej. una calle, un río, una tubería.
+- **Polígono:** una secuencia de puntos que se cierra formando un área. Ej. un barrio, un lote, un lago.
+
+## Vector vs raster
+- **Vector:** representa el mundo con geometrías discretas y bien definidas (puntos, líneas, polígonos), cada una con sus propios atributos. Es ideal para entidades con límites claros (calles, lotes, edificios).
+- **Raster:** representa el mundo como una grilla continua de celdas (píxeles), cada una con un valor. Es ideal para fenómenos continuos que no tienen un límite natural (elevación, temperatura, imágenes satelitales).
+
+La diferencia clave: en vector cada entidad es un objeto independiente con su fila en la tabla de atributos; en raster no hay "entidades", solo una matriz de valores.
+
+## Diagrama: cómo se relacionan capa–atributo–geometría–CRS
+
+```mermaid
+graph TD
+    CRS["CRS (ej. WGS84 / EPSG:4326)<br/>define cómo se ubican las coordenadas en el mundo"]
+    Capa["Capa (ej. 'Barrios')<br/>conjunto de entidades del mismo tipo"]
+    Entidad["Entidad (ej. 'La Esperanza')<br/>un elemento individual de la capa"]
+    Geometria["Geometría (polígono)<br/>forma definida por coordenadas"]
+    Atributo["Atributos (tabla)<br/>nombre, población, área..."]
+
+    Capa --> Entidad
+    Entidad --> Geometria
+    Entidad --> Atributo
+    CRS -. "define ubicación real de" .-> Geometria
+```
+
+En resumen: una **capa** agrupa **entidades** del mismo tipo; cada entidad tiene una **geometría** (su forma/ubicación, expresada en coordenadas) y unos **atributos** (su información descriptiva, en la tabla de atributos); y el **CRS** es lo que le da significado geográfico real a esas coordenadas de la geometría.
+

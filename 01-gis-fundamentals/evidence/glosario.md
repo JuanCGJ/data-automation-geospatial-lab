@@ -21,6 +21,17 @@ Para ilustrar gráficamente los términos anteriores: una capa "Barrios", con su
 ## CRS (Coordinate Reference System)
 Un **CRS** es el sistema que define cómo un conjunto de coordenadas se relaciona con ubicaciones reales sobre la superficie de la Tierra. Sin un CRS, un par de números (x, y) no significa nada — el CRS es el que le da contexto geográfico a esos números (qué forma de la Tierra se asume, qué unidad se usa, dónde está el origen). Dos capas con el mismo dato pero distinto CRS no se van a alinear correctamente en un mapa hasta que se reproyecten a un CRS en común.
 
+**Algunos CRS comunes (nombre + EPSG):**
+- **WGS84** (World Geodetic System 1984, EPSG:4326) — geográfico global, el que usa el GPS.
+- **Web Mercator** (EPSG:3857) — proyectado, usado por Google Maps, OpenStreetMap y la mayoría de mapas web (tiles).
+- **MAGNA-SIRGAS / Origen Nacional** (EPSG:3116) — proyectado, el oficial para cartografía en Colombia.
+- **SIRGAS 2000** (EPSG:4674) — geográfico, datum oficial usado en gran parte de Sudamérica.
+- **NAD83** (North American Datum 1983, EPSG:4269) — geográfico, usado en Estados Unidos y Canadá.
+- **ETRS89** (European Terrestrial Reference System 1989, EPSG:4258) — geográfico, estándar en Europa.
+- **UTM Zone 18N** (EPSG:32618) — proyectado, parte del sistema UTM (hay una zona EPSG distinta cada 6° de longitud); cubre buena parte de Colombia y la región andina.
+- **British National Grid** (EPSG:27700) — proyectado, oficial para cartografía del Reino Unido.
+- **GDA2020** (Geocentric Datum of Australia 2020, EPSG:7844) — geográfico, datum oficial de Australia.
+
 ## EPSG
 **EPSG** es un catálogo estándar de códigos numéricos que identifican de forma única cada CRS (ej. EPSG:4326, EPSG:3116). En vez de describir manualmente todos los parámetros de un sistema de coordenadas, basta con referenciar su código EPSG para que cualquier software GIS sepa exactamente de qué sistema se trata.
 

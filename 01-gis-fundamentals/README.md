@@ -1,6 +1,6 @@
 # Proyecto 1 — Fundamentos GIS (teoría)
 
-> Estado: pendiente
+> Estado: completado ✅
 
 ## Objetivo
 Entender los conceptos fundamentales de GIS (dato espacial, capas, atributos, coordenadas, CRS, geometría) antes de empezar a usar herramientas.
@@ -31,12 +31,17 @@ README con el glosario propio de términos GIS + el diagrama capa–atributo–g
 4. Hacer un diagrama simple de cómo se relacionan capa–atributo–geometría–CRS.
 
 ## Progreso (checklist)
-- [ ] **1.1** — En un documento, consultar y escribir en tus palabras qué son los siguientes términos: dato espacial vs no espacial, capa, atributo, coordenadas. Evidencia: pendiente
-- [ ] **1.2** — En el mismo documento, consultar y escribir qué son y para qué sirven: CRS, EPSG, WGS84. Evidencia: pendiente
-- [ ] **1.3** — Consultar y escribir la diferencia entre geometría de tipo punto, línea y polígono, y la diferencia entre datos vector y raster. Evidencia: pendiente
-- [ ] **1.4** — Hacer un diagrama simple de cómo se relacionan capa–atributo–geometría–CRS. Evidencia: pendiente
+- [x] **1.1** — En un documento, consultar y escribir en tus palabras qué son los siguientes términos: dato espacial vs no espacial, capa, atributo, coordenadas. Evidencia: `evidence/glosario.md`
+- [x] **1.2** — En el mismo documento, consultar y escribir qué son y para qué sirven: CRS, EPSG, WGS84. Evidencia: `evidence/glosario.md`
+- [x] **1.3** — Consultar y escribir la diferencia entre geometría de tipo punto, línea y polígono, y la diferencia entre datos vector y raster. Evidencia: `evidence/glosario.md`, `evidence/vector-vs-raster.svg`
+- [x] **1.4** — Hacer un diagrama simple de cómo se relacionan capa–atributo–geometría–CRS. Evidencia: `evidence/glosario.md`, `evidence/mapa-ficticio.svg`
 
 ## Qué aprendí
+- A definir en mis propias palabras los conceptos base de GIS: dato espacial vs no espacial, capa, atributo y coordenadas.
+- Qué es un CRS, para qué sirve el código EPSG, y a reconocer varios CRS comunes (WGS84, Web Mercator, MAGNA-SIRGAS, UTM, entre otros) con su código correspondiente.
+- La diferencia entre los tres tipos de geometría vectorial (punto, línea, polígono) y entre datos vector y raster.
+- A ilustrar estos conceptos gráficamente: un mapa ficticio mostrando una capa con sus entidades, atributos y una coordenada, y una comparación visual vector vs raster.
+- A documentar todo en Markdown, incluyendo diagramas Mermaid e imágenes SVG que se renderizan directamente en GitHub.
 
 ## Problemas encontrados y solución
 
@@ -45,4 +50,4 @@ README con el glosario propio de términos GIS + el diagrama capa–atributo–g
 - **¿Cuál es la diferencia entre datos vector y raster?** Vector representa el mundo con geometrías discretas (puntos, líneas, polígonos) y es ideal para entidades bien definidas (calles, lotes, edificios). Raster representa el mundo como una grilla continua de celdas/píxeles, ideal para fenómenos continuos (elevación, temperatura, imágenes satelitales).
 
 ## Evidencia
-En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.
+En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio. Aquí específicamente: `glosario.md` (con las respuestas de los 4 ejercicios y el diagrama Mermaid), `mapa-ficticio.svg` (capa, atributos y coordenada de ejemplo) y `vector-vs-raster.svg` (comparación visual).

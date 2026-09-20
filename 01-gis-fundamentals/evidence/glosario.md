@@ -68,3 +68,5 @@ graph TD
 
 En resumen: una **capa** agrupa **entidades** del mismo tipo; cada entidad tiene una **geometría** (su forma/ubicación, expresada en coordenadas) y unos **atributos** (su información descriptiva, en la tabla de atributos); y el **CRS** es lo que le da significado geográfico real a esas coordenadas de la geometría.
 
+![Comparación visual entre vector y raster: polígono, línea y punto discretos vs. una grilla continua de celdas](vector-vs-raster.svg)
+

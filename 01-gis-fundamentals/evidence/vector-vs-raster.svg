@@ -1,0 +1,89 @@
+<svg viewBox="0 0 780 380" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif">
+  <rect x="0" y="0" width="780" height="380" fill="#ffffff"/>
+
+  <!-- Panel Vector -->
+  <text x="30" y="28" font-size="18" font-weight="bold" fill="#222">Vector</text>
+  <rect x="20" y="40" width="340" height="320" fill="#f7f7f7" stroke="#999" stroke-width="1.5"/>
+
+  <polygon points="50,90 200,80 220,220 60,230" fill="#f5e08c" stroke="#a6821a" stroke-width="2"/>
+  <text x="100" y="165" font-size="12" font-weight="bold" fill="#5c4a0e">Polígono (barrio)</text>
+
+  <line x1="40" y1="280" x2="330" y2="300" stroke="#2b6a80" stroke-width="4"/>
+  <text x="230" y="270" font-size="12" font-weight="bold" fill="#2b6a80">Línea (calle)</text>
+
+  <circle cx="280" cy="120" r="7" fill="#d62828" stroke="#fff" stroke-width="1.5"/>
+  <text x="235" y="105" font-size="12" font-weight="bold" fill="#d62828">Punto (hospital)</text>
+
+  <text x="30" y="345" font-size="12" fill="#555">Entidades discretas, cada una con sus propios atributos</text>
+
+  <!-- Panel Raster -->
+  <text x="420" y="28" font-size="18" font-weight="bold" fill="#222">Raster</text>
+  <rect x="410" y="40" width="340" height="320" fill="#f7f7f7" stroke="#999" stroke-width="1.5"/>
+
+  <rect x="420" y="50" width="38" height="38" fill="#e8dcb5" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="50" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="50" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="50" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="50" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="50" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="50" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="50" width="38" height="38" fill="#e8dcb5" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="420" y="88" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="88" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="88" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="88" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="88" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="88" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="88" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="88" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="420" y="126" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="126" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="126" width="38" height="38" fill="#7e8d6a" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="126" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="126" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="126" width="38" height="38" fill="#7e8d6a" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="126" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="126" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="420" y="164" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="164" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="164" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="164" width="38" height="38" fill="#496545" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="164" width="38" height="38" fill="#496545" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="164" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="164" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="164" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="420" y="202" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="202" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="202" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="202" width="38" height="38" fill="#496545" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="202" width="38" height="38" fill="#496545" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="202" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="202" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="202" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="420" y="240" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="240" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="240" width="38" height="38" fill="#7e8d6a" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="240" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="240" width="38" height="38" fill="#6a7e5c" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="240" width="38" height="38" fill="#7e8d6a" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="240" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="240" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="420" y="278" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="278" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="278" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="278" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="278" width="38" height="38" fill="#8e9975" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="278" width="38" height="38" fill="#9ba37f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="278" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="278" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="420" y="316" width="38" height="38" fill="#e8dcb5" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="458" y="316" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="496" y="316" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="534" y="316" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="572" y="316" width="38" height="38" fill="#b3b48f" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="610" y="316" width="38" height="38" fill="#bdbc97" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="648" y="316" width="38" height="38" fill="#cfc9a3" stroke="#ffffff" stroke-width="0.5"/>
+  <rect x="686" y="316" width="38" height="38" fill="#e8dcb5" stroke="#ffffff" stroke-width="0.5"/>
+
+  <text x="420" y="345" font-size="12" fill="#555">Grilla continua de celdas (píxeles); sin objetos individuales</text>
+</svg>

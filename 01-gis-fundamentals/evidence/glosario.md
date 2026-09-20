@@ -17,7 +17,6 @@ Para ilustrar gráficamente los términos anteriores: una capa "Barrios", con su
 
 ![Mapa ficticio de la Ciudad X mostrando la capa Barrios, atributos de una entidad y una coordenada](mapa-ficticio.svg)
 
-
 ## CRS (Coordinate Reference System)
 Un **CRS** es el sistema que define cómo un conjunto de coordenadas se relaciona con ubicaciones reales sobre la superficie de la Tierra. Sin un CRS, un par de números (x, y) no significa nada — el CRS es el que le da contexto geográfico a esos números (qué forma de la Tierra se asume, qué unidad se usa, dónde está el origen). Dos capas con el mismo dato pero distinto CRS no se van a alinear correctamente en un mapa hasta que se reproyecten a un CRS en común.
 
@@ -50,6 +49,8 @@ Toda entidad geográfica en un GIS se representa con uno de estos tres tipos de 
 
 La diferencia clave: en vector cada entidad es un objeto independiente con su fila en la tabla de atributos; en raster no hay "entidades", solo una matriz de valores.
 
+![Comparación visual entre vector y raster: polígono, línea y punto discretos vs. una grilla continua de celdas](vector-vs-raster.svg)
+
 ## Diagrama: cómo se relacionan capa–atributo–geometría–CRS
 
 ```mermaid
@@ -67,6 +68,4 @@ graph TD
 ```
 
 En resumen: una **capa** agrupa **entidades** del mismo tipo; cada entidad tiene una **geometría** (su forma/ubicación, expresada en coordenadas) y unos **atributos** (su información descriptiva, en la tabla de atributos); y el **CRS** es lo que le da significado geográfico real a esas coordenadas de la geometría.
-
-![Comparación visual entre vector y raster: polígono, línea y punto discretos vs. una grilla continua de celdas](vector-vs-raster.svg)
 

@@ -37,10 +37,9 @@ El mismo dataset en shapefile, GeoJSON y GeoPackage, más capturas de cada conve
 - [x] **2.2** — Consultar y escribir en tus palabras qué son y para qué se usa cada uno de estos formatos: shapefile, GeoJSON, KML/KMZ, GeoPackage, CSV con coordenadas. Evidencia: [formatos en mis palabras](evidence/2.2-formatos.md)
 - [x] **2.3** — Descargar un dataset abierto de tu ciudad (ej. barrios o comunas) en formato shapefile. Evidencia: [capa Comunas cargada desde el servicio ArcGIS REST](evidence/2.3-comunas-arcgis-rest.png); shapefile en `data/comunas_manizales.*`
 - [x] **2.4** — En QGIS, convertir ese shapefile a GeoJSON y a GeoPackage (exportar capa como). Evidencia: [archivos exportados](evidence/2.4-archivos-exportados.png) — GeoJSON reproyectado a EPSG:4326; GeoPackage conserva el CRS de origen (EPSG:6256)
--- [x] **2.5** — Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos. Evidencia: [puntos del CSV sobre las comunas](evidence/2.5-puntos-csv.png); CSV en `data/puntos_manizales.csv`
+- [x] **2.5** — Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos. Evidencia: [puntos del CSV sobre las comunas](evidence/2.5-puntos-csv.png); CSV en `data/puntos_manizales.csv`
 - [x] **2.6** — Tomar una captura de pantalla de cada formato cargado en QGIS. Evidencia: [shapefile](evidence/2.6-shapefile.png), [GeoJSON](evidence/2.6-geojson.png), [GeoPackage](evidence/2.6-geopackage.png)
 
-## Qué aprendí
 ## Qué aprendí
 - Un shapefile no es un archivo sino varios (`.shp`, `.shx`, `.dbf`, `.prj`, `.cpg`); sin el `.prj`, los datos pierden su CRS.
 - La diferencia entre **definir** un CRS (declarar en qué sistema están las coordenadas, sin moverlas) y **reproyectar** (transformar las coordenadas a otro sistema).

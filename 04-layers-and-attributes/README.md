@@ -1,6 +1,6 @@
 # Proyecto 4 — Capas y atributos
 
-> Estado: pendiente
+> Estado: completado
 
 ## Objetivo
 Aprender a trabajar con la tabla de atributos: tipos de dato, campos calculados y filtros.
@@ -27,13 +27,18 @@ Capa exportada con el nuevo campo calculado.
 4. Exportar la selección filtrada como una nueva capa.
 
 ## Progreso (checklist)
-- [ ] **4.1** — Revisar el tipo de dato de cada campo de la capa de comunas (Propiedades de la capa → Campos) y escribir qué tipos existen en QGIS (entero, decimal, texto, fecha, etc.). Evidencia: pendiente
-- [ ] **4.2** — Con la calculadora de campos, crear el campo `area_km2` (área de cada comuna en km²) y compararlo con el campo `Shape__Are`. Evidencia: pendiente
-- [ ] **4.3** — Usar la selección por expresión para seleccionar las comunas con `area_km2` mayor a un valor dado. Evidencia: pendiente
-- [ ] **4.4** — Exportar la selección filtrada como una nueva capa. Evidencia: pendiente
+- [x] **4.1** — Revisar el tipo de dato de cada campo de la capa de comunas (Propiedades de la capa → Campos) y escribir qué tipos existen en QGIS (entero, decimal, texto, fecha, etc.). Evidencia: [hallazgos](evidence/hallazgos.md)existen en QGIS (entero, decimal, texto, fecha, etc.). Evidencia: pendiente
+- [x] **4.2** — Con la calculadora de campos, crear el campo `area_km2` (área de cada comuna en km²) y compararlo con el campo `Shape__Are`. Evidencia: [hallazgos](evidence/hallazgos.md)
+- [x] **4.3** — Usar la selección por expresión para seleccionar las comunas con `area_km2` mayor a un valor dado. Evidencia: [hallazgos](evidence/hallazgos.md)
+- [x] **4.4** — Exportar la selección filtrada como una nueva capa. Evidencia: [hallazgos](evidence/hallazgos.md)
 
 ## Qué aprendí
-
+- Cada campo tiene un tipo de dato (entero, decimal, texto, fecha, booleano) que define qué operaciones admite; QGIS los muestra con los íconos 123, 1.2 y abc.
+- Los tipos pueden cambiar al convertir entre formatos (`OBJECTID` quedó como decimal), así que conviene revisarlos después de cada exportación.
+- Agregar un campo modifica el archivo original; por eso se trabajó sobre una copia.
+- La calculadora de campos crea columnas a partir de expresiones; `$area` da el área según la unidad del CRS.
+- Dos áreas correctas pueden diferir según la superficie de medición: el plano de Manizales (a 2.100 m de altura) o el elipsoide (nivel del mar).
+- La selección por expresión es el equivalente en QGIS a un `SELECT ... WHERE`, y exportar la selección crea un subconjunto como capa nueva.
 ## Problemas encontrados y solución
 
 ## Preguntas de entrevista
@@ -42,3 +47,8 @@ Capa exportada con el nuevo campo calculado.
 
 ## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.
+- `hallazgos.md`: hallazgos de los 4 ejercicios, con sus capturas.
+- `4.1-tipos-campos.png`: tipos de dato de cada campo.
+- `4.2-area-km2.png`: tabla con el campo calculado `area_km2`.
+- `4.3-seleccion.png`: comunas mayores a 3 km² seleccionadas.
+- `4.4-exportacion.png`: capa exportada con las 5 comunas.

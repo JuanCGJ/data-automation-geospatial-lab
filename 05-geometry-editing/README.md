@@ -1,6 +1,6 @@
 # Proyecto 5 — Edición de geometrías
 
-> Estado: pendiente
+> Estado: completado
 
 ## Objetivo
 Practicar la edición de geometrías en QGIS: crear, mover, dividir y unir entidades.

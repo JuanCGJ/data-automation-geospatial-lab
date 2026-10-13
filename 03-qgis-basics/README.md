@@ -1,6 +1,6 @@
 # Proyecto 3 — QGIS desde cero
 
-> Estado: pendiente
+> Estado: completado
 
 ## Objetivo
 Familiarizarte con la interfaz de QGIS y el concepto de proyecto, capas y CRS del proyecto.
@@ -9,7 +9,7 @@ Familiarizarte con la interfaz de QGIS y el concepto de proyecto, capas y CRS de
 QGIS instalado; las 3 capas generadas en el Proyecto 2 (shapefile, GeoJSON, GeoPackage).
 
 ## Entregable
-Captura del proyecto con las 3 capas cargadas + notas sobre qué pasó al cambiar el CRS.
+Captura de la interfaz de QGIS, tablas de atributos de las 3 capas y notas sobre qué pasó al cambiar el CRS del proyecto.
 
 ## Conceptos
 **Interfaz de QGIS:** panel de capas (lista las capas cargadas), tabla de atributos (datos no espaciales de cada capa), barra de herramientas (accesos a las funciones más usadas).
@@ -20,15 +20,14 @@ Captura del proyecto con las 3 capas cargadas + notas sobre qué pasó al cambia
 
 ## Ejercicios
 1. Explorar la interfaz de QGIS: identificar el panel de capas, la tabla de atributos y la barra de herramientas.
-2. Crear un nuevo proyecto en QGIS y cargar las 3 capas del Proyecto 2 (shapefile, GeoJSON, GeoPackage).
-3. Abrir la tabla de atributos de cada capa y revisar sus columnas.
-4. Cambiar el CRS del proyecto (Propiedades del proyecto → CRS) y anotar qué cambia visualmente en las capas.
+2. Abrir la tabla de atributos de cada una de las 3 capas del Proyecto 2 (shapefile, GeoJSON, GeoPackage) y revisar sus columnas.
+3. Cambiar el CRS del proyecto (Propiedades del proyecto → CRS) y anotar qué cambia visualmente en las capas.
+
 
 ## Progreso (checklist)
-- [ ] **3.1** — Explorar la interfaz de QGIS: identificar el panel de capas, la tabla de atributos y la barra de herramientas. Evidencia: pendiente
-- [ ] **3.2** — Crear un nuevo proyecto en QGIS y cargar las 3 capas del Proyecto 2 (shapefile, GeoJSON, GeoPackage). Evidencia: pendiente
-- [ ] **3.3** — Abrir la tabla de atributos de cada capa y revisar sus columnas. Evidencia: pendiente
-- [ ] **3.4** — Cambiar el CRS del proyecto (Propiedades del proyecto → CRS) y anotar qué cambia visualmente en las capas. Evidencia: pendiente
+- [x] **3.1** — Explorar la interfaz de QGIS: identificar el panel de capas, la tabla de atributos y la barra de herramientas. Evidencia: [interfaz de QGIS](evidence/3.1-interfaz-qgis.png)
+- [x] **3.2** — Abrir la tabla de atributos de cada una de las 3 capas y revisar sus columnas. Evidencia: [tablas y hallazgos](evidence/3.2-tablas-atributos.md)
+- [x] **3.3** — Cambiar el CRS del proyecto y anotar qué cambia visualmente en las capas. Evidencia: [capturas y notas](evidence/3.3-cambio-crs.md)
 
 ## Qué aprendí
 
@@ -40,3 +39,7 @@ Captura del proyecto con las 3 capas cargadas + notas sobre qué pasó al cambia
 
 ## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.
+- `hallazgos.md`: hallazgos de los 3 ejercicios, con sus capturas.
+- `3.1-interfaz-qgis.png`: interfaz de QGIS con la tabla de atributos abierta.
+- `3.2-tabla-geojson.png`, `3.2-tabla-geopackage.png`: tablas de atributos.
+- `3.3-crs-6256.png`, `3.3-crs-4326.png`, `3.3-crs-3035.png`: la misma capa con tres CRS del proyecto.

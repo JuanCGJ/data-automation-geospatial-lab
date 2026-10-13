@@ -25,14 +25,14 @@ Script `.sql` con las consultas espaciales y sus resultados.
 2. Consultar y escribir qué hace cada una de estas funciones: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`.
 3. Agregar una columna `geometry` a una tabla existente e insertar puntos usando `ST_MakePoint`.
 4. Escribir una consulta que devuelva qué puntos están a menos de 5 km de otro (usando `ST_DWithin` o `ST_Distance`).
-5. Guardar las consultas y sus resultados en un script `.sql`.
+5. Cargar la capa de comunas del Proyecto 2 a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL; se usará como zonas en el Proyecto 12.
 
 ## Progreso (checklist)
 - [ ] **9.1** — Consultar y escribir la diferencia entre los tipos de dato geometry y geography, y qué es un SRID. Evidencia: pendiente
 - [ ] **9.2** — Consultar y escribir qué hace cada una de estas funciones: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`. Evidencia: pendiente
 - [ ] **9.3** — Agregar una columna `geometry` a una tabla existente e insertar puntos usando `ST_MakePoint`. Evidencia: pendiente
 - [ ] **9.4** — Escribir una consulta que devuelva qué puntos están a menos de 5 km de otro (usando `ST_DWithin` o `ST_Distance`). Evidencia: pendiente
-- [ ] **9.5** — Guardar las consultas y sus resultados en un script `.sql`. Evidencia: pendiente
+- [ ] **9.5** — Cargar la capa de comunas del Proyecto 2 a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL; se usará como zonas en el Proyecto 12. Evidencia: pendiente
 
 ## Qué aprendí
 

@@ -6,7 +6,7 @@
 Conectar n8n con PostgreSQL para automatizar el guardado de datos externos.
 
 ## Requisitos
-Contenedores de n8n y PostgreSQL corriendo; credenciales de PostgreSQL configuradas en n8n.
+Contenedores de n8n y PostgreSQL corriendo; credenciales de PostgreSQL configuradas en n8n; el workflow "Hello n8n" del Proyecto 10.
 
 ## Entregable
 Workflow exportado (JSON) + captura de los datos guardados en la tabla.
@@ -20,13 +20,13 @@ Workflow exportado (JSON) + captura de los datos guardados en la tabla.
 
 ## Ejercicios
 1. Configurar en n8n las credenciales de conexión a PostgreSQL.
-2. Crear un workflow con un trigger schedule (ej. cada hora) que llame a una API pública (ej. clima de tu ciudad).
+2. Duplicar el workflow "Hello n8n" del ejercicio 10.2 (schedule → API de clima) para usarlo como base, en lugar de construirlo de nuevo.
 3. Agregar un nodo de PostgreSQL que inserte automáticamente los datos recibidos en una tabla.
 4. Ejecutar el workflow y verificar en DBeaver que los datos se guardaron correctamente.
 
 ## Progreso (checklist)
 - [ ] **11.1** — Configurar en n8n las credenciales de conexión a PostgreSQL. Evidencia: pendiente
-- [ ] **11.2** — Crear un workflow con un trigger schedule (ej. cada hora) que llame a una API pública (ej. clima de tu ciudad). Evidencia: pendiente
+- [ ] **11.2** — Duplicar el workflow "Hello n8n" del ejercicio 10.2 (schedule → API de clima) para usarlo como base, en lugar de construirlo de nuevo. Evidencia: pendiente
 - [ ] **11.3** — Agregar un nodo de PostgreSQL que inserte automáticamente los datos recibidos en una tabla. Evidencia: pendiente
 - [ ] **11.4** — Ejecutar el workflow y verificar en DBeaver que los datos se guardaron correctamente. Evidencia: pendiente
 

@@ -20,8 +20,6 @@ Mapa exportado como imagen usando el diseñador de impresión (layout) de QGIS.
 
 **Etiquetas (labels):** texto mostrado sobre el mapa con el valor de un campo (ej. nombre de cada barrio).
 
-**Consulta de definición:** filtro aplicado a nivel de capa que oculta entidades sin modificar los datos originales.
-
 ## Ejercicios
 1. Consultar y escribir la diferencia entre simbología de símbolo único, categorizado y graduado.
 2. Simbolizar una capa por categoría (ej. por tipo de uso de suelo o por comuna).

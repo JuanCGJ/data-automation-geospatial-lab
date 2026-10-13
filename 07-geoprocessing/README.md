@@ -6,7 +6,7 @@
 Aprender las herramientas de geoprocesamiento espacial más usadas en QGIS.
 
 ## Requisitos
-QGIS; una capa de puntos (ej. hospitales) y otra capa de puntos o polígonos (ej. colegios).
+QGIS; la capa `puntos_manizales` y la capa de comunas del Proyecto 2.
 
 ## Entregable
 Capa resultado de la intersección + explicación escrita de qué hace cada herramienta.
@@ -26,15 +26,13 @@ Capa resultado de la intersección + explicación escrita de qué hace cada herr
 
 ## Ejercicios
 1. Consultar y escribir en tus palabras qué hace cada una de estas herramientas: buffer, clip, dissolve, intersect, union, spatial join.
-2. Crear un buffer de 1 km alrededor de un punto (ej. un hospital).
-3. Intersectar ese buffer con otra capa (ej. colegios) para identificar cuáles quedan dentro.
-4. Escribir una explicación corta de qué hizo cada herramienta usada en el ejercicio.
+2. Crear un buffer de 1 km alrededor de un punto de `puntos_manizales` (ej. Universidad de Caldas), trabajando en un CRS en metros (EPSG:6256).
+3. Intersectar ese buffer con la capa de comunas para identificar qué comunas quedan dentro, total o parcialmente.
 
 ## Progreso (checklist)
 - [ ] **7.1** — Consultar y escribir en tus palabras qué hace cada una de estas herramientas: buffer, clip, dissolve, intersect, union, spatial join. Evidencia: pendiente
-- [ ] **7.2** — Crear un buffer de 1 km alrededor de un punto (ej. un hospital). Evidencia: pendiente
-- [ ] **7.3** — Intersectar ese buffer con otra capa (ej. colegios) para identificar cuáles quedan dentro. Evidencia: pendiente
-- [ ] **7.4** — Escribir una explicación corta de qué hizo cada herramienta usada en el ejercicio. Evidencia: pendiente
+- [ ] **7.2** — Crear un buffer de 1 km alrededor de un punto de `puntos_manizales` (ej. Universidad de Caldas), trabajando en un CRS en metros (EPSG:6256). Evidencia: pendiente
+- [ ] **7.3** — Intersectar ese buffer con la capa de comunas para identificar qué comunas quedan dentro, total o parcialmente. Evidencia: pendiente
 
 ## Qué aprendí
 

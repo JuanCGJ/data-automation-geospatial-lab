@@ -6,7 +6,7 @@
 Aprender a trabajar con la tabla de atributos: tipos de dato, campos calculados y filtros.
 
 ## Requisitos
-QGIS; una capa con datos numéricos (ej. población y área), puede ser de un proyecto anterior.
+QGIS; la capa de comunas de Manizales del Proyecto 2 (`02-gis-data-formats/data/comunas_manizales.gpkg`).
 
 ## Entregable
 Capa exportada con el nuevo campo calculado.
@@ -21,15 +21,15 @@ Capa exportada con el nuevo campo calculado.
 **Selección y filtro:** seleccionar resalta entidades sin ocultar el resto; filtrar (consulta de definición) oculta las que no cumplen la condición, mostrando solo el subconjunto.
 
 ## Ejercicios
-1. Consultar y escribir qué tipos de dato existen en la tabla de atributos de QGIS (entero, texto, decimal, fecha, etc.).
-2. Abrir la calculadora de campos y crear un campo nuevo calculado (ej. densidad = población / área).
-3. Usar el panel de selección por expresión para filtrar entidades según una condición (ej. densidad mayor a un valor dado).
+1. Revisar el tipo de dato de cada campo de la capa de comunas (Propiedades de la capa → Campos) y escribir qué tipos existen en QGIS (entero, decimal, texto, fecha, etc.).
+2. Con la calculadora de campos, crear el campo `area_km2` (área de cada comuna en km²) y compararlo con el campo `Shape__Are`.
+3. Usar la selección por expresión para seleccionar las comunas con `area_km2` mayor a un valor dado.
 4. Exportar la selección filtrada como una nueva capa.
 
 ## Progreso (checklist)
-- [ ] **4.1** — Consultar y escribir qué tipos de dato existen en la tabla de atributos de QGIS (entero, texto, decimal, fecha, etc.). Evidencia: pendiente
-- [ ] **4.2** — Abrir la calculadora de campos y crear un campo nuevo calculado (ej. densidad = población / área). Evidencia: pendiente
-- [ ] **4.3** — Usar el panel de selección por expresión para filtrar entidades según una condición (ej. densidad mayor a un valor dado). Evidencia: pendiente
+- [ ] **4.1** — Revisar el tipo de dato de cada campo de la capa de comunas (Propiedades de la capa → Campos) y escribir qué tipos existen en QGIS (entero, decimal, texto, fecha, etc.). Evidencia: pendiente
+- [ ] **4.2** — Con la calculadora de campos, crear el campo `area_km2` (área de cada comuna en km²) y compararlo con el campo `Shape__Are`. Evidencia: pendiente
+- [ ] **4.3** — Usar la selección por expresión para seleccionar las comunas con `area_km2` mayor a un valor dado. Evidencia: pendiente
 - [ ] **4.4** — Exportar la selección filtrada como una nueva capa. Evidencia: pendiente
 
 ## Qué aprendí

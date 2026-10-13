@@ -1,6 +1,6 @@
 # Proyecto 6 — Simbología y visualización
 
-> Estado: pendiente
+> Estado: completado
 
 ## Objetivo
 Aprender a simbolizar y etiquetar capas en QGIS para comunicar información visualmente.
@@ -52,7 +52,6 @@ Mapa exportado como imagen usando el diseñador de impresión (layout) de QGIS.
 
 ## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.
-## Evidencia
 - `hallazgos.md`: hallazgos de los 4 ejercicios, con sus capturas.
 - `6.2-categorizado.png`: activos simbolizados por tipo.
 - `6.3-graduado-clases.png`, `6.3-etiquetas-config.png`: configuración de la simbología graduada y de las etiquetas.

@@ -29,13 +29,23 @@ Captura de la interfaz de QGIS, tablas de atributos de las 3 capas y notas sobre
 - [x] **3.2** — Abrir la tabla de atributos de cada una de las 3 capas y revisar sus columnas. Evidencia: [tablas y hallazgos](evidence/3.2-tablas-atributos.md)
 - [x] **3.3** — Cambiar el CRS del proyecto y anotar qué cambia visualmente en las capas. Evidencia: [capturas y notas](evidence/3.3-cambio-crs.md)
 
+
 ## Qué aprendí
+- Las zonas de QGIS: barra de herramientas, Browser (buscar datos), Layers (capas cargadas, donde la de arriba tapa a las de abajo), lienzo del mapa y barra de estado (coordenadas, escala y CRS).
+- Una capa puede estar encendida y no verse porque la vista está en otro lugar; *Zoom to Layer(s)* lo resuelve.
+- La tabla de atributos muestra los datos de cada entidad: filas = entidades, columnas = campos.
+- El límite de 10 caracteres del shapefile aplica a los nombres de campo, no a los valores, y se hereda en todo lo que se exporta a partir de él. Conviene exportar desde la fuente original.
+- El GeoPackage agrega un identificador propio (`fid`), y un identificador interno (`OBJECTID`) no tiene por qué coincidir con un código real (`nro`).
+- Cambiar el CRS del proyecto no modifica los datos, solo cómo se dibujan (reproyección al vuelo).
+- Un CRS usado lejos de su zona de diseño deforma las formas; cerca del ecuador, WGS 84 casi no deforma.
+- Cuando dos CRS usan datums distintos, hay que elegir una transformación de datum; importa en trabajos de precisión.
 
 ## Problemas encontrados y solución
+3.1 — La capa no aparecía en el mapa. Estaba encendida pero la vista estaba en otro lugar. Solución: clic derecho → *Zoom to Layer(s)*.
 
 ## Preguntas de entrevista
-- **¿Qué diferencia hay entre el CRS de un proyecto y el CRS de una capa en QGIS?** El CRS de la capa es el sistema en el que fue creado/guardado el dato original; el CRS del proyecto es el sistema en el que QGIS muestra todas las capas en pantalla, reproyectándolas al vuelo si no coinciden.
-- **¿Para qué sirve la tabla de atributos?** Para ver y editar la información no geométrica asociada a cada entidad de una capa (nombres, categorías, valores numéricos), y para filtrar o seleccionar entidades según esos valores.
+- ¿Qué diferencia hay entre el CRS de un proyecto y el CRS de una capa en QGIS?** El CRS de la capa es el sistema en el que fue creado/guardado el dato original; el CRS del proyecto es el sistema en el que QGIS muestra todas las capas en pantalla, reproyectándolas al vuelo si no coinciden.
+- ¿Para qué sirve la tabla de atributos?** Para ver y editar la información no geométrica asociada a cada entidad de una capa (nombres, categorías, valores numéricos), y para filtrar o seleccionar entidades según esos valores.
 
 ## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.

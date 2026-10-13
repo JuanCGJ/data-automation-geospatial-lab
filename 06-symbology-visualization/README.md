@@ -6,7 +6,7 @@
 Aprender a simbolizar y etiquetar capas en QGIS para comunicar información visualmente.
 
 ## Requisitos
-QGIS; una capa con al menos un campo categórico y uno numérico.
+QGIS; la capa `activos` del Proyecto 5 (campo categórico `tipo`) y la capa de comunas del Proyecto 4 (campo numérico `area_km2`).
 
 ## Entregable
 Mapa exportado como imagen usando el diseñador de impresión (layout) de QGIS.
@@ -22,14 +22,14 @@ Mapa exportado como imagen usando el diseñador de impresión (layout) de QGIS.
 
 ## Ejercicios
 1. Consultar y escribir la diferencia entre simbología de símbolo único, categorizado y graduado.
-2. Simbolizar una capa por categoría (ej. por tipo de uso de suelo o por comuna).
-3. Simbolizar otra capa (o la misma con otro campo) por valor graduado, y agregar etiquetas con el nombre o valor de cada entidad.
+2. Simbolizar la capa `activos` por categoría según el campo `tipo`.
+3. Simbolizar la capa de comunas por valor graduado según `area_km2`, y agregar etiquetas con el nombre de cada comuna.
 4. Usar el diseñador de impresión (layout) de QGIS para exportar el mapa como imagen.
 
 ## Progreso (checklist)
-- [ ] **6.1** — Consultar y escribir la diferencia entre simbología de símbolo único, categorizado y graduado. Evidencia: pendiente
-- [ ] **6.2** — Simbolizar una capa por categoría (ej. por tipo de uso de suelo o por comuna). Evidencia: pendiente
-- [ ] **6.3** — Simbolizar otra capa (o la misma con otro campo) por valor graduado, y agregar etiquetas con el nombre o valor de cada entidad. Evidencia: pendiente
+- [x] **6.1** — Consultar y escribir la diferencia entre simbología de símbolo único, categorizado y graduado. Evidencia: [hallazgos](evidence/hallazgos.md)
+- [ ] **6.2** — Simbolizar la capa `activos` por categoría según el campo `tipo`. Evidencia: pendiente
+- [ ] **6.3** — Simbolizar la capa de comunas por valor graduado según `area_km2`, y agregar etiquetas con el nombre de cada comuna. Evidencia: pendiente
 - [ ] **6.4** — Usar el diseñador de impresión (layout) de QGIS para exportar el mapa como imagen. Evidencia: pendiente
 
 ## Qué aprendí

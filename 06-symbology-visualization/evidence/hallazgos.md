@@ -12,7 +12,9 @@ La **simbología** define cómo se dibuja cada entidad (color, tamaño, forma). 
 
 ## 6.2 — Simbología categorizada
 
-![Activos por tipo](6.2-categorizado.png)
+![Activos por tipo](6.3-graduado-etiquetas.png)
+
+*La misma captura de la 6.3 muestra la leyenda de `activos` (panel Layers, arriba a la izquierda), por eso no se tomó una aparte.*
 
 - Capa `activos` simbolizada con *Categorized* sobre el campo `tipo`: 3 categorías (`camara`, `poste`, `sensor`), cada una con un color distinto.
 - *Classify* genera una categoría por cada valor único del campo; por eso fue importante escribir los valores de forma uniforme en la 5.2.

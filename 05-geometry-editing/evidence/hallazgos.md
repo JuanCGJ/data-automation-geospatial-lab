@@ -20,3 +20,24 @@ QGIS protege las capas contra cambios accidentales: para modificar geometrías o
 - **Vértice:** cada esquina o punto de quiebre de una línea o polígono. El borde de una comuna puede tener cientos.
 - **Mover un punto vs. mover un vértice:** un punto es una entidad completa (se mueve con *Move Feature*); un vértice es solo una parte de una línea o polígono (se mueve con *Vertex Tool*).
 - **Split vs. Merge:** son operaciones inversas. Al dividir, las partes nuevas copian los atributos de la original; al unir, hay que decidir qué atributos se conservan.
+
+## 5.2 — Capa de puntos desde cero
+
+![Capa activos](5.2-capa-activos.png)
+
+- Se creó la capa vacía `activos` (GeoPackage, geometría Point, EPSG:6256) con los campos `tipo` y `estado` (texto).
+- Se digitalizaron 5 puntos con *Add Point Feature*: 2 cámaras, 2 postes y 1 sensor.
+- Los valores se escribieron con un formato uniforme (minúsculas, sin tildes) para que funcionen como categorías en la simbología.
+- Los cambios solo se escriben en el archivo al guardar (*Save Layer Edits*).
+
+## 5.3 — Dividir un polígono (Split Features)
+
+| Antes | Después |
+|---|---|
+| ![Antes](5.3-antes.png) | ![Después](5.3-despues.png) |
+
+- Se dividió la comuna Tesorito en una copia de la capa (`data/comunas_editadas.gpkg`) con *Edit → Edit Geometry → Split Features*.
+- La línea de corte cruzó el polígono en más de un tramo, por su forma irregular, y generó **3 partes**: la capa pasó de 12 a 14 entidades.
+- La entidad original (fid 9) conserva uno de los pedazos; las nuevas reciben los demás. Las 3 copiaron todos los atributos.
+- *Split* **no recalcula** los campos: las 3 partes mostraban `area_km2` = 7,89. Se recalculó con `$area / 1000000`: 4,16 + 3,47 + 0,26 = 7,89 km², igual al área original.
+- `Shape__Are` (calculado por ArcGIS) quedó desactualizado en las 3 partes; los campos de área de la fuente no son confiables tras editar geometrías.

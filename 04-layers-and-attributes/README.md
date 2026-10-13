@@ -27,7 +27,7 @@ Capa exportada con el nuevo campo calculado.
 4. Exportar la selección filtrada como una nueva capa.
 
 ## Progreso (checklist)
-- [x] **4.1** — Revisar el tipo de dato de cada campo de la capa de comunas (Propiedades de la capa → Campos) y escribir qué tipos existen en QGIS (entero, decimal, texto, fecha, etc.). Evidencia: [hallazgos](evidence/hallazgos.md)existen en QGIS (entero, decimal, texto, fecha, etc.). Evidencia: pendiente
+- [x] **4.1** — Revisar el tipo de dato de cada campo de la capa de comunas (Propiedades de la capa → Campos) y escribir qué tipos existen en QGIS (entero, decimal, texto, fecha, etc.). Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **4.2** — Con la calculadora de campos, crear el campo `area_km2` (área de cada comuna en km²) y compararlo con el campo `Shape__Are`. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **4.3** — Usar la selección por expresión para seleccionar las comunas con `area_km2` mayor a un valor dado. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **4.4** — Exportar la selección filtrada como una nueva capa. Evidencia: [hallazgos](evidence/hallazgos.md)

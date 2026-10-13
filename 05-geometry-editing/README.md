@@ -6,7 +6,7 @@
 Practicar la edición de geometrías en QGIS: crear, mover, dividir y unir entidades.
 
 ## Requisitos
-QGIS; una capa de polígonos existente (de proyectos anteriores) para editar.
+QGIS; una copia de la capa de comunas del Proyecto 4 (`04-layers-and-attributes/data/comunas_manizales.gpkg`) para editar sin alterar los datos originales.
 
 ## Entregable
 Capa editada + capturas antes/después.
@@ -23,16 +23,14 @@ Capa editada + capturas antes/después.
 ## Ejercicios
 1. Consultar y escribir cómo funcionan las herramientas de crear, mover y eliminar puntos, y de editar vértices de líneas y polígonos en QGIS.
 2. Activar el modo edición y crear una capa nueva de puntos desde cero (ej. "activos" ficticios de tu ciudad: postes, cámaras, etc.).
-3. Tomar una captura del polígono existente antes de editarlo.
-4. Usar la herramienta de dividir entidades (split features) para dividir un polígono existente en dos.
-5. Tomar una captura del resultado después de la edición.
+3. Usar la herramienta de dividir entidades (split features) para dividir un polígono existente en dos, con captura antes y después de la edición.
+
+> Nota: los antiguos ejercicios "captura antes" y "captura después" se fusionaron en el 5.3, porque eran la evidencia de la división y no ejercicios propios.
 
 ## Progreso (checklist)
-- [ ] **5.1** — Consultar y escribir cómo funcionan las herramientas de crear, mover y eliminar puntos, y de editar vértices de líneas y polígonos en QGIS. Evidencia: pendiente
+- [x] **5.1** — Consultar y escribir cómo funcionan las herramientas de crear, mover y eliminar puntos, y de editar vértices de líneas y polígonos en QGIS. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [ ] **5.2** — Activar el modo edición y crear una capa nueva de puntos desde cero (ej. "activos" ficticios de tu ciudad: postes, cámaras, etc.). Evidencia: pendiente
-- [ ] **5.3** — Tomar una captura del polígono existente antes de editarlo. Evidencia: pendiente
-- [ ] **5.4** — Usar la herramienta de dividir entidades (split features) para dividir un polígono existente en dos. Evidencia: pendiente
-- [ ] **5.5** — Tomar una captura del resultado después de la edición. Evidencia: pendiente
+- [ ] **5.3** — Usar la herramienta de dividir entidades (split features) para dividir un polígono existente en dos, con captura antes y después de la edición. Evidencia: pendiente
 
 ## Qué aprendí
 

@@ -47,6 +47,8 @@ Capa editada + capturas antes/después.
 
 **5.3 — Las partes divididas tenían el área de la comuna completa.** Las 3 partes de Tesorito mostraban `area_km2` = 7,89, porque *Split* copia los atributos sin recalcularlos. Solución: recalcular el campo con `$area / 1000000` (*Update All* en la tabla) y verificar que la suma de las partes sea igual al área original.
 
+**Commit — Las ediciones no llegaban a GitHub.** El primer push subió `activos_manizales.gpkg` vacío y `comunas_editadas.gpkg` sin dividir. Causa: con la capa abierta, QGIS escribe los cambios del GeoPackage en un archivo temporal `.gpkg-wal` (ignorado por `.gitignore`) y solo los pasa al `.gpkg` al cerrar la capa. Solución: cerrar QGIS antes de hacer commit de un GeoPackage editado.
+
 ## Preguntas de entrevista
 - **¿Qué es el "modo edición" en QGIS y por qué es importante guardar los cambios?** Es el estado que habilita modificar geometrías y atributos. Mientras está activo, los cambios quedan en memoria; si no se guardan explícitamente, se pierden. Protege los datos contra modificaciones accidentales.
 - **¿Qué diferencia hay entre dividir (split) y unir (merge) entidades?** Son operaciones inversas: *split* corta una entidad en varias partes que copian los atributos de la original; *merge* combina varias entidades en una sola y obliga a decidir qué atributos se conservan.

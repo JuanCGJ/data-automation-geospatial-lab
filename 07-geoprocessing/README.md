@@ -30,7 +30,7 @@ Capa resultado de la intersección + explicación escrita de qué hace cada herr
 3. Intersectar ese buffer con la capa de comunas para identificar qué comunas quedan dentro, total o parcialmente.
 
 ## Progreso (checklist)
-- [ ] **7.1** — Consultar y escribir en tus palabras qué hace cada una de estas herramientas: buffer, clip, dissolve, intersect, union, spatial join. Evidencia: pendiente
+- [x] **7.1** — Consultar y escribir en tus palabras qué hace cada una de estas herramientas: buffer, clip, dissolve, intersect, union, spatial join. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [ ] **7.2** — Crear un buffer de 1 km alrededor de un punto de `puntos_manizales` (ej. Universidad de Caldas), trabajando en un CRS en metros (EPSG:6256). Evidencia: pendiente
 - [ ] **7.3** — Intersectar ese buffer con la capa de comunas para identificar qué comunas quedan dentro, total o parcialmente. Evidencia: pendiente
 

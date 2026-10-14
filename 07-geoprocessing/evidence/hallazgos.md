@@ -21,14 +21,6 @@ El **geoprocesamiento** crea capas **nuevas** a partir de relaciones espaciales 
 - Buffer de 1 km alrededor de la Universidad de Caldas, usando *Selected features only* para no generar un círculo por cada punto. 25 segmentos.
 - Resultado en `data/buffer_1km.gpkg`. Se verificó con la herramienta *Measure Line*: 2 km de diámetro, es decir, 1 km de radio.
 
-## 7.2 — Buffer de 1 km
-
-![Buffer de 1 km](7.2-buffer.png)
-
-- Los puntos del CSV estaban en WGS 84 (grados); se exportaron a `data/puntos_6256.gpkg` en EPSG:6256 (metros) para que la distancia del buffer tuviera sentido.
-- Buffer de 1 km alrededor de la Universidad de Caldas, usando *Selected features only* para no generar un círculo por cada punto. 25 segmentos.
-- Resultado en `data/buffer_1km.gpkg`. Se verificó con la herramienta *Measure Line*: 2 km de diámetro, es decir, 1 km de radio.
-
 ## 7.3 — Intersección del buffer con las comunas
 
 ![Intersección: mapa](7.3-interseccion-mapa.png)

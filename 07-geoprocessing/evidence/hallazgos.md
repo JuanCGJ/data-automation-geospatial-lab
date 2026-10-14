@@ -32,15 +32,15 @@ El **geoprocesamiento** crea capas **nuevas** a partir de relaciones espaciales 
 
 | Comuna | Área en el buffer (km²) |
 |---|---|
-| Estación | 2,3054 |
-| Ecoturístico Cerro de Oro | 0,6085 |
-| Palogrande | 0,1805 |
+| Palogrande | 2,3054 |
+| Universitaria | 0,6085 |
+| Estación | 0,1805 |
 | La Fuente | 0,0345 |
-| Universitaria | 0,0086 |
+| Ecoturístico Cerro de Oro | 0,0086 |
 | **Total** | **3,1375** |
 
 - Validación: π·1² = 3,1416 km². La diferencia se explica porque el buffer es un polígono de 100 lados (3,1395 km²) y `$area` mide sobre el elipsoide (−0,07 %): 3,1373 ≈ 3,1375. Todo el buffer cae dentro de la ciudad.
-- El 73 % del buffer cae en Estación; las coordenadas del CSV (2.5) son aproximadas.
+- El 73 % del buffer cae en Palogrande, la comuna donde está ubicada la Universidad de Caldas.
 
 ### Conceptos clave
 - **Clip vs. Intersect:** las dos devuelven solo la zona común, pero Clip usa la segunda capa como "molde" y descarta sus atributos; Intersect conserva los atributos de las dos.

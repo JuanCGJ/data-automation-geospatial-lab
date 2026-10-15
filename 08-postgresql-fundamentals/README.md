@@ -1,6 +1,6 @@
 # Proyecto 8 — PostgreSQL desde cero
 
-> Estado: pendiente
+> Estado: completado
 
 ## Objetivo
 Aprender los fundamentos de bases de datos relacionales y SQL básico usando PostgreSQL.
@@ -66,4 +66,4 @@ En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (captur
 - `8.2-diagrama-er.png`: diagrama entidad-relación del esquema `monitoreo`.
 - `8.3-lecturas.png`, `8.3-error-fk.png`: datos insertados y prueba de la FK.
 - `8.4-consulta1-filtro.png` … `8.4-consulta5-alertas.png`: resultado de cada consulta.
-- `../sql/monitoreo.sql`: script completo del proyecto.
+- `sql/monitoreo.sql`: script completo del proyecto (fuera de `evidence/`).

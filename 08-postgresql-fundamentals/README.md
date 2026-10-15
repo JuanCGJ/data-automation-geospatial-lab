@@ -6,7 +6,7 @@
 Aprender los fundamentos de bases de datos relacionales y SQL básico usando PostgreSQL.
 
 ## Requisitos
-Contenedor de PostgreSQL corriendo (del Proyecto 0); DBeaver o pgAdmin conectado.
+Contenedor de PostgreSQL corriendo (del Proyecto 0, base de datos `gisdb`); DBeaver conectado. Los datos de prueba se basan en los activos del Proyecto 5 (cámaras, postes y sensores).
 
 ## Entregable
 Script `.sql` con la creación de tablas, las queries, y capturas de los resultados.
@@ -28,14 +28,14 @@ Script `.sql` con la creación de tablas, las queries, y capturas de los resulta
 
 ## Ejercicios
 1. Consultar y escribir qué son: base de datos, esquema, tabla, llave primaria (PK), llave foránea (FK) e índice.
-2. Crear una base de datos nueva con 2 tablas relacionadas por FK (ej. dispositivos y lecturas).
+2. Crear el esquema `monitoreo` en `gisdb` con 2 tablas relacionadas por FK: `activos` y `lecturas`.
 3. Insertar datos de prueba en ambas tablas.
 4. Escribir 5 queries que incluyan al menos un JOIN, una agregación y un filtro.
 5. Guardar todo en un script `.sql` y tomar capturas de los resultados de cada query.
 
 ## Progreso (checklist)
-- [ ] **8.1** — Consultar y escribir qué son: base de datos, esquema, tabla, llave primaria (PK), llave foránea (FK) e índice. Evidencia: pendiente
-- [ ] **8.2** — Crear una base de datos nueva con 2 tablas relacionadas por FK (ej. dispositivos y lecturas). Evidencia: pendiente
+- [x] **8.1** — Consultar y escribir qué son: base de datos, esquema, tabla, llave primaria (PK), llave foránea (FK) e índice. Evidencia: [hallazgos](evidence/hallazgos.md)
+- [ ] **8.2** — Crear el esquema `monitoreo` en `gisdb` con 2 tablas relacionadas por FK: `activos` y `lecturas`. Evidencia: pendiente
 - [ ] **8.3** — Insertar datos de prueba en ambas tablas. Evidencia: pendiente
 - [ ] **8.4** — Escribir 5 queries que incluyan al menos un JOIN, una agregación y un filtro. Evidencia: pendiente
 - [ ] **8.5** — Guardar todo en un script `.sql` y tomar capturas de los resultados de cada query. Evidencia: pendiente

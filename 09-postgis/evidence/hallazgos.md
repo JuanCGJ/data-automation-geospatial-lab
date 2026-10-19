@@ -34,6 +34,12 @@ Todas empiezan por `ST_` (*spatial type*) y se usan dentro de un `SELECT` o un `
 | `ST_Intersects(a, b)` | ¿Las geometrías se tocan o se cruzan en algún punto? | Verdadero / falso | Condición previa de *Intersection* (7.3) |
 | `ST_Buffer(g, d)` | Crea un polígono a una distancia `d` alrededor de la geometría | Geometría | *Buffer* (7.2) |
 
+### Conceptos clave
+- **Funciones que responden vs. funciones que crean:** `ST_DWithin`, `ST_Contains` e `ST_Intersects` responden sí o no y sirven para filtrar en el `WHERE`. `ST_MakePoint` e `ST_Buffer` crean geometrías nuevas.
+- **`ST_Contains` vs. `ST_Intersects`:** `ST_Contains(comuna, punto)` exige que el punto esté dentro; `ST_Intersects` acepta cualquier contacto, incluso un borde compartido.
+- **El orden importa en `ST_Contains`:** el contenedor va primero. `ST_Contains(comuna, punto)` puede ser verdadero; `ST_Contains(punto, comuna)` nunca lo es.
+- **Índice espacial (GiST):** igual que el índice por fecha del Proyecto 8, pero en dos dimensiones. Guarda el rectángulo que envuelve cada geometría y descarta rápido las que están lejos, antes de calcular con precisión.
+
 ## 9.3 — Columna geométrica en `monitoreo.activos`
 
 ![Activos con geometría](9.3-activos-geom.png)
@@ -84,41 +90,7 @@ Todas empiezan por `ST_` (*spatial type*) y se usan dentro de un `SELECT` o un `
 
 ### Problema 2: DB Manager no pudo importar las comunas
 
-![Error de importación](9.5-diag-6-error-import.png)
-
-- Error `SRID must be <= 998999`: el GeoPackage guarda EPSG:6256 con la definición vacía (GDAL tampoco puede escribirla en WKT1), así que QGIS lo trató como un CRS personalizado con un número interno. Asignar el CRS de la capa no lo resolvió.
-- Solución: cargar las comunas con un script SQL generado a partir de `comunas_validas.gpkg` (`sql/comunas.sql`), con `ST_GeomFromText(..., 6256)`. La carga queda reproducible.
-
-![Comunas cargadas](9.5-comunas-cargadas.png)
-
-- 12 comunas, todas válidas, 35,80 km² (área plana; 35,77 km² con `$area` de QGIS, que mide sobre el elipsoide).
-
-### Verificación con `ST_Contains`
-
-![Verificación](9.5-verificacion-contains.png)
-
-- *Spatial join*: `JOIN monitoreo.comunas ON ST_Contains(c.geom, a.geom)` une cada activo con la comuna que lo contiene.
-- Las 5 comunas obtenidas espacialmente coinciden con las registradas a mano en el Proyecto 8.
-- La tabla `monitoreo.comunas` queda lista como zonas para el geofencing del Proyecto 12.
-
-### Problema 1: QGIS mostraba los activos sin CRS
-
-![QGIS sin CRS](9.5-diag-0-qgis-sin-crs.png)
-
-| Paso | Consulta | Resultado | Evidencia |
-|---|---|---|---|
-| Diagnóstico 1 | `SELECT DISTINCT ST_SRID(geom) FROM monitoreo.activos` | 6256 (correcto) | ![](9.5-diag-1-srid.png) |
-| Diagnóstico 2 | `spatial_ref_sys WHERE srid = 6256` | Sin filas: PostGIS no conoce el 6256 | ![](9.5-diag-2-spatial-ref-sys.png) |
-| Solución | `INSERT INTO spatial_ref_sys ...` (WKT2 + PROJ) | 1 fila insertada | ![](9.5-diag-3-insert.png) |
-| Comprobación | `spatial_ref_sys WHERE srid = 6256` | 1 fila: `6256, EPSG, 6256` | ![](9.5-diag-4-registrado.png) |
-| Verificación | `ST_Transform` de la universidad a EPSG:4326 | `POINT(-75.493 5.056)`, igual al CSV del Proyecto 2 | ![](9.5-diag-5-transform.png) |
-
-- Causa: EPSG:6256 usa el método *Colombia Urban*, que no se puede escribir en WKT1. Por eso PostGIS no lo incluye en `spatial_ref_sys`, y QGIS no podía interpretar el SRID.
-- Tras registrarlo y volver a cargar la capa, los activos quedaron alineados con las comunas:
-
-![Activos desde PostGIS en QGIS](9.5-activos-postgis-qgis.png)
-
-### Problema 2: DB Manager no pudo importar las comunas
+![Configuración de DB Manager](9.5-dbmanager-import.png)
 
 ![Error de importación](9.5-diag-6-error-import.png)
 
@@ -136,9 +108,3 @@ Todas empiezan por `ST_` (*spatial type*) y se usan dentro de un `SELECT` o un `
 - *Spatial join*: `JOIN monitoreo.comunas ON ST_Contains(c.geom, a.geom)` une cada activo con la comuna que lo contiene.
 - Las 5 comunas obtenidas espacialmente coinciden con las registradas a mano en el Proyecto 8.
 - La tabla `monitoreo.comunas` queda lista como zonas para el geofencing del Proyecto 12.
-
-### Conceptos clave
-- **Funciones que responden vs. funciones que crean:** `ST_DWithin`, `ST_Contains` e `ST_Intersects` responden sí o no y sirven para filtrar en el `WHERE`. `ST_MakePoint` e `ST_Buffer` crean geometrías nuevas.
-- **`ST_Contains` vs. `ST_Intersects`:** `ST_Contains(comuna, punto)` exige que el punto esté dentro; `ST_Intersects` acepta cualquier contacto, incluso un borde compartido.
-- **El orden importa en `ST_Contains`:** el contenedor va primero. `ST_Contains(comuna, punto)` puede ser verdadero; `ST_Contains(punto, comuna)` nunca lo es.
-- **Índice espacial (GiST):** igual que el índice por fecha del Proyecto 8, pero en dos dimensiones. Guarda el rectángulo que envuelve cada geometría y descarta rápido las que están lejos, antes de calcular con precisión.

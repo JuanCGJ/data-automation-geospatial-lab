@@ -6,7 +6,7 @@
 Aprender a extender PostgreSQL con PostGIS para guardar y consultar datos espaciales.
 
 ## Requisitos
-Contenedor de PostgreSQL+PostGIS corriendo; tabla creada en el Proyecto 8.
+Contenedor de PostgreSQL+PostGIS corriendo; tabla `monitoreo.activos` del Proyecto 8; capa de comunas corregida del Proyecto 7 (`07-geoprocessing/data/comunas_validas.gpkg`).
 
 ## Entregable
 Script `.sql` con las consultas espaciales y sus resultados.
@@ -23,16 +23,16 @@ Script `.sql` con las consultas espaciales y sus resultados.
 ## Ejercicios
 1. Consultar y escribir la diferencia entre los tipos de dato geometry y geography, y qué es un SRID.
 2. Consultar y escribir qué hace cada una de estas funciones: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`.
-3. Agregar una columna `geometry` a una tabla existente e insertar puntos usando `ST_MakePoint`.
-4. Escribir una consulta que devuelva qué puntos están a menos de 5 km de otro (usando `ST_DWithin` o `ST_Distance`).
-5. Cargar la capa de comunas del Proyecto 2 a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL; se usará como zonas en el Proyecto 12.
+3. Agregar una columna `geometry` (SRID 6256) a `monitoreo.activos` y asignar la ubicación de cada activo usando `ST_MakePoint`.
+4. Escribir una consulta que devuelva la distancia de cada activo a la Universidad de Caldas (`ST_Distance`) y cuáles están a menos de 1 km (`ST_DWithin`), igual que el buffer de la 7.2.
+5. Cargar la capa de comunas (corregida en la 7.3) a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL que use `ST_Contains`; se usará como zonas en el Proyecto 12.
 
 ## Progreso (checklist)
-- [ ] **9.1** — Consultar y escribir la diferencia entre los tipos de dato geometry y geography, y qué es un SRID. Evidencia: pendiente
-- [ ] **9.2** — Consultar y escribir qué hace cada una de estas funciones: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`. Evidencia: pendiente
-- [ ] **9.3** — Agregar una columna `geometry` a una tabla existente e insertar puntos usando `ST_MakePoint`. Evidencia: pendiente
-- [ ] **9.4** — Escribir una consulta que devuelva qué puntos están a menos de 5 km de otro (usando `ST_DWithin` o `ST_Distance`). Evidencia: pendiente
-- [ ] **9.5** — Cargar la capa de comunas del Proyecto 2 a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL; se usará como zonas en el Proyecto 12. Evidencia: pendiente
+- [x] **9.1** — Consultar y escribir la diferencia entre los tipos de dato geometry y geography, y qué es un SRID. Evidencia: [hallazgos](evidence/hallazgos.md)
+- [x] **9.2** — Consultar y escribir qué hace cada una de estas funciones: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`. Evidencia: [hallazgos](evidence/hallazgos.md)
+- [ ] **9.3** — Agregar una columna `geometry` (SRID 6256) a `monitoreo.activos` y asignar la ubicación de cada activo usando `ST_MakePoint`. Evidencia: pendiente
+- [ ] **9.4** — Escribir una consulta que devuelva la distancia de cada activo a la Universidad de Caldas (`ST_Distance`) y cuáles están a menos de 1 km (`ST_DWithin`). Evidencia: pendiente
+- [ ] **9.5** — Cargar la capa de comunas (corregida en la 7.3) a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL que use `ST_Contains`. Evidencia: pendiente
 
 ## Qué aprendí
 

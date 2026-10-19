@@ -90,9 +90,9 @@ Todas empiezan por `ST_` (*spatial type*) y se usan dentro de un `SELECT` o un `
 
 ### Problema 2: DB Manager no pudo importar las comunas
 
-![Configuración de DB Manager](9.5-dbmanager-import.png)
+![Configuración de DB Manager](9.5-dbmanager-1-import.png)
 
-![Error de importación](9.5-diag-6-error-import.png)
+![Error de importación](9.5-dbmanager-2-error.png)
 
 - Error `SRID must be <= 998999`: el GeoPackage guarda EPSG:6256 con la definición vacía (GDAL tampoco puede escribirla en WKT1), así que QGIS lo trató como un CRS personalizado con un número interno. Asignar el CRS de la capa no lo resolvió.
 - Solución: cargar las comunas con un script SQL generado a partir de `comunas_validas.gpkg` (`sql/comunas.sql`), con `ST_GeomFromText(..., 6256)`. La carga queda reproducible.

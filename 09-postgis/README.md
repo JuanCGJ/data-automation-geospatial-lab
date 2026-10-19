@@ -63,7 +63,8 @@ En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (captur
 - `hallazgos.md`: hallazgos de los 5 ejercicios, con sus capturas.
 - `9.3-activos-geom.png`: activos con su geometría.
 - `9.4-distancias.png`: distancias a la Universidad de Caldas.
-- `9.5-diag-0` a `9.5-diag-6`: diagnóstico y solución de los problemas de CRS.
+- `9.5-dbmanager-1-import.png`, `9.5-dbmanager-2-error.png`: intento de importar las comunas con DB Manager y su error.
+- `9.5-diag-0` a `9.5-diag-5`: diagnóstico y solución del SRID 6256.
 - `9.5-activos-postgis-qgis.png`: activos de PostGIS dibujados en QGIS sobre las comunas.
 - `9.5-comunas-cargadas.png`, `9.5-verificacion-contains.png`: carga de comunas y verificación espacial.
 - `sql/postgis.sql`: script del proyecto. `sql/comunas.sql`: carga de las comunas.

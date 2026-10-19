@@ -1,7 +1,12 @@
 -- =========================================================
 -- Proyecto 9 — PostGIS
 -- Base de datos: gisdb | Esquema: monitoreo | CRS: EPSG:6256
+-- Requisito: tablas monitoreo.activos y monitoreo.lecturas del Proyecto 8
 -- =========================================================
+
+-- Verificar que PostGIS está activo (esperado: 3.4 USE_GEOS=1 USE_PROJ=1 USE_STATS=1)
+SELECT PostGIS_Version();
+
 
 -- ===== 9.3 Columna geométrica =====
 ALTER TABLE monitoreo.activos
@@ -18,6 +23,7 @@ UPDATE monitoreo.activos SET geom = ST_SetSRID(ST_MakePoint(1173356, 1053121), 6
 UPDATE monitoreo.activos SET geom = ST_SetSRID(ST_MakePoint(1175024, 1052064), 6256) WHERE id_activo = 4; -- Estación
 UPDATE monitoreo.activos SET geom = ST_SetSRID(ST_MakePoint(1176408, 1052900), 6256) WHERE id_activo = 5; -- Nuevo Horizonte
 
+-- Comprobación: geometría en formato legible (WKT)
 SELECT id_activo, tipo, comuna, ST_AsText(geom) AS ubicacion
 FROM monitoreo.activos;
 
@@ -60,16 +66,16 @@ VALUES (
 )
 ON CONFLICT (srid) DO NOTHING;
 
--- Diagnóstico: ¿PostGIS conoce el SRID 6256?  → sin filas (causa del problema)
-SELECT srid, auth_name, auth_srid
-FROM spatial_ref_sys
-WHERE srid = 6256;
-
 -- Verificación: la universidad, de metros (6256) a grados (4326).
 -- Debe dar las coordenadas originales del CSV del Proyecto 2: (-75.493, 5.056)
 SELECT ST_AsText(
   ST_Transform(ST_SetSRID(ST_MakePoint(1175734, 1051047), 6256), 4326)
 );
+
+
+-- ===== 9.5 Carga de comunas =====
+-- DB Manager de QGIS falló ("SRID must be <= 998999"); las comunas se cargan
+-- ejecutando el script sql/comunas.sql (crea monitoreo.comunas con 12 comunas).
 
 
 -- ===== 9.5 Verificación espacial =====

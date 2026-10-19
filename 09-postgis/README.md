@@ -25,14 +25,14 @@ Script `.sql` con las consultas espaciales y sus resultados.
 2. Consultar y escribir qué hace cada una de estas funciones: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`.
 3. Agregar una columna `geometry` (SRID 6256) a `monitoreo.activos` y asignar la ubicación de cada activo usando `ST_MakePoint`.
 4. Escribir una consulta que devuelva la distancia de cada activo a la Universidad de Caldas (`ST_Distance`) y cuáles están a menos de 1 km (`ST_DWithin`), igual que el buffer de la 7.2.
-5. Cargar la capa de comunas (corregida en la 7.3) a PostGIS y verificarla con una consulta SQL que use `ST_Contains`; se usará como zonas en el Proyecto 12.
+5. Cargar la capa de comunas (corregida en la 7.3) a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL que use `ST_Contains`; se usará como zonas en el Proyecto 12.
 
 ## Progreso (checklist)
 - [x] **9.1** — Consultar y escribir la diferencia entre los tipos de dato geometry y geography, y qué es un SRID. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **9.2** — Consultar y escribir qué hace cada una de estas funciones: `ST_MakePoint`, `ST_Distance`, `ST_DWithin`, `ST_Contains`, `ST_Intersects`, `ST_Buffer`. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [ ] **9.3** — Agregar una columna `geometry` (SRID 6256) a `monitoreo.activos` y asignar la ubicación de cada activo usando `ST_MakePoint`. Evidencia: pendiente
 - [ ] **9.4** — Escribir una consulta que devuelva la distancia de cada activo a la Universidad de Caldas (`ST_Distance`) y cuáles están a menos de 1 km (`ST_DWithin`). Evidencia: pendiente
-- [ ] **9.5** — Cargar la capa de comunas (corregida en la 7.3) a PostGIS y verificarla con una consulta SQL que use `ST_Contains`. Evidencia: pendiente
+- [ ] **9.5** — Cargar la capa de comunas (corregida en la 7.3) a PostGIS desde QGIS (DB Manager) y verificarla con una consulta SQL que use `ST_Contains`. Evidencia: pendiente
 
 ## Qué aprendí
 

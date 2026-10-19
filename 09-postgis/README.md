@@ -50,6 +50,8 @@ Script `.sql` con las consultas espaciales y sus resultados.
 
 **9.5 — DB Manager fallaba con `SRID must be <= 998999`.** El GeoPackage guarda EPSG:6256 sin definición y QGIS lo trató como un CRS personalizado. Solución: cargar las comunas con un script SQL (`sql/comunas.sql`) usando `ST_GeomFromText(..., 6256)`.
 
+Explicación detallada de estos dos problemas: [problemas-srid.md](problemas-srid.md).
+
 **9.3 — El script no tenía conexión en DBeaver.** Al guardarlo como archivo quedó sin base de datos asociada. Solución: `Ctrl + 9` y elegir `gisdb`.
 
 ## Preguntas de entrevista

@@ -113,3 +113,11 @@ Invoke-RestMethod -Method Post -Uri "http://localhost:5678/webhook-test/saludo" 
 - **GET vs. POST:** GET pide datos (10.2, Open-Meteo); POST envía datos (10.3, PowerShell → n8n).
 - **URL de prueba:** `/webhook-test/saludo` solo escucha después de pulsar *Execute workflow* y acepta **una** llamada. La de producción, `/webhook/saludo`, queda escuchando siempre cuando el workflow está publicado.
 - **Respond to Webhook** permite decidir qué y cuándo se responde (por ejemplo, después de consultar PostGIS), en vez de responder automáticamente al recibir la petición.
+
+## 10.4 — Exportar los workflows
+
+- Un workflow de n8n es un archivo **JSON** que describe los nodos, su configuración y sus conexiones. Exportarlo permite versionarlo en GitHub e importarlo en otra instancia de n8n (menú ⋯ → *Import from File*).
+- Exportados desde el menú ⋯ → *Download* del editor:
+  - [`workflows/hello-n8n.json`](../workflows/hello-n8n.json): Schedule Trigger → HTTP Request → Edit Fields.
+  - [`workflows/webhook-saludo.json`](../workflows/webhook-saludo.json): Webhook → Respond to Webhook.
+- Ninguno de los dos usa credenciales. Cuando un workflow las use (Proyecto 11), el JSON exportado guarda solo el **nombre e id** de la credencial, no la contraseña; aun así conviene revisarlo antes de subirlo.

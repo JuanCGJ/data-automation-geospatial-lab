@@ -76,3 +76,40 @@ Flujo: **Schedule Trigger → HTTP Request → Edit Fields (Set)**. Trae el clim
 - El Schedule Trigger mostraba `America/New_York`, la zona por defecto de n8n, mientras Open-Meteo respondía en `America/Bogota` porque así se pidió en la URL. Era el mismo momento expresado en dos zonas, con una hora de diferencia.
 - Solución: en `docker-compose.yml` se agregaron las variables de entorno `GENERIC_TIMEZONE=America/Bogota` (zona de n8n) y `TZ=America/Bogota` (zona del contenedor), y se recreó el contenedor con `docker compose up -d`. El workflow y la cuenta se conservaron porque viven en el volumen `n8n-data`.
 - Lección: al integrar sistemas, fijar la zona horaria en cada uno; si no, las horas guardadas en la base de datos pueden quedar desfasadas.
+
+## 10.3 — Workflow con webhook
+
+Flujo: **Webhook → Respond to Webhook**. Recibe un nombre y una comuna, y responde con un mensaje. Es la base del geofencing del Proyecto 12 (recibir una coordenada y responder si está dentro de Manizales).
+
+| Nodo | Configuración |
+|---|---|
+| Webhook | Método `POST`, path `saludo`, sin autenticación, *Respond: Using 'Respond to Webhook' Node* |
+| Respond to Webhook | *Respond With: JSON*, cuerpo con expressions |
+
+Cuerpo de la respuesta:
+```
+{
+  "mensaje": "Hola {{ $json.body.nombre }}, recibimos tu reporte desde la comuna {{ $json.body.comuna }}",
+  "recibido": "{{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}"
+}
+```
+
+### Prueba desde PowerShell
+![Respuesta en PowerShell](10.3-powershell-respuesta.png)
+
+```powershell
+Invoke-RestMethod -Method Post -Uri "http://localhost:5678/webhook-test/saludo" -ContentType "application/json" -Body '{"nombre":"Juan","comuna":"Palogrande"}'
+```
+
+- `Invoke-RestMethod` hace una petición HTTP desde la terminal (lo mismo que el nodo HTTP Request, pero en sentido contrario: aquí es PowerShell quien llama a n8n).
+- Respuesta: *"Hola Juan, recibimos tu reporte desde la comuna Palogrande"*, con la hora en zona de Bogotá gracias al ajuste del 10.2.
+
+### Lo que recibió n8n
+![Webhook recibido](10.3-webhook-recibido.png)
+
+- El webhook entrega un item con `headers` (datos técnicos de la petición), `params`, `query` y **`body`** (los datos enviados). Por eso las expressions usan `$json.body.nombre` y no `$json.nombre`.
+
+### Conceptos clave
+- **GET vs. POST:** GET pide datos (10.2, Open-Meteo); POST envía datos (10.3, PowerShell → n8n).
+- **URL de prueba:** `/webhook-test/saludo` solo escucha después de pulsar *Execute workflow* y acepta **una** llamada. La de producción, `/webhook/saludo`, queda escuchando siempre cuando el workflow está publicado.
+- **Respond to Webhook** permite decidir qué y cuándo se responde (por ejemplo, después de consultar PostGIS), en vez de responder automáticamente al recibir la petición.

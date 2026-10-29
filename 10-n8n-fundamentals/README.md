@@ -37,7 +37,7 @@ Exportar (JSON) los 2 workflows creados + capturas de su ejecución.
 ## Progreso (checklist)
 - [x] **10.1** — Consultar y escribir qué son: workflow, node, trigger, HTTP request, webhook, expression y el nodo IF. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **10.2** — Crear un workflow "Hello n8n": un trigger de tipo schedule → un nodo HTTP request a una API pública (ej. Open-Meteo) → un nodo que transforme el JSON recibido. Evidencia: [hallazgos](evidence/hallazgos.md)
-- [ ] **10.3** — Crear un segundo workflow con un trigger de tipo webhook que reciba datos y responda con un mensaje. Evidencia: pendiente
+- [x] **10.3** — Crear un segundo workflow con un trigger de tipo webhook que reciba datos y responda con un mensaje. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [ ] **10.4** — Exportar ambos workflows como JSON. Evidencia: pendiente
 
 ## Qué aprendí

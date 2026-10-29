@@ -30,8 +30,8 @@
 | Uso típico | Reportes, sincronizaciones periódicas | Formularios, eventos en tiempo real, integraciones |
 
 ### Conceptos clave
-- **Ejecución manual vs. activa:** mientras se construye, el workflow se prueba a mano (*Execute workflow*). Para que corra solo (por schedule o webhook de producción) hay que **activarlo**.
-- **URL de prueba vs. de producción del webhook:** la de prueba solo escucha mientras se está probando en el editor; la de producción funciona cuando el workflow está activo.
+- **Ejecución manual vs. activa:** mientras se construye, el workflow se prueba a mano (*Execute workflow*). Para que corra solo (por schedule o webhook de producción) hay que **activarlo**; en la versión usada en este curso, el botón se llama **Publish**.
+- **URL de prueba vs. de producción del webhook:** la de prueba solo escucha mientras se está probando en el editor; la de producción funciona cuando el workflow está publicado (activo).
 - **Relación con lo anterior:** n8n será el "pegamento" del curso. En el Proyecto 11 escribirá en PostgreSQL y en el 12 consultará PostGIS (`ST_Contains`) para validar coordenadas.
 
 ## 10.2 — Workflow "Hello n8n"

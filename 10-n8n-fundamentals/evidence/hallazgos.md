@@ -33,3 +33,46 @@
 - **Ejecución manual vs. activa:** mientras se construye, el workflow se prueba a mano (*Execute workflow*). Para que corra solo (por schedule o webhook de producción) hay que **activarlo**.
 - **URL de prueba vs. de producción del webhook:** la de prueba solo escucha mientras se está probando en el editor; la de producción funciona cuando el workflow está activo.
 - **Relación con lo anterior:** n8n será el "pegamento" del curso. En el Proyecto 11 escribirá en PostgreSQL y en el 12 consultará PostGIS (`ST_Contains`) para validar coordenadas.
+
+## 10.2 — Workflow "Hello n8n"
+
+Flujo: **Schedule Trigger → HTTP Request → Edit Fields (Set)**. Trae el clima actual de Manizales cada hora y lo deja listo para guardarlo en PostgreSQL (Proyecto 11).
+
+| Nodo | Configuración | Qué hace |
+|---|---|---|
+| Schedule Trigger | Cada 1 hora | Dispara el workflow por tiempo |
+| HTTP Request | `GET` a `https://api.open-meteo.com/v1/forecast?latitude=5.07&longitude=-75.52&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=America/Bogota` | Pide el clima actual a la API de Open-Meteo (gratis, sin clave) |
+| Edit Fields (Set) | 5 campos con expressions | Deja solo los datos útiles, en una estructura plana |
+
+### Respuesta de la API
+![HTTP Request](10.2-http-request.png)
+
+- Lo que va después del `?` en la URL son los **parámetros**: coordenadas, datos pedidos y zona horaria.
+- La respuesta trae `current_units` (unidades) y `current` (valores). La elevación que reporta Open-Meteo para el punto es **2116 m**, casi la altura del plano de proyección de EPSG:6256 (2100 m, Proyecto 9).
+
+### Transformación con Edit Fields
+![Edit Fields](10.2-edit-fields.png)
+
+| Campo | Tipo | Expression |
+|---|---|---|
+| `ciudad` | String | `Manizales` (valor fijo) |
+| `fecha_hora` | String | `{{ $json.current.time }}` |
+| `temperatura_c` | Number | `{{ $json.current.temperature_2m }}` |
+| `humedad_pct` | Number | `{{ $json.current.relative_humidity_2m }}` |
+| `viento_kmh` | Number | `{{ $json.current.wind_speed_10m }}` |
+
+- Antes: un JSON anidado con datos técnicos que no se necesitan (`generationtime_ms`, `utc_offset_seconds`…). Después: un item plano con 5 campos, la misma forma que tendrá una fila de la tabla en PostgreSQL.
+- Al arrastrar un campo desde el INPUT, n8n escribe la expression automáticamente. Hay que verificar el resultado: en la primera prueba `humedad_pct` quedó con la ruta de la temperatura (16.9 en vez de 81) y se corrigió.
+
+### Workflow completo
+![Workflow completo](10.2-workflow-completo.png)
+
+- *Execute workflow* ejecuta todos los nodos en orden; *Execute step* prueba solo un nodo.
+- n8n guarda los cambios automáticamente. El workflow **no se publicó** (*Publish*): por ahora solo se ejecuta a mano, para no generar ejecuciones cada hora.
+
+### Problema: zona horaria de n8n
+![Zona horaria corregida](10.2-timezone-bogota.png)
+
+- El Schedule Trigger mostraba `America/New_York`, la zona por defecto de n8n, mientras Open-Meteo respondía en `America/Bogota` porque así se pidió en la URL. Era el mismo momento expresado en dos zonas, con una hora de diferencia.
+- Solución: en `docker-compose.yml` se agregaron las variables de entorno `GENERIC_TIMEZONE=America/Bogota` (zona de n8n) y `TZ=America/Bogota` (zona del contenedor), y se recreó el contenedor con `docker compose up -d`. El workflow y la cuenta se conservaron porque viven en el volumen `n8n-data`.
+- Lección: al integrar sistemas, fijar la zona horaria en cada uno; si no, las horas guardadas en la base de datos pueden quedar desfasadas.

@@ -36,13 +36,14 @@ Exportar (JSON) los 2 workflows creados + capturas de su ejecución.
 
 ## Progreso (checklist)
 - [x] **10.1** — Consultar y escribir qué son: workflow, node, trigger, HTTP request, webhook, expression y el nodo IF. Evidencia: [hallazgos](evidence/hallazgos.md)
-- [ ] **10.2** — Crear un workflow "Hello n8n": un trigger de tipo schedule → un nodo HTTP request a una API pública (ej. Open-Meteo) → un nodo que transforme el JSON recibido. Evidencia: pendiente
+- [x] **10.2** — Crear un workflow "Hello n8n": un trigger de tipo schedule → un nodo HTTP request a una API pública (ej. Open-Meteo) → un nodo que transforme el JSON recibido. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [ ] **10.3** — Crear un segundo workflow con un trigger de tipo webhook que reciba datos y responda con un mensaje. Evidencia: pendiente
 - [ ] **10.4** — Exportar ambos workflows como JSON. Evidencia: pendiente
 
 ## Qué aprendí
 
 ## Problemas encontrados y solución
+**10.2 — n8n usaba la zona horaria de Nueva York.** El Schedule Trigger mostraba `America/New_York` (valor por defecto). Solución: variables `GENERIC_TIMEZONE` y `TZ` en `America/Bogota` en `docker-compose.yml` y `docker compose up -d`.
 
 ## Preguntas de entrevista
 - **¿Qué diferencia hay entre un trigger de tipo schedule y uno de tipo webhook?** Schedule dispara el workflow en intervalos de tiempo definidos (ej. cada hora); webhook lo dispara en el momento en que llega una petición HTTP externa, en tiempo real.

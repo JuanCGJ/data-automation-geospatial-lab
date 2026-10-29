@@ -42,6 +42,14 @@ Cada proyecto sigue la misma plantilla: **Objective, Concepts, Requirements, Set
 
 Instrucciones detalladas de instalación (Docker Desktop, `docker-compose.yml` para PostgreSQL/PostGIS y n8n, QGIS) en `00-dev-environment/README.md`.
 
+Inicio rápido:
+```bash
+cp .env.example .env      # en PowerShell: Copy-Item .env.example .env
+# edita .env y reemplaza xxx por una contraseña propia
+docker compose up -d
+```
+Las credenciales viven en `.env`, que está en `.gitignore` y nunca se sube al repositorio. Los puertos (PostgreSQL 5432, n8n 5678) solo escuchan en `127.0.0.1`.
+
 ## Progreso
 
 Actualmente en **Proyecto 0 — Entorno de desarrollo**. Este README y el estado de cada carpeta se van actualizando a medida que se completa cada proyecto.

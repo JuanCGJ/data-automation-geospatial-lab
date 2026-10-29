@@ -1,0 +1,63 @@
+{
+  "name": "Webhook saludo",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "saludo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f1e6daf9-1e81-4a07-ada9-8685ea805c13",
+      "name": "Webhook",
+      "webhookId": "15c0fd49-59f6-4827-81e4-f4ddc663b8f8"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "=     {\n       \"mensaje\": \"Hola {{ $json.body.nombre }}, recibimos tu reporte desde la comuna {{ $json.body.comuna }}\",\n       \"recibido\": \"{{ $now.toFormat('yyyy-MM-dd HH:mm:ss') }}\"\n     }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0506b8e0-88e3-4e45-9a49-2d40abb7edc6",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "dcadb8e3-351b-45e4-af06-a25d029738e0",
+  "meta": {
+    "instanceId": "f2698b05857ee29b36fdf58fb62890bf41ab0d404653fdadd2d81c62cd51d881"
+  },
+  "nodeGroups": [],
+  "id": "Nq7Nwr7uJQizXgp4",
+  "tags": []
+}

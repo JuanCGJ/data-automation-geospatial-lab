@@ -1,0 +1,122 @@
+{
+  "name": "Hello n8n",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "5f39dc43-0e58-4d69-bc99-99686540af9e",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "     https://api.open-meteo.com/v1/forecast?latitude=5.07&longitude=-75.52&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=America/Bogota",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d32bb5fd-f26b-4b61-a7b2-dc7f5a5132d2",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98b74bc4-e0ce-4702-94ba-a740a8cf3ebc",
+              "name": "ciudad",
+              "value": "Manizales",
+              "type": "string"
+            },
+            {
+              "id": "e144d0eb-7cf2-4d33-87b4-775d510e55f9",
+              "name": "fecha_hora",
+              "value": "={{ $json.current.time }}",
+              "type": "string"
+            },
+            {
+              "id": "83f227d4-0638-4526-8107-5e73f82c8e58",
+              "name": "temperatura_c",
+              "value": "={{ $json.current.temperature_2m }}",
+              "type": "number"
+            },
+            {
+              "id": "0a269a53-6740-468e-bdf4-232a2772bac8",
+              "name": "humedad_pct",
+              "value": "={{ $json.current.relative_humidity_2m }}",
+              "type": "number"
+            },
+            {
+              "id": "3bc40098-ed88-4fd1-a646-ae6995e79d8c",
+              "name": "viento_kmh",
+              "value": "={{ $json.current.wind_speed_10m }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "3007ee4a-ad33-48bf-842f-e4657e846d0b",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "bed6e79b-84a9-4806-9eb7-49c8608fd3e1",
+  "meta": {
+    "instanceId": "f2698b05857ee29b36fdf58fb62890bf41ab0d404653fdadd2d81c62cd51d881"
+  },
+  "nodeGroups": [],
+  "id": "CbQswleFjIzxzcIa",
+  "tags": []
+}

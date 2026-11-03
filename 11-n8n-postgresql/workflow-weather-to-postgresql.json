@@ -1,0 +1,240 @@
+{
+  "name": "Weather to PostgreSQL",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "631953a4-b061-4d6c-9902-9d3641c735e6",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "     https://api.open-meteo.com/v1/forecast?latitude=5.07&longitude=-75.52&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=America/Bogota",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "38d754ad-c1f2-4aa0-bb74-c8b903bc5b7f",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98b74bc4-e0ce-4702-94ba-a740a8cf3ebc",
+              "name": "ciudad",
+              "value": "Manizales",
+              "type": "string"
+            },
+            {
+              "id": "e144d0eb-7cf2-4d33-87b4-775d510e55f9",
+              "name": "fecha_hora",
+              "value": "={{ DateTime.fromISO($json.current.time, { zone: $json.timezone }).toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "83f227d4-0638-4526-8107-5e73f82c8e58",
+              "name": "temperatura_c",
+              "value": "={{ $json.current.temperature_2m }}",
+              "type": "number"
+            },
+            {
+              "id": "0a269a53-6740-468e-bdf4-232a2772bac8",
+              "name": "humedad_pct",
+              "value": "={{ $json.current.relative_humidity_2m }}",
+              "type": "number"
+            },
+            {
+              "id": "3bc40098-ed88-4fd1-a646-ae6995e79d8c",
+              "name": "viento_kmh",
+              "value": "={{ $json.current.wind_speed_10m }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "daa27598-7339-4c92-b20a-c26f52ccc8a2",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "value": "monitoreo",
+          "mode": "list",
+          "cachedResultName": "monitoreo"
+        },
+        "table": {
+          "__rl": true,
+          "value": "clima_open_meteo",
+          "mode": "list",
+          "cachedResultName": "clima_open_meteo"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ciudad",
+              "displayName": "ciudad",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fecha_hora",
+              "displayName": "fecha_hora",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "temperatura_c",
+              "displayName": "temperatura_c",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "humedad_pct",
+              "displayName": "humedad_pct",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "viento_kmh",
+              "displayName": "viento_kmh",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "creado_en",
+              "displayName": "creado_en",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        672,
+        0
+      ],
+      "id": "54f88539-ef87-4c7b-ac4b-58b9806b71aa",
+      "name": "Insert rows in a table",
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Insert rows in a table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "61e14b11-9ac5-4e79-be61-de8957ff8561",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f2698b05857ee29b36fdf58fb62890bf41ab0d404653fdadd2d81c62cd51d881"
+  },
+  "nodeGroups": [],
+  "id": "YtRJiih9fBox3aSN",
+  "tags": []
+}

@@ -1,0 +1,181 @@
+{
+  "name": "Geofencing Manizales",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "geofence",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -240,
+        16
+      ],
+      "id": "95754dc5-f8e5-42d5-b8b1-e5a3568a4293",
+      "name": "Webhook",
+      "webhookId": "8292a54d-dd95-488d-9d3b-821229c5dd10"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "b0646e12-b8cd-4e9d-b03b-7a1f222e6792",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "df91faf7-e800-4449-aeff-72ac3620848d",
+              "leftValue": "={{ $json.dentro }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        192,
+        16
+      ],
+      "id": "2e1c23d3-4a0e-4320-9ff8-bcf337e76062",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "   INSERT INTO monitoreo.alertas_geofence (nombre, lat, lon, geom)\n   VALUES (\n       $1,\n       $2::numeric,\n       $3::numeric,\n       ST_Transform(ST_SetSRID(ST_MakePoint($3::float8, $2::float8), 4326), 6256)\n   )\n   RETURNING id AS alerta_id, nombre, lat, lon, NULL AS comuna, false AS dentro, creado_en;",
+        "options": {
+          "queryReplacement": "=   {{ $('Webhook').item.json.body.nombre }},{{ $('Webhook').item.json.body.lat }},{{ $('Webhook').item.json.body.lon }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        416,
+        -96
+      ],
+      "id": "14e984a6-7a3a-4e4d-a9fa-d72bc361d6de",
+      "name": "Registrar alerta",
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n    c.nombre             AS comuna,\n    c.nombre IS NOT NULL AS dentro\nFROM (\n    SELECT ST_Transform(ST_SetSRID(ST_MakePoint($1::float8, $2::float8), 4326), 6256) AS geom\n) p\nLEFT JOIN monitoreo.comunas c ON ST_Contains(c.geom, p.geom);",
+        "options": {
+          "queryReplacement": "=   {{ $json.body.lon }},{{ $json.body.lat }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        -32,
+        16
+      ],
+      "id": "982ee6cd-c0d6-49a1-bad5-db908db4c57c",
+      "name": "Validar en PostGIS",
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validar en PostGIS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Registrar alerta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar alerta": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validar en PostGIS": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1afa4837-2a8a-4d7e-9a5a-4b582493d665",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f2698b05857ee29b36fdf58fb62890bf41ab0d404653fdadd2d81c62cd51d881"
+  },
+  "nodeGroups": [],
+  "id": "3mMkCISSXwRyvTgj",
+  "tags": []
+}

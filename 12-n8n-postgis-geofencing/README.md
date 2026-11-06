@@ -1,6 +1,6 @@
 # Proyecto 12 — n8n + PostGIS (Geofencing)
 
-> Estado: pendiente
+> Estado: en progreso
 
 ## Objetivo
 Construir un sistema de geofencing: recibir coordenadas GPS vía webhook y validar si están dentro de una zona usando PostGIS.
@@ -26,7 +26,7 @@ Workflow completo + demo en gif o video corto.
 5. Grabar un gif o video corto mostrando el workflow funcionando de principio a fin.
 
 ## Progreso (checklist)
-- [ ] **12.1** — Preparar coordenadas GPS de prueba dentro y fuera de Manizales, reutilizando `puntos_manizales.csv` del Proyecto 2 y agregando algunos puntos fuera de la ciudad. Evidencia: pendiente
+- [x] **12.1** — Preparar coordenadas GPS de prueba dentro y fuera de Manizales, reutilizando `puntos_manizales.csv` del Proyecto 2 y agregando algunos puntos fuera de la ciudad. Evidencia: [datos](data/coordenadas_prueba.csv), [hallazgos](evidence/hallazgos.md)
 - [ ] **12.2** — Crear un webhook en n8n que reciba una coordenada (latitud/longitud). Evidencia: pendiente
 - [ ] **12.3** — Agregar un nodo que consulte PostGIS con `ST_Contains` para validar si la coordenada está dentro de alguna comuna. Evidencia: pendiente
 - [ ] **12.4** — Agregar lógica (nodo IF) que genere una alerta (registro en otra tabla o mensaje simulado) cuando la coordenada esté fuera de la zona. Evidencia: pendiente
@@ -42,3 +42,6 @@ Workflow completo + demo en gif o video corto.
 
 ## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.
+- `hallazgos.md`: hallazgos de los ejercicios, con sus capturas.
+- `12.1-coordenadas-manizales.png`, `12.1-coordenadas-regional.png`: coordenadas de prueba sobre las comunas (vista de la ciudad y vista regional).
+- `data/coordenadas_prueba.csv`: 9 coordenadas de prueba con el resultado esperado (fuera de `evidence/`).

@@ -31,4 +31,4 @@ Las comunas se cargaron desde PostGIS (`monitoreo.comunas`, del 9.5) y el CSV co
 - **Credencial de PostgreSQL en QGIS:** se guardó con el gestor de autenticación (pestaña *Authentication*, configuración `gisdb-local`), cifrada en `qgis-auth.db` y protegida por la contraseña maestra (integrada con el administrador de credenciales de Windows). Guardarla en la pestaña *Basic* la deja en texto plano y la copia dentro de las capas y del proyecto `.qgz`.
 
 ### Problema: el CSV se leía como una sola columna
-QGIS mostraba `id,nombre,lat,lon,esperado` como un único campo. Causa: el archivo se había guardado con Excel, que en español agrega comillas a cada línea o usa `;` como separador. Solución: crear el CSV con un editor de texto plano (Bloc de notas / VS Code) en UTF-8.
+QGIS mostraba `id,nombre,lat,lon,esperado` como un único campo. Causa probable: el archivo se guardó desde Excel, que en español agrega comillas a cada línea o usa `;` como separador. Solución: volver a crear el CSV con un editor de texto plano (Bloc de notas / VS Code) en UTF-8.

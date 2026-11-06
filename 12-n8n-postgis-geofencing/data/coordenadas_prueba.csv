@@ -1,0 +1,10 @@
+id,nombre,lat,lon,esperado
+1,Catedral Basilica,5.0685,-75.5174,dentro
+2,Monumento a los Colonizadores,5.0726,-75.5284,dentro
+3,Universidad de Caldas,5.0560,-75.4930,dentro
+4,Estadio Palogrande,5.0555,-75.4890,dentro
+5,Ecoparque Los Yarumos,5.0640,-75.4810,dentro
+6,Villamaria (parque principal),5.0447,-75.5145,fuera
+7,Chinchina,4.9826,-75.6036,fuera
+8,Pereira,4.8133,-75.6961,fuera
+9,Bogota,4.6097,-74.0817,fuera

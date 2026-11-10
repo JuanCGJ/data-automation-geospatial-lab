@@ -1,6 +1,6 @@
 # Proyecto 13 — Python + datos geoespaciales
 
-> Estado: pendiente
+> Estado: en progreso
 
 ## Objetivo
 Aprender a manipular datos geoespaciales con Python y conectarlos a PostgreSQL/PostGIS.
@@ -25,7 +25,7 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 4. Escribir los centroides en una tabla nueva de PostGIS.
 
 ## Progreso (checklist)
-- [ ] **13.1** — Consultar y escribir qué son y para qué sirven las librerías geopandas, shapely y psycopg. Evidencia: pendiente
+- [x] **13.1** — Consultar y escribir qué son y para qué sirven las librerías geopandas, shapely y psycopg. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [ ] **13.2** — Instalar las librerías necesarias en un entorno virtual de Python. Evidencia: pendiente
 - [ ] **13.3** — Escribir un script que lea la capa de comunas desde PostGIS (cargada en 9.5) con geopandas, calcule el centroide de cada comuna y compare su área con el campo `area_km2` del ejercicio 4.2. Evidencia: pendiente
 - [ ] **13.4** — Escribir los centroides en una tabla nueva de PostGIS. Evidencia: pendiente
@@ -40,3 +40,4 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 
 ## Evidencia
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.
+- `hallazgos.md`: hallazgos de los ejercicios.

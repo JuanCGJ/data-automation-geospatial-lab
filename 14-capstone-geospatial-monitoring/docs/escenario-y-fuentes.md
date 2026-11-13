@@ -18,30 +18,31 @@ Manizales está construida sobre un filo de montaña, con pendientes fuertes y u
 
 Para las otras 9 comunas no se encontró evidencia publicada verificable. Las fuentes nombran barrios con eventos históricos, pero no se usaron para clasificar comunas sin una fuente que confirme a qué comuna pertenece cada barrio.
 
-## 3. Cómo lo usaremos
-**Riesgo = detonante (lluvia) × condición del terreno (susceptibilidad).** La lluvia es casi igual en toda la ciudad; lo que diferencia a las comunas es su terreno.
+## 3. Datos de susceptibilidad: Servicio Geológico Colombiano
+Se descargó el **Mapa Nacional de Susceptibilidad por Movimientos en Masa del SGC** (versión 2, 2019, escala 1:100.000) [4]: un **raster** (`SuscMM_100k.tif`, ~180 MB, todo el país) en el que cada celda tiene una clase de susceptibilidad, descrita en su tabla de valores (`.vat.dbf`). Con **estadística zonal** en QGIS se obtiene la clase predominante de cada una de las 12 comunas. Así **todas** las comunas quedan clasificadas con un dato oficial, sin asumir niveles, y las 3 comunas con evidencia publicada (sección 2) sirven para **validar** el resultado.
 
-| Susceptibilidad | Comunas | Base | Umbral A25 |
-|---|---|---|---|
-| Alta | 1, 2, 11 | Con fuente | 150 mm *(supuesto)* |
-| Media | Las otras 9 | **Supuesto** a falta de datos | **200 mm** (oficial OMPAD [1]) |
-| Baja | Ninguna | No se declaran comunas "seguras" sin evidencia | 250 mm *(supuesto)* |
+## 4. Cómo lo usaremos
+**Riesgo = detonante (lluvia) × condición del terreno (susceptibilidad).** La lluvia es casi igual en toda la ciudad; lo que diferencia a las comunas es su terreno. Por eso el umbral es **inverso** a la susceptibilidad: un terreno más frágil se desliza con menos lluvia acumulada.
 
-- **Datos:** `data/susceptibilidad_comunas.csv`, con una columna `fuente` que indica si cada nivel tiene respaldo o es supuesto.
+| Susceptibilidad (SGC) | Umbral A25 |
+|---|---|
+| Alta / muy alta | 150 mm *(supuesto)* |
+| Media | **200 mm** (oficial OMPAD [1]) |
+| Baja / muy baja | 250 mm *(supuesto)* |
+
+- **Datos:** la estadística zonal genera la susceptibilidad de cada comuna, que se guarda en PostGIS junto con su umbral y la fuente del dato.
 - **Lluvia:** n8n consulta Open-Meteo en el punto interior de cada comuna (Proyecto 13), suma la lluvia diaria de los últimos 25 días (A25) y la compara con el umbral de la comuna → **alerta por comuna**.
 - **Cobertura:** brigadas de emergencia simuladas reportan su posición por webhook; si una comuna en alerta no tiene una brigada cercana (`ST_DWithin`), se genera la alerta **"comuna en alerta sin cobertura"**.
 - **Demo:** se reproduce un periodo histórico real de lluvias con los datos históricos de Open-Meteo.
 
-## 4. Limitaciones
-- Los umbrales de 150 y 250 mm y el nivel "media" de 9 comunas son **supuestos del proyecto**, no clasificaciones oficiales.
+## 5. Limitaciones
+- Solo el umbral de 200 mm es oficial; los de 150 y 250 mm son **supuestos del proyecto** para que la susceptibilidad module la alerta.
+- El mapa del SGC es **regional** (1:100.000): sirve para comparar comunas entre sí, no para evaluar el riesgo de un predio o una cuadra.
 - Open-Meteo entrega datos en una cuadrícula de varios kilómetros: la lluvia será casi igual en todas las comunas. La arquitectura queda lista para datos más finos (por ejemplo, la red de estaciones de la UNAL [1]).
 - Es un **ejercicio de portafolio**: no reemplaza los sistemas de alerta oficiales de la ciudad.
-
-## 5. Mejora prevista
-Refinar la susceptibilidad de las 12 comunas con el **Mapa Nacional de Susceptibilidad por Movimientos en Masa del SGC** (v2, 2019, escala 1:100.000, formato raster) mediante estadística zonal [4].
 
 ## Fuentes
 1. Instituto de Estudios Ambientales (IDEA), Universidad Nacional de Colombia – Sede Manizales. Artículo sobre umbrales de lluvia (A25, E95) y deslizamientos en el sector occidental de Manizales. https://idea.manizales.unal.edu.co/publicaciones/reportes_meteorologicos/red_manizales/documentos_y_publicaciones/articulos_en_seminarios_congresos/articulo4.pdf
 2. Duque Escobar, G. (2023). *Amenaza climática, un reto complejo para Manizales.* https://godues.wordpress.com/2023/03/27/amenaza-climatica-un-reto-complejo-para-manizales/
 3. *Riesgo por deslizamientos en suelos de la Comuna San José de Manizales.* https://www.researchgate.net/publication/385552148_Riesgo_por_deslizamientos_en_suelos_de_la_Comuna_San_Jose_de_Manizales
-4. Servicio Geológico Colombiano. Mapas de amenazas y susceptibilidad por movimientos en masa. https://www2.sgc.gov.co/sgc/mapas/Paginas/Imagenes-de-amenazas-.aspx
+4. Servicio Geológico Colombiano (2019). *Mapa Nacional de Susceptibilidad por Movimientos en Masa*, v2, escala 1:100.000 (`SuscMM_2019web.zip`). https://www2.sgc.gov.co/sgc/mapas/Paginas/Imagenes-de-amenazas-.aspx

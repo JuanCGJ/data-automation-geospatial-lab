@@ -16,6 +16,8 @@ Integrar todo lo aprendido en un proyecto final: un sistema que, a partir de la 
 
 **Escenario, datos y fuentes:** [`docs/escenario-y-fuentes.md`](docs/escenario-y-fuentes.md).
 
+**Arquitectura:** [`docs/arquitectura.md`](docs/arquitectura.md).
+
 ## Entregable
 Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el flujo funcionando de principio a fin.
 

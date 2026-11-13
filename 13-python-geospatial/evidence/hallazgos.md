@@ -164,3 +164,57 @@ Es como una casa con dos puertas en la que Docker solo abrió una. Con `localhos
 
 - DBeaver no mostró el problema porque cada programa decide en qué orden prueba las direcciones de `localhost`.
 - Lección: cuando un servicio de Docker se publica en `127.0.0.1`, conectarse a `127.0.0.1` y no a `localhost`. Y ante una demora, **medir por partes** antes de suponer la causa (la primera sospecha, el antivirus, resultó falsa).
+
+## 13.4 — Escribir los centroides en una tabla nueva de PostGIS
+
+### GeoAlchemy2
+`to_postgis()` necesita la librería **GeoAlchemy2** para convertir la geometría al tipo `geometry` de PostGIS; no venía con las del 13.2. Se instaló y se regeneró `requirements.txt` (cada librería nueva → volver a ejecutar `pip freeze`):
+```bash
+pip install geoalchemy2
+pip freeze | Set-Content -Encoding ascii requirements.txt
+```
+
+### Tabla `monitoreo.comunas_centroides`
+Dos puntos por comuna (24 filas), en formato "largo": una fila por punto y una columna `tipo` que los distingue.
+
+| tipo | Qué es | ¿Siempre dentro? |
+|---|---|---|
+| `centroide` | Centro geométrico (`.centroid`, equivale a `ST_Centroid`) | No: comunas 1 y 5 quedan fuera |
+| `punto_interior` | `.representative_point()` (equivale a `ST_PointOnSurface`) | Sí |
+
+| Columna | Tipo | Origen |
+|---|---|---|
+| `id_comuna`, `nombre` | entero, texto | `monitoreo.comunas` |
+| `tipo` | texto | `centroide` / `punto_interior` |
+| `dentro_de_comuna` | booleano | `.within(polígono)` calculado en Python |
+| `geom` | `geometry(Point, 6256)` | El punto |
+
+- `pd.concat([centroides, interiores], ignore_index=True)` apila las dos tablas; `rename_geometry("geom")` usa el mismo nombre de columna que el resto del curso.
+- `to_postgis(..., if_exists="replace", index=False)`: el script se puede ejecutar varias veces sin duplicar filas (borra y crea la tabla de nuevo).
+- **Llave primaria compuesta:** `to_postgis` no crea PK. Se agrega con `ALTER TABLE ... ADD PRIMARY KEY (id_comuna, tipo)`, ejecutado con `engine.begin()` + `text()`. Ni `id_comuna` ni `tipo` son únicos por separado, pero la pareja sí: una comuna tiene como máximo un punto de cada tipo, y PostgreSQL rechaza cualquier duplicado.
+- La tabla original `monitoreo.comunas` no se modificó: Python solo la leyó (el geofencing del Proyecto 12 depende de ella). Lo que se agrega a un DataFrame vive solo en la memoria de Python hasta que se escribe explícitamente.
+
+![Escritura en PostGIS](13.4-escritura-postgis.png)
+
+### Verificación en DBeaver
+```sql
+SELECT tipo,
+       COUNT(*)                                    AS puntos,
+       COUNT(*) FILTER (WHERE NOT dentro_de_comuna) AS fuera,
+       ST_SRID(MIN(geom))                          AS srid
+FROM monitoreo.comunas_centroides
+GROUP BY tipo;
+```
+
+![Verificación en DBeaver](13.4-dbeaver-verificacion.png)
+
+- `centroide`: 12 puntos, 2 fuera; `punto_interior`: 12 puntos, 0 fuera; SRID 6256 en ambos. `COUNT(*) FILTER (WHERE ...)` cuenta solo las filas que cumplen la condición.
+
+### Verificación en QGIS
+Proyecto [`proyecto-13.qgz`](../proyecto-13.qgz): `monitoreo.comunas` (opacidad 40 %) y `monitoreo.comunas_centroides` categorizada por `tipo` (rojo = centroide, azul = punto interior), con etiquetas `id_comuna`.
+
+![Centroides en QGIS](13.4-qgis-centroides.png)
+
+- Los 12 puntos interiores caen dentro de su comuna; los centroides de las comunas 1 (Atardeceres) y 5 (Ciudadela del Norte) quedan fuera. Python, PostGIS y QGIS coinciden.
+- QGIS reconoce `dentro_de_comuna` como booleano (`t/f`): el tipo se conservó de Python a PostGIS.
+- El `.qgz` guarda la conexión con la configuración de autenticación (`authcfg`), sin contraseña.

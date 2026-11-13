@@ -10,6 +10,14 @@ Todos los proyectos anteriores (0-13) completados y funcionando.
 
 **Decisión de diseño:** el capstone usa un **esquema nuevo** en `gisdb` (nombre propuesto: `plataforma`) con tablas y workflows propios. Las tablas de los proyectos anteriores no se modifican; `monitoreo.comunas` se usa solo como lectura (zonas). Así los proyectos 8-13 siguen coincidiendo con su documentación, y el capstone se puede recrear o borrar de una vez sin afectar nada más.
 
+**Escenario elegido (borrador, se precisa en el 14.1): Sistema de alerta temprana por deslizamientos en Manizales.**
+- **Activos:** brigadas de emergencia móviles; sus posiciones vienen de un simulador en Python que envía cada posición al webhook de n8n.
+- **Clima (API):** Open-Meteo consultado en el punto interior de cada comuna (`monitoreo.comunas_centroides`, Proyecto 13); lluvia acumulada en 24 h. Para la demo se reproduce un día histórico real de lluvia intensa.
+- **Territorio:** susceptibilidad a deslizamientos por comuna (alta/media/baja) con su propio umbral de lluvia. Fuente por revisar: capa de amenaza del POT en el servicio ArcGIS REST de la Alcaldía; si no está disponible, se asigna y se documenta como supuesto.
+- **Alertas:** ① comuna en alerta cuando la lluvia supera el umbral de su susceptibilidad; ② comuna en alerta **sin cobertura** si ninguna brigada está a menos de X km (`ST_DWithin`).
+- **Salidas:** mapa de monitoreo en QGIS y reporte automático en Python.
+- **Alcance:** completo (versión mínima + cobertura, reporte y reproducción del evento histórico), construido en ese orden.
+
 ## Entregable
 Repo completo + video corto (1-2 min) mostrando el flujo funcionando de principio a fin.
 

@@ -32,6 +32,7 @@ import pandas as pd            # pandas: base de geopandas; aquí solo para opci
 from dotenv import load_dotenv # load_dotenv: carga las variables del archivo .env
 from sqlalchemy import create_engine   # create_engine: crea la conexión a la base de datos
 from sqlalchemy.engine import URL      # URL: arma la dirección de conexión por partes
+from sqlalchemy import text            # text: permite ejecutar SQL escrito como texto (ALTER TABLE)
 
 
 # =====================================================================
@@ -132,3 +133,71 @@ print()
 print("Comparación de áreas y centroides:")
 # round(4) redondea a 4 decimales solo para mostrar; los valores internos no cambian.
 print(comunas[columnas].round(4).to_string(index=False))   # to_string(index=False): sin la columna 0, 1, 2...
+
+
+
+# =====================================================================
+# 13.4 Escribir centroides y puntos interiores en una tabla nueva de PostGIS
+# =====================================================================
+
+# representative_point() devuelve un punto que SIEMPRE cae dentro del polígono
+# (equivale a ST_PointOnSurface en PostGIS). Sirve cuando el centroide queda fuera.
+puntos_interiores = comunas.representative_point()
+
+# Un GeoDataFrame por cada tipo de punto, con las mismas columnas:
+#   - geometry=...: la columna que será la geometría de la tabla.
+#   - crs=comunas.crs: el mismo CRS de las comunas (EPSG:6256).
+#   - "dentro_de_comuna": se vuelve a calcular con .within para dejarlo verificado en la tabla.
+centroides = gpd.GeoDataFrame(
+    {
+        "id_comuna": comunas["id_comuna"],
+        "nombre": comunas["nombre"],
+        "tipo": "centroide",                                        # mismo valor en todas las filas
+        "dentro_de_comuna": comunas["centroide"].within(comunas.geometry),
+    },
+    geometry=comunas["centroide"],
+    crs=comunas.crs,
+)
+
+interiores = gpd.GeoDataFrame(
+    {
+        "id_comuna": comunas["id_comuna"],
+        "nombre": comunas["nombre"],
+        "tipo": "punto_interior",
+        "dentro_de_comuna": puntos_interiores.within(comunas.geometry),   # debe dar True en las 12
+    },
+    geometry=puntos_interiores,
+    crs=comunas.crs,
+)
+
+# pd.concat apila las dos tablas una debajo de la otra: 12 + 12 = 24 filas.
+# ignore_index=True renumera las filas de 0 a 23.
+resultado = pd.concat([centroides, interiores], ignore_index=True)
+
+# La columna de geometría se llama "geom", como en el resto de tablas del curso.
+resultado = resultado.rename_geometry("geom")
+
+# to_postgis crea la tabla monitoreo.comunas_centroides y escribe las 24 filas.
+#   - if_exists="replace": si la tabla ya existe la BORRA y la crea de nuevo.
+#     Así el script se puede ejecutar varias veces sin duplicar datos.
+#   - index=False: no guarda el número de fila de pandas como columna.
+#   - Requiere la librería GeoAlchemy2 (convierte la geometría al tipo geometry de PostGIS).
+resultado.to_postgis(
+    "comunas_centroides",
+    engine,
+    schema="monitoreo",
+    if_exists="replace",
+    index=False,
+)
+
+# to_postgis no crea llave primaria. Se agrega con SQL: la combinación (id_comuna, tipo)
+# identifica cada fila de forma única. QGIS y DBeaver trabajan mejor con tablas que tienen PK.
+# engine.begin() abre una conexión y hace COMMIT al final del bloque "with" si no hubo errores.
+with engine.begin() as conexion:
+    conexion.execute(text(
+        "ALTER TABLE monitoreo.comunas_centroides ADD PRIMARY KEY (id_comuna, tipo)"
+    ))
+
+print()
+print("Tabla monitoreo.comunas_centroides escrita:", len(resultado), "filas")
+print(resultado.drop(columns="geom").to_string(index=False))

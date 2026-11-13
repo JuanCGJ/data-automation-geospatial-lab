@@ -21,3 +21,6 @@ Thumbs.db
 
 # Entornos / secretos
 .env
+
+# Datos crudos pesados: se descargan aparte (ver docs/escenario-y-fuentes.md de cada proyecto)
+**/data/raw/

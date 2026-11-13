@@ -197,6 +197,7 @@ Dos puntos por comuna (24 filas), en formato "largo": una fila por punto y una c
 ![Escritura en PostGIS](13.4-escritura-postgis.png)
 
 ### Verificación en DBeaver
+Script: [`sql/verificacion.sql`](../sql/verificacion.sql).
 ```sql
 SELECT tipo,
        COUNT(*)                                    AS puntos,

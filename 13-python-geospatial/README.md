@@ -28,7 +28,7 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 - [x] **13.1** — Consultar y escribir qué son y para qué sirven las librerías geopandas, shapely y psycopg. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **13.2** — Instalar las librerías necesarias en un entorno virtual de Python. Evidencia: [requirements.txt](requirements.txt), [hallazgos](evidence/hallazgos.md)
 - [x] **13.3** — Escribir un script que lea la capa de comunas desde PostGIS (cargada en 9.5) con geopandas, calcule el centroide de cada comuna y compare su área con el campo `area_km2` del ejercicio 4.2. Evidencia: [script](scripts/comunas_centroides.py), [hallazgos](evidence/hallazgos.md)
-- [x] **13.4** — Escribir los centroides en una tabla nueva de PostGIS. Evidencia: [script](scripts/comunas_centroides.py), [proyecto QGIS](proyecto-13.qgz), [hallazgos](evidence/hallazgos.md)
+- [x] **13.4** — Escribir los centroides en una tabla nueva de PostGIS. Evidencia: [script](scripts/comunas_centroides.py), [verificación SQL](sql/verificacion.sql), [proyecto QGIS](proyecto-13.qgz), [hallazgos](evidence/hallazgos.md)
 
 ## Qué aprendí
 - Qué hace cada librería del stack geoespacial de Python: psycopg (driver), SQLAlchemy (conexión), shapely (geometrías, con GEOS) y geopandas (tablas con geometría y CRS); y GeoAlchemy2 para escribir geometrías en PostGIS.
@@ -63,4 +63,4 @@ En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (captur
 - `13.2-pip-install.png`, `13.2-verificacion-librerias.png`, `13.2-requirements.png`: instalación, verificación de versiones y `requirements.txt`.
 - `13.3-lectura-postgis.png`, `13.3-areas-centroides.png`: lectura de las comunas desde PostGIS y comparación de áreas y centroides.
 - `13.4-escritura-postgis.png`, `13.4-dbeaver-verificacion.png`, `13.4-qgis-centroides.png`: tabla escrita desde Python, verificación en DBeaver y centroides en QGIS.
-- `scripts/comunas_centroides.py`, `requirements.txt`, `proyecto-13.qgz`: script, librerías del entorno y proyecto de QGIS (fuera de `evidence/`).
+- `scripts/comunas_centroides.py`, `sql/verificacion.sql`, `requirements.txt`, `proyecto-13.qgz`: script, consultas de verificación, librerías del entorno y proyecto de QGIS (fuera de `evidence/`).

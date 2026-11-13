@@ -8,6 +8,8 @@ Integrar todo lo aprendido en un proyecto final: una plataforma de monitoreo y a
 ## Requisitos
 Todos los proyectos anteriores (0-13) completados y funcionando.
 
+**Decisión de diseño:** el capstone usa un **esquema nuevo** en `gisdb` (nombre propuesto: `plataforma`) con tablas y workflows propios. Las tablas de los proyectos anteriores no se modifican; `monitoreo.comunas` se usa solo como lectura (zonas). Así los proyectos 8-13 siguen coincidiendo con su documentación, y el capstone se puede recrear o borrar de una vez sin afectar nada más.
+
 ## Entregable
 Repo completo + video corto (1-2 min) mostrando el flujo funcionando de principio a fin.
 

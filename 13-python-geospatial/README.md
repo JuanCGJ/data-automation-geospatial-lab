@@ -27,7 +27,7 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 ## Progreso (checklist)
 - [x] **13.1** — Consultar y escribir qué son y para qué sirven las librerías geopandas, shapely y psycopg. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **13.2** — Instalar las librerías necesarias en un entorno virtual de Python. Evidencia: [requirements.txt](requirements.txt), [hallazgos](evidence/hallazgos.md)
-- [ ] **13.3** — Escribir un script que lea la capa de comunas desde PostGIS (cargada en 9.5) con geopandas, calcule el centroide de cada comuna y compare su área con el campo `area_km2` del ejercicio 4.2. Evidencia: pendiente
+- [x] **13.3** — Escribir un script que lea la capa de comunas desde PostGIS (cargada en 9.5) con geopandas, calcule el centroide de cada comuna y compare su área con el campo `area_km2` del ejercicio 4.2. Evidencia: [script](scripts/comunas_centroides.py), [hallazgos](evidence/hallazgos.md)
 - [ ] **13.4** — Escribir los centroides en una tabla nueva de PostGIS. Evidencia: pendiente
 
 ## Qué aprendí
@@ -42,3 +42,4 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (capturas de pantalla y, cuando aplica, gifs o videos cortos) del trabajo realizado en cada ejercicio.
 - `hallazgos.md`: hallazgos de los ejercicios.
 - `13.2-pip-install.png`, `13.2-verificacion-librerias.png`, `13.2-requirements.png`: instalación, verificación de versiones y `requirements.txt`.
+- `13.3-lectura-postgis.png`, `13.3-areas-centroides.png`: lectura de las comunas desde PostGIS y comparación de áreas y centroides.

@@ -112,6 +112,31 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ## 13.3 — Leer las comunas desde PostGIS con Python
 
+Script: [`scripts/comunas_centroides.py`](../scripts/comunas_centroides.py) (comentado línea por línea, incluidas las instrucciones para ejecutarlo).
+
+### VS Code
+- Extensión **Python** de Microsoft (incluye Pylance y Python Debugger).
+- **Workspace Trust:** VS Code abre las carpetas nuevas en *Restricted Mode* y desactiva las extensiones que ejecutan código ("The Python extension is not available in untrusted workspaces"). Se marcó la carpeta del repo como confiable (*Yes, I trust the authors*).
+- **Python: Select Interpreter** → `.venv` (la barra de estado muestra `.venv (3.14.10)`). Con eso la terminal integrada activa el entorno virtual sola.
+- La terminal integrada es el mismo PowerShell, pero arranca en la carpeta abierta y con el `.venv` activo. El script se ejecuta desde la carpeta del proyecto: `python scripts\comunas_centroides.py` (desde la raíz del repo la ruta relativa no existe: `No such file or directory`).
+
+### Conexión y lectura
+- El script corre **fuera de Docker**, así que se conecta como DBeaver: `127.0.0.1:5432` (n8n, dentro de Docker, usa el host `postgis`).
+- Usuario, contraseña y base se leen del `.env` de la raíz del repo con `python-dotenv`; la ruta se calcula con `Path(__file__).resolve().parents[2]`, así funciona desde cualquier carpeta.
+- `URL.create(...)` arma la conexión por partes: una contraseña con `@`, `#` o `/` no rompe la dirección.
+- `gpd.read_postgis(..., geom_col="geom")` devuelve un GeoDataFrame y toma el CRS del SRID de la columna: **EPSG:6256**.
+
+![Lectura desde PostGIS](13.3-lectura-postgis.png)
+
+### Áreas y centroides
+
+![Áreas y centroides](13.3-areas-centroides.png)
+
+- `area_km2` llega como `Decimal` (columna `NUMERIC`) y se convierte con `astype(float)` para operar con los valores de geopandas.
+- `.area` da m² porque EPSG:6256 es un CRS en metros; ÷ 1e6 → km². (En EPSG:4326 daría "grados²", que no sirve.)
+- **Diferencia sistemática:** en las 12 comunas, el área calculada en Python es entre **0,065 % y 0,069 % mayor** que `area_km2` de QGIS (Proyecto 4); por ejemplo, Tesorito 7,8960 vs 7,8907 km². Que sea constante y siempre en el mismo sentido indica una diferencia de **método**, no un error. Explicación más probable: QGIS (`$area`) calcula por defecto el área **elipsoidal** (sobre la forma curva de la Tierra) y GeoPandas el área **plana** sobre el mapa proyectado, que la proyección deforma un poco y de forma casi uniforme en una zona pequeña. Para este uso la diferencia es despreciable.
+- **Centroides fuera de su comuna:** `centroide.within(geometría)` es `False` en **2 comunas: 1 (Atardeceres) y 5 (Ciudadela del Norte)**. Son polígonos irregulares, y el centroide (el promedio de todas las posiciones del área) cae en un hueco o entrante, fuera del polígono. Para un punto que siempre quede dentro se usa `representative_point()` (13.4).
+
 ### Problema: el script tardaba más de 2 minutos
 El script tardaba **133,8 s** en ejecutarse, aunque solo lee 12 comunas. Se midió por partes con `Measure-Command` (PowerShell):
 

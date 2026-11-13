@@ -39,7 +39,7 @@ Se descargó el **Mapa Nacional de Susceptibilidad por Movimientos en Masa del S
 - Solo el umbral de 200 mm es oficial; los de 150 y 250 mm son **supuestos del proyecto** para que la susceptibilidad module la alerta.
 - El mapa del SGC es **regional** (1:100.000): sirve para comparar comunas entre sí, no para evaluar el riesgo de un predio o una cuadra.
 - Open-Meteo entrega datos en una cuadrícula de varios kilómetros: la lluvia será casi igual en todas las comunas. La arquitectura queda lista para datos más finos (por ejemplo, la red de estaciones de la UNAL [1]).
-- Es un **ejercicio de portafolio**: no reemplaza los sistemas de alerta oficiales de la ciudad.
+- Es un **ejercicio académico**: no reemplaza los sistemas de alerta oficiales de la ciudad.
 
 ## Fuentes
 1. Instituto de Estudios Ambientales (IDEA), Universidad Nacional de Colombia – Sede Manizales. Artículo sobre umbrales de lluvia (A25, E95) y deslizamientos en el sector occidental de Manizales. https://idea.manizales.unal.edu.co/publicaciones/reportes_meteorologicos/red_manizales/documentos_y_publicaciones/articulos_en_seminarios_congresos/articulo4.pdf

@@ -33,32 +33,32 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 **Análisis de cobertura:** determinar si un recurso (brigada) está a una distancia aceptable de una zona que lo necesita (`ST_DWithin`).
 
 ## Ejercicios
-1. Definir el escenario del capstone y documentar los datos, su uso y sus fuentes (`docs/escenario-y-fuentes.md`).
-2. Diseñar el diagrama de arquitectura completo del sistema: fuentes → n8n / Python → PostGIS → QGIS.
-3. Calcular la susceptibilidad de cada comuna con estadística zonal sobre el raster del SGC en QGIS, y compararla con las comunas que la literatura señala como más susceptibles.
-4. Crear el esquema `plataforma` y su modelo de datos en PostGIS, y cargar la susceptibilidad y el umbral de cada comuna.
-5. Construir el workflow de n8n que consulta la lluvia de los últimos 25 días (A25) en el punto interior de cada comuna, la guarda y registra una alerta cuando supera el umbral.
-6. Escribir en Python un simulador que genere recorridos de brigadas de emergencia y envíe cada posición al webhook de n8n.
-7. Construir el workflow de n8n que recibe las posiciones de las brigadas, identifica su comuna con PostGIS y las guarda.
-8. Detectar las comunas en alerta sin cobertura (ninguna brigada a menos de X km, `ST_DWithin`) y registrarlas como alerta.
-9. Armar en QGIS el mapa de monitoreo: comunas por susceptibilidad y estado de alerta, brigadas y comunas sin cobertura.
-10. Escribir en Python un reporte automático con el resumen de alertas por comuna.
-11. Reproducir un periodo histórico real de lluvias y grabar un video corto (1-2 min) del sistema funcionando de principio a fin.
-12. Recopilar en `docs/interview-questions.md` 2-3 preguntas de entrevista por proyecto, con respuestas ya practicadas.
+1. Definir el escenario del sistema de alerta: documentar el problema, los datos que se usarán, la regla de alerta y sus fuentes en `docs/escenario-y-fuentes.md`.
+2. Diseñar el diagrama de arquitectura que muestre las fuentes de datos (Open-Meteo, raster del SGC y simulador de brigadas), los procesos (n8n y Python), la base de datos (PostGIS) y la visualización (QGIS), y cómo fluyen los datos entre ellos.
+3. Calcular la susceptibilidad de cada comuna: recortar el raster del SGC a Manizales, aplicar estadística zonal en QGIS para obtener la clase predominante por comuna y compararla con las comunas que señala la literatura.
+4. Crear el esquema `plataforma` en PostGIS con sus tablas (susceptibilidad y umbral por comuna, brigadas, posiciones, lluvia y alertas) y cargar la susceptibilidad calculada en el 14.3.
+5. Construir el workflow de lluvia en n8n: consultar en Open-Meteo la lluvia diaria de los últimos 25 días en el punto interior de cada comuna, calcular el A25, guardarlo y registrar una alerta cuando supere el umbral de la comuna.
+6. Programar en Python un simulador de brigadas: generar recorridos por la ciudad y enviar cada posición al webhook de n8n, como lo haría un GPS real.
+7. Construir el workflow de posiciones en n8n: recibir cada posición por webhook, identificar con `ST_Contains` en qué comuna está la brigada y guardarla.
+8. Detectar las comunas en alerta sin cobertura: identificar con `ST_DWithin` las comunas en alerta que no tienen ninguna brigada a menos de X km y registrarlas como alerta de cobertura.
+9. Diseñar el mapa de monitoreo en QGIS: comunas por susceptibilidad y estado de alerta, posiciones de las brigadas y comunas sin cobertura.
+10. Programar en Python un reporte automático que resuma por comuna la lluvia A25, las alertas generadas y la cobertura de brigadas.
+11. Reproducir un periodo histórico real de lluvias con los datos de Open-Meteo y grabar un video corto (1-2 min) del sistema funcionando de principio a fin.
+12. Consolidar en `docs/interview-questions.md` 2-3 preguntas clave por proyecto, con sus respuestas.
 
 ## Progreso (checklist)
-- [ ] **14.1** — Definir el escenario del capstone y documentar los datos, su uso y sus fuentes. Evidencia: pendiente
-- [ ] **14.2** — Diseñar el diagrama de arquitectura completo del sistema. Evidencia: pendiente
-- [ ] **14.3** — Calcular la susceptibilidad de cada comuna con estadística zonal sobre el raster del SGC y compararla con la literatura. Evidencia: pendiente
-- [ ] **14.4** — Crear el esquema `plataforma` y su modelo de datos, y cargar la susceptibilidad y el umbral de cada comuna. Evidencia: pendiente
-- [ ] **14.5** — Workflow de n8n de lluvia A25 por comuna con alerta por umbral. Evidencia: pendiente
-- [ ] **14.6** — Simulador en Python de recorridos de brigadas que envía posiciones al webhook. Evidencia: pendiente
-- [ ] **14.7** — Workflow de n8n que recibe posiciones de brigadas, identifica su comuna y las guarda. Evidencia: pendiente
-- [ ] **14.8** — Detectar y registrar las comunas en alerta sin cobertura (`ST_DWithin`). Evidencia: pendiente
-- [ ] **14.9** — Mapa de monitoreo en QGIS. Evidencia: pendiente
-- [ ] **14.10** — Reporte automático en Python con el resumen de alertas por comuna. Evidencia: pendiente
-- [ ] **14.11** — Reproducir un periodo histórico de lluvias y grabar el video del sistema funcionando. Evidencia: pendiente
-- [ ] **14.12** — Recopilar en `docs/interview-questions.md` 2-3 preguntas de entrevista por proyecto, con respuestas practicadas. Evidencia: pendiente
+- [ ] **14.1** — Definir el escenario del sistema de alerta: documentar el problema, los datos que se usarán, la regla de alerta y sus fuentes en `docs/escenario-y-fuentes.md`. Evidencia: pendiente
+- [ ] **14.2** — Diseñar el diagrama de arquitectura que muestre las fuentes de datos (Open-Meteo, raster del SGC y simulador de brigadas), los procesos (n8n y Python), la base de datos (PostGIS) y la visualización (QGIS), y cómo fluyen los datos entre ellos. Evidencia: pendiente
+- [ ] **14.3** — Calcular la susceptibilidad de cada comuna: recortar el raster del SGC a Manizales, aplicar estadística zonal en QGIS para obtener la clase predominante por comuna y compararla con las comunas que señala la literatura. Evidencia: pendiente
+- [ ] **14.4** — Crear el esquema `plataforma` en PostGIS con sus tablas (susceptibilidad y umbral por comuna, brigadas, posiciones, lluvia y alertas) y cargar la susceptibilidad calculada en el 14.3. Evidencia: pendiente
+- [ ] **14.5** — Construir el workflow de lluvia en n8n: consultar en Open-Meteo la lluvia diaria de los últimos 25 días en el punto interior de cada comuna, calcular el A25, guardarlo y registrar una alerta cuando supere el umbral de la comuna. Evidencia: pendiente
+- [ ] **14.6** — Programar en Python un simulador de brigadas: generar recorridos por la ciudad y enviar cada posición al webhook de n8n, como lo haría un GPS real. Evidencia: pendiente
+- [ ] **14.7** — Construir el workflow de posiciones en n8n: recibir cada posición por webhook, identificar con `ST_Contains` en qué comuna está la brigada y guardarla. Evidencia: pendiente
+- [ ] **14.8** — Detectar las comunas en alerta sin cobertura: identificar con `ST_DWithin` las comunas en alerta que no tienen ninguna brigada a menos de X km y registrarlas como alerta de cobertura. Evidencia: pendiente
+- [ ] **14.9** — Diseñar el mapa de monitoreo en QGIS: comunas por susceptibilidad y estado de alerta, posiciones de las brigadas y comunas sin cobertura. Evidencia: pendiente
+- [ ] **14.10** — Programar en Python un reporte automático que resuma por comuna la lluvia A25, las alertas generadas y la cobertura de brigadas. Evidencia: pendiente
+- [ ] **14.11** — Reproducir un periodo histórico real de lluvias con los datos de Open-Meteo y grabar un video corto (1-2 min) del sistema funcionando de principio a fin. Evidencia: pendiente
+- [ ] **14.12** — Consolidar en `docs/interview-questions.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
 
 ## Qué aprendí
 

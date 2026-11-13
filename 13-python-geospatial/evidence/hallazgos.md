@@ -109,3 +109,33 @@ Windows bloquea por defecto los scripts de PowerShell (*Execution Policy*). Solu
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 `RemoteSigned` permite los scripts creados en el equipo (como `Activate.ps1`) y exige firma a los descargados de internet.
+
+## 13.3 — Leer las comunas desde PostGIS con Python
+
+### Problema: el script tardaba más de 2 minutos
+El script tardaba **133,8 s** en ejecutarse, aunque solo lee 12 comunas. Se midió por partes con `Measure-Command` (PowerShell):
+
+| Medición | Tiempo |
+|---|---|
+| Solo `import geopandas` | 3,1 s → las librerías no eran el problema |
+| Script completo con `host="localhost"` | **133,8 s** |
+| Script completo con `host="127.0.0.1"` | **3,8 s** |
+
+```bash
+Measure-Command { python -c "import geopandas" } | Select-Object TotalSeconds
+Measure-Command { python scripts\comunas_centroides.py } | Select-Object TotalSeconds
+```
+
+**Qué pasaba.** `localhost` es un *nombre* que significa "este mismo computador", y en Windows tiene dos direcciones:
+
+| Dirección | Versión | ¿Docker publica PostgreSQL ahí? |
+|---|---|---|
+| `::1` | IPv6 | **No** |
+| `127.0.0.1` | IPv4 | **Sí**: `docker-compose.yml` publica `"127.0.0.1:5432:5432"` |
+
+Es como una casa con dos puertas en la que Docker solo abrió una. Con `localhost`, el programa tocaba primero la puerta IPv6 (`::1`), donde no había nadie, y se quedaba esperando respuesta hasta rendirse; solo entonces probaba la puerta IPv4 (`127.0.0.1`), que respondía de inmediato. Escribiendo `127.0.0.1` va directo a la puerta correcta.
+
+**Solución:** en `URL.create(...)`, `host="127.0.0.1"` en lugar de `host="localhost"`. Bajó de 133,8 s a 3,8 s.
+
+- DBeaver no mostró el problema porque cada programa decide en qué orden prueba las direcciones de `localhost`.
+- Lección: cuando un servicio de Docker se publica en `127.0.0.1`, conectarse a `127.0.0.1` y no a `localhost`. Y ante una demora, **medir por partes** antes de suponer la causa (la primera sospecha, el antivirus, resultó falsa).

@@ -63,6 +63,18 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [ ] **14.12** — Consolidar en `docs/interview-questions.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
 
 ## Qué aprendí
+*Ejercicios 14.1 a 14.3; se completa al cerrar el proyecto.*
+
+- A definir un escenario con fuentes verificables antes de construir: el indicador oficial A25 de Manizales (200 mm en 25 días), las comunas con evidencia publicada y qué datos son supuestos del proyecto.
+- A diferenciar **susceptibilidad** (condición del terreno) de **amenaza** (que ya incluye detonantes como la lluvia), y por qué el umbral de lluvia es inverso a la susceptibilidad.
+- A diseñar y documentar una arquitectura por capas (fuentes, procesamiento, almacenamiento, salidas) con un diagrama en Mermaid versionado como texto.
+- A organizar datos pesados: los crudos en `data/raw/` ignorados por Git (límite de 100 MB de GitHub) y solo los procesados en el repo.
+- A leer la ficha técnica de un raster antes de usarlo: tamaño de celda, CRS y rango de valores, y a descubrir que sus valores eran **códigos** que una tabla de valores (`.vat.dbf`) traduce a clases.
+- A recortar y reproyectar un raster en un solo paso, con remuestreo por **vecino más cercano** para datos categóricos, y a verificar el resultado (el área con datos coincidió con la suma de las comunas).
+- A reclasificar un raster con una tabla (*Reclassify by layer*) y a simbolizar un raster categórico (*Paletted/Unique values*).
+- A convertir un raster en un atributo por polígono con **estadística zonal** e **histograma zonal**, y que en datos categóricos se usa la mayoría y no el promedio, aunque la mayoría puede esconder la variación interna.
+- A construir un criterio de nivel defendible: dato oficial (% del área en alta + muy alta) más un ajuste conservador por evidencia local, separado en columnas para que se vea qué viene de cada fuente.
+- A asignar el CRS del proyecto de QGIS: el primer raster cargado tenía un CRS sin código EPSG y el proyecto quedó como *Unknown CRS*; se fijó en EPSG:6256.
 
 ## Problemas encontrados y solución
 

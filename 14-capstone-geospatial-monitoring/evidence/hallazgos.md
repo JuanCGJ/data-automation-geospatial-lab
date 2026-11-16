@@ -23,7 +23,7 @@ Documento y diagrama: [`docs/arquitectura.md`](../docs/arquitectura.md).
 - Diagrama en **Mermaid** dentro del Markdown: GitHub lo dibuja y se versiona como texto.
 - **Puerto publicado y seguridad:** PostgreSQL y n8n se publican en `127.0.0.1` (por ejemplo `"127.0.0.1:5432:5432"`), así que solo los programas de la propia laptop pueden conectarse; con `"5432:5432"` quedarían accesibles desde la red local. Escribir en la documentación `127.0.0.1` y el puerto estándar `5432` no expone nada: no son secretos y las credenciales siguen en `.env`.
 
-## 14.3 — Susceptibilidad por comuna (en progreso)
+## 14.3 — Susceptibilidad por comuna
 
 ### Organización de datos pesados
 - El raster del SGC (`SuscMM_100k.tif`, **180 MB**) supera el límite de **100 MB por archivo** de GitHub. Convención adoptada: los datos crudos van en `data/raw/` dentro de cada proyecto y Git los ignora con la regla `**/data/raw/` en el `.gitignore` de la raíz; al repo solo suben los datos procesados y livianos. La fuente de descarga queda documentada en `docs/escenario-y-fuentes.md`.
@@ -197,6 +197,14 @@ Columnas creadas con la **calculadora de campos** (Ctrl + I) en `comunas_suscept
 > La susceptibilidad de cada comuna sale del mapa oficial del Servicio Geológico Colombiano: medimos qué porcentaje de su territorio es de alta susceptibilidad. Como ese mapa es regional y no capta detalles locales, subimos un nivel a las tres comunas donde estudios locales documentan más deslizamientos. Es un criterio conservador: en un sistema de alerta es preferible alertar de más que de menos.
 
 Si se pregunta por qué solo un nivel: el mapa oficial no muestra tanta área de alta susceptibilidad en esas comunas; el ajuste complementa el dato, no lo reemplaza.
+
+### Paso 10 — Mapa de nivel por comuna
+`comunas_susceptibilidad_hist` con simbología **categorizada** por `nivel` (baja `#1A9641`, media `#FFD92F`, alta `#D7191C`) y etiquetas con la expresión `"id_comuna" || if("ajuste" IS NOT NULL, '*', '')`: el número de la comuna, con `*` si su nivel se ajustó por evidencia histórica (`||` une textos; `if(condición, sí, no)`).
+
+![Mapa de nivel por comuna](14.3-mapa-nivel.png)
+
+- **Alta** (rojo): 1\*, 7, 8, 9, 11\* · **Media** (amarillo): 2\*, 5, 6 · **Baja** (verde): 3, 4, 10, 12.
+- Las comunas de nivel alto se concentran en el **occidente** (1, 11) y en el **sur–oriente** (7, 8, 9); el centro (3, 4, 10, 12) es de nivel bajo.
 
 ### Archivos generados
 | Archivo | Qué es | ¿Final? |

@@ -51,7 +51,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 ## Progreso (checklist)
 - [x] **14.1** — Definir el escenario del sistema de alerta: documentar el problema, los datos que se usarán, la regla de alerta y sus fuentes en `docs/escenario-y-fuentes.md`. Evidencia: [escenario y fuentes](docs/escenario-y-fuentes.md)
 - [x] **14.2** — Diseñar el diagrama de arquitectura que muestre las fuentes de datos (Open-Meteo, raster del SGC y simulador de brigadas), los procesos (n8n y Python), la base de datos (PostGIS) y la visualización (QGIS), y cómo fluyen los datos entre ellos. Evidencia: [arquitectura](docs/arquitectura.md), [hallazgos](evidence/hallazgos.md)
-- [ ] **14.3** — Calcular la susceptibilidad de cada comuna: recortar el raster del SGC a Manizales, aplicar estadística zonal en QGIS para obtener la clase predominante por comuna y compararla con las comunas que señala la literatura. Evidencia: pendiente
+- [x] **14.3** — Calcular la susceptibilidad de cada comuna: recortar el raster del SGC a Manizales, aplicar estadística zonal en QGIS para obtener la clase predominante por comuna y compararla con las comunas que señala la literatura. Evidencia: [GeoPackage final](data/comunas_susceptibilidad_hist.gpkg), [hallazgos](evidence/hallazgos.md)
 - [ ] **14.4** — Crear el esquema `plataforma` en PostGIS con sus tablas (susceptibilidad y umbral por comuna, brigadas, posiciones, lluvia y alertas) y cargar la susceptibilidad calculada en el 14.3. Evidencia: pendiente
 - [ ] **14.5** — Construir el workflow de lluvia en n8n: consultar en Open-Meteo la lluvia diaria de los últimos 25 días en el punto interior de cada comuna, calcular el A25, guardarlo y registrar una alerta cuando supere el umbral de la comuna. Evidencia: pendiente
 - [ ] **14.6** — Programar en Python un simulador de brigadas: generar recorridos por la ciudad y enviar cada posición al webhook de n8n, como lo haría un GPS real. Evidencia: pendiente
@@ -78,3 +78,6 @@ En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (captur
 - `14.2-arquitectura.png`: diagrama de arquitectura del sistema.
 - `hallazgos.md`: hallazgos de los ejercicios, con sus capturas.
 - `14.3-raster-colombia.png`, `14.3-raster-comunas.png`, `14.3-raster-crs-pixel.png`, `14.3-raster-banda.png`, `14.3-tabla-valores.png`: raster del SGC, su ficha técnica y su tabla de valores.
+- `14.3-raster-recortado.png`, `14.3-recorte-informacion.png`, `14.3-recorte-crs.png`, `14.3-recorte-bandas.png`: raster recortado y reproyectado, y su verificación.
+- `14.3-reclasificacion-log.png`, `14.3-reclasificado-bandas.png`, `14.3-susceptibilidad-clases.png`: reclasificación código → clase y raster por clases.
+- `14.3-estadistica-zonal.png`, `14.3-histograma-zonal.png`, `14.3-nivel-por-comuna.png`, `14.3-mapa-nivel.png`: estadística e histograma zonal, nivel final y mapa por comuna.

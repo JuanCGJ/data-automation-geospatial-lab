@@ -74,7 +74,134 @@ Se abrió como capa vectorial sin geometría (Añadir capa vectorial → *All fi
 - **Qué son los 15.230 códigos (hipótesis, no confirmada por el archivo):** probablemente cada código es un **polígono** del mapa original del SGC, una zona homogénea del terreno resultante de cruzar factores como geología, geomorfología, pendiente y cobertura, que luego se convirtió a raster. Pistas: los códigos son consecutivos (1 … 15.230), como identificadores, y `Count` varía enormemente (de 234 a 5,7 millones de celdas), como polígonos de tamaños muy distintos. No son 15.230 tipos de suelo: un tipo de suelo es un solo factor; una unidad combina varios.
 - **Consecuencia:** promediar los códigos no tiene sentido (el código 9.000 no es "más susceptible" que el 2). Antes de la estadística zonal hay que **reclasificar** cada código a su clase.
 
-### Plan del cálculo
-1. **Recortar** el raster a las comunas y **reproyectarlo** a EPSG:6256 con remuestreo por **vecino más cercano**: los valores son categóricos y otros métodos promediarían códigos vecinos, inventando valores.
-2. **Reclasificar** código → clase (1–5) con la tabla de valores.
-3. **Estadística zonal:** clase predominante de cada comuna, y comparación con las comunas que señala la literatura.
+### Procedimiento
+```
+raster SGC (códigos, todo el país) → recortar y reproyectar → reclasificar código → clase
+→ estadística zonal (clase predominante) → histograma zonal (% por clase) → nivel por comuna
+```
+
+### Paso 4 — Recortar y reproyectar
+**Raster → Extraction → Clip Raster by Mask Layer**: entrada `SuscMM_100k`, máscara `comunas`, **CRS de destino EPSG:6256**, *Match the extent…* y *Keep resolution…* activados. Salida: [`data/susc_manizales_codigos.tif`](../data/susc_manizales_codigos.tif) (dato procesado y liviano, sí se versiona).
+
+- **Recortar:** de ~2.600 millones de celdas a ~138.000; los cálculos siguientes son instantáneos.
+- **Reproyectar en el mismo paso:** raster y comunas quedan en el mismo CRS.
+- **Remuestreo por vecino más cercano** (el predeterminado de la herramienta; la opción no aparece en *Advanced Parameters*): al reproyectar se recalcula la cuadrícula, y como los valores son **códigos categóricos** cada celda nueva debe copiar el código más cercano. Un método que promedie (bilineal, cúbico) inventaría códigos: el promedio de 2 y 8 es 5, que no corresponde a esa zona.
+
+![Raster recortado](14.3-raster-recortado.png)
+
+**Verificación (Properties → Information):**
+
+![Información del recorte](14.3-recorte-informacion.png)
+
+![CRS del recorte](14.3-recorte-crs.png)
+
+![Bandas del recorte](14.3-recorte-bandas.png)
+
+| Verificación | Resultado |
+|---|---|
+| CRS | **EPSG:6256 – MAGNA-SIRGAS / Manizales urban grid**, el de las comunas |
+| Tamaño de celda | 30,86 m, igual al original |
+| Valores | 8.814 a 9.228, tipo `UInt32`, *DataType = Thematic*: siguen siendo códigos enteros (no hubo promedios). De los 15.230 códigos del país, Manizales usa un rango pequeño |
+| Área con datos | 469 × 294 = 137.886 celdas, **27,26 %** válidas ≈ 37.600 celdas × 952 m² ≈ **35,8 km²**; la suma de `area_km2` de las 12 comunas es **35,77 km²** → el recorte cubre exactamente las comunas |
+| NoData | `2,14748e+09`: valor especial (gigante a propósito) para las celdas fuera de las comunas |
+
+### Paso 6 — Reclasificar código → clase
+**Processing Toolbox → Reclassify by layer** (la Caja de herramientas se abre en *Processing → Toolbox*).
+
+| Parámetro | Valor | Por qué |
+|---|---|---|
+| Raster layer | `susc_manizales_codigos` | El recorte |
+| Layer containing class breaks | `SuscMM_100k.tif.vat` | La tabla de valores es la regla |
+| Minimum / Maximum class value field | `Value` / `Value` | La herramienta trabaja con rangos; un código exacto es un rango que empieza y termina en el mismo número |
+| Output value field | `Suscep` | La clase 1–5 |
+| Range boundaries | **`min <= value <= max`** | Con mínimo = máximo, ambos extremos deben incluirse; con `<` ningún código cumpliría y el resultado saldría vacío |
+| Use NoData when no range matches | ✅ | Un código ausente de la tabla queda sin dato, no conserva el código |
+| Output data type | `Int16` | Clases enteras pequeñas |
+
+Salida: [`data/susc_manizales_clases.tif`](../data/susc_manizales_clases.tif).
+
+![Log de la reclasificación](14.3-reclasificacion-log.png)
+
+- El Log lista una regla por código (`9977 ≤ x ≤ 9977 → 5`). *"Message log truncated"* (en rojo) **no es un error**: QGIS dejó de mostrar las 15.230 reglas en pantalla, pero las aplicó todas.
+- **Error evitado:** en la primera configuración *Maximum class value field* quedó en `Suscep`; la regla habría sido "de 8.814 a 4" y ningún código habría coincidido. Se corrigió a `Value` antes de ejecutar.
+
+![Bandas del raster reclasificado](14.3-reclasificado-bandas.png)
+
+- Valores de **2 a 5**, NoData `-9999`: los códigos se convirtieron en clases. **No hay clase 1 (muy baja)** en las comunas: coherente con una ciudad sobre un filo de montaña.
+- Un raster nuevo no trae paleta: QGIS lo dibuja en grises (negro = valor bajo, blanco = alto). Se simbolizó con **Paletted/Unique values** (equivalente raster de la simbología categorizada) con la paleta RdYlGn: `#1A9641` baja, `#FFFFBF` media, `#FDAE61` alta, `#D7191C` muy alta. Las comunas se dibujan encima con *Fill style = No Brush* (solo borde); bajar la opacidad de la capa haría transparente también el borde.
+
+![Susceptibilidad por clases](14.3-susceptibilidad-clases.png)
+
+### Paso 8a — Estadística zonal (clase predominante)
+**Processing Toolbox → Zonal statistics** (zonas = polígonos; no *Raster layer zonal statistics*, que usa otro raster como zonas, ni *(in place)*, que modifica la capa de entrada). Entrada `comunas`, raster `susc_manizales_clases`, prefijo `susc_`, estadísticas **Count, Majority, Variety**. Salida: [`data/comunas_susceptibilidad.gpkg`](../data/comunas_susceptibilidad.gpkg).
+
+- Sobre clases categóricas se usa la **mayoría** (la clase que más se repite), no el promedio: el promedio de "media" y "muy alta" no es "alta". Por eso se desmarcaron *Mean* y *Sum*.
+
+![Estadística zonal](14.3-estadistica-zonal.png)
+
+- `susc_majority`: **media (3) en 10 comunas** y **alta (4) en 7 Tesorito y 9 Universitaria**. `susc_count` coincide con el área (comuna 7: 7,89 km² ≈ 8.285 celdas esperadas, 8.129 contadas, 98 %; las celdas de borde solo cuentan si su centro cae dentro).
+- **No coincide con la literatura:** las comunas 1, 2 y 11 quedan en "media". La mayoría esconde la variación interna de cada comuna; hace falta el porcentaje por clase.
+
+### Paso 8b — Histograma zonal (% por clase)
+**Processing Toolbox → Zonal histogram** sobre `comunas_susceptibilidad` (así se conservan las columnas del 8a), prefijo `clase_`. Salida: [`data/comunas_susceptibilidad_hist.gpkg`](../data/comunas_susceptibilidad_hist.gpkg), que es la **capa final** del ejercicio.
+
+![Histograma zonal](14.3-histograma-zonal.png)
+
+| Columna | Origen | Significado |
+|---|---|---|
+| `fid` | GeoPackage | Identificador interno de fila |
+| `id_comuna`, `nombre`, `area_km2` | `monitoreo.comunas` | Datos de la comuna |
+| `susc_count` | 8a | Celdas **con dato** dentro de la comuna (~952 m² cada una) |
+| `susc_majority` | 8a | Clase que más se repite |
+| `susc_variety` | 8a | Número de clases distintas |
+| `clase_NODATA` | 8b | Celdas sin dato (bordes del recorte) |
+| `clase_2` … `clase_5` | 8b | Celdas de susceptibilidad baja, media, alta y muy alta |
+
+Las cuentas cuadran: en la comuna 1, 0 + 2.416 + 927 + 0 = 3.343 = `susc_count`. Ejemplo de lo que esconde la mayoría: Palogrande tiene mayoría "media", pero 2.201 de sus 5.042 celdas (43,7 %) son alta o muy alta.
+
+### Paso 9 — Nivel por comuna (criterio C)
+Se evaluaron tres criterios: **A** clase predominante (10 comunas iguales, no diferencia), **B** % del área en alta + muy alta con cortes, y **C** = B + ajuste por evidencia histórica. Se eligió **C**.
+
+Columnas creadas con la **calculadora de campos** (Ctrl + I) en `comunas_susceptibilidad_hist`, guardadas con *Save edits*:
+
+| Columna | Expresión |
+|---|---|
+| `pct_alta` | `round(("clase_4" + "clase_5") * 100.0 / "susc_count", 1)` |
+| `nivel_sgc` | `CASE WHEN "pct_alta" >= 40 THEN 'alta' WHEN "pct_alta" >= 20 THEN 'media' ELSE 'baja' END` |
+| `nivel` | `CASE WHEN "id_comuna" IN (1, 11) THEN 'alta' WHEN "id_comuna" = 2 THEN 'media' ELSE "nivel_sgc" END` |
+| `ajuste` | Motivo del ajuste en texto; `NULL` si no hubo ajuste |
+
+- `CASE WHEN` evalúa las condiciones en orden y se queda con la primera que se cumple. Comillas dobles = columna; comillas simples = texto.
+- Los cortes de **20 % y 40 %** son **supuestos del proyecto**. `nivel_sgc` (dato oficial) y `nivel` (con ajuste) quedan en columnas separadas para que se vea qué viene de cada lado.
+
+![Nivel por comuna](14.3-nivel-por-comuna.png)
+
+| Comuna | % alta + muy alta | `nivel_sgc` | `nivel` | Ajuste |
+|---|---|---|---|---|
+| 7 Tesorito | 93,1 | alta | **alta** | |
+| 9 Universitaria | 75,4 | alta | **alta** | |
+| 8 Palogrande | 43,7 | alta | **alta** | |
+| 11 La Macarena | 29,1 | media | **alta** | Sector occidental, el más lluvioso (IDEA – UNAL) |
+| 1 Atardeceres | 27,7 | media | **alta** | Sector occidental, el más lluvioso (IDEA – UNAL) |
+| 6 Ecoturístico Cerro de Oro | 26,6 | media | **media** | |
+| 5 Ciudadela del Norte | 25,5 | media | **media** | |
+| 2 San José | 10,6 | baja | **media** | Ladera de Olivares, deslizamientos históricos |
+| 10 La Fuente | 9,4 | baja | **baja** | |
+| 12 Nuevo Horizonte | 6,5 | baja | **baja** | |
+| 4 Estación | 2,6 | baja | **baja** | |
+| 3 Cumanday | 0,2 | baja | **baja** | |
+
+**Comparación con la literatura:** el mapa del SGC respalda parcialmente a Atardeceres y La Macarena (~30 % de su territorio en alta). San José tiene solo 10,6 %: su historial (ladera de Olivares) probablemente responde a factores que un mapa regional 1:100.000 no capta (una ladera puntual, ocupación urbana, cortes de taludes).
+
+**Cómo sustentarlo:**
+> La susceptibilidad de cada comuna sale del mapa oficial del Servicio Geológico Colombiano: medimos qué porcentaje de su territorio es de alta susceptibilidad. Como ese mapa es regional y no capta detalles locales, subimos un nivel a las tres comunas donde estudios locales documentan más deslizamientos. Es un criterio conservador: en un sistema de alerta es preferible alertar de más que de menos.
+
+Si se pregunta por qué solo un nivel: el mapa oficial no muestra tanta área de alta susceptibilidad en esas comunas; el ajuste complementa el dato, no lo reemplaza.
+
+### Archivos generados
+| Archivo | Qué es | ¿Final? |
+|---|---|---|
+| `data/susc_manizales_codigos.tif` | Raster recortado y reproyectado, con códigos | Intermedio |
+| `data/susc_manizales_clases.tif` | Raster reclasificado, clases 2–5 | Sí (para el mapa) |
+| `data/comunas_susceptibilidad.gpkg` | Comunas con estadística zonal (8a) | Intermedio |
+| `data/comunas_susceptibilidad_hist.gpkg` | Comunas con histograma, `pct_alta`, `nivel_sgc`, `nivel` y `ajuste` | **Sí: se carga a PostGIS en el 14.4** |

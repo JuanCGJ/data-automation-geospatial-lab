@@ -24,19 +24,21 @@ Se descargó el **Mapa Nacional de Susceptibilidad por Movimientos en Masa del S
 ## 4. Cómo lo usaremos
 **Riesgo = detonante (lluvia) × condición del terreno (susceptibilidad).** La lluvia es casi igual en toda la ciudad; lo que diferencia a las comunas es su terreno. Por eso el umbral es **inverso** a la susceptibilidad: un terreno más frágil se desliza con menos lluvia acumulada.
 
-| Susceptibilidad (SGC) | Umbral A25 |
+| Nivel de la comuna | Umbral A25 |
 |---|---|
-| Alta / muy alta | 150 mm *(supuesto)* |
+| Alta | 150 mm *(supuesto)* |
 | Media | **200 mm** (oficial OMPAD [1]) |
-| Baja / muy baja | 250 mm *(supuesto)* |
+| Baja | 250 mm *(supuesto)* |
 
-- **Datos:** la estadística zonal genera la susceptibilidad de cada comuna, que se guarda en PostGIS junto con su umbral y la fuente del dato.
+**Nivel de cada comuna** (calculado en el ejercicio 14.3): porcentaje del área de la comuna en susceptibilidad alta o muy alta según el SGC (≥ 40 % alta, 20–40 % media, < 20 % baja; cortes *supuestos*), y un ajuste conservador de un nivel en las tres comunas con evidencia local de deslizamientos (1 Atardeceres y 11 La Macarena → alta; 2 San José → media). Resultado: **alta** 1, 7, 8, 9, 11 · **media** 2, 5, 6 · **baja** 3, 4, 10, 12.
+
+- **Datos:** el nivel de cada comuna se guarda en PostGIS junto con su umbral y el motivo de cualquier ajuste.
 - **Lluvia:** n8n consulta Open-Meteo en el punto interior de cada comuna (Proyecto 13), suma la lluvia diaria de los últimos 25 días (A25) y la compara con el umbral de la comuna → **alerta por comuna**.
 - **Cobertura:** brigadas de emergencia simuladas reportan su posición por webhook; si una comuna en alerta no tiene una brigada cercana (`ST_DWithin`), se genera la alerta **"comuna en alerta sin cobertura"**.
 - **Demo:** se reproduce un periodo histórico real de lluvias con los datos históricos de Open-Meteo.
 
 ## 5. Limitaciones
-- Solo el umbral de 200 mm es oficial; los de 150 y 250 mm son **supuestos del proyecto** para que la susceptibilidad module la alerta.
+- Solo el umbral de 200 mm es oficial; los de 150 y 250 mm y los cortes de 20 % y 40 % son **supuestos del proyecto**, y el ajuste por evidencia local es un criterio propio, documentado.
 - El mapa del SGC es **regional** (1:100.000): sirve para comparar comunas entre sí, no para evaluar el riesgo de un predio o una cuadra.
 - Open-Meteo entrega datos en una cuadrícula de varios kilómetros: la lluvia será casi igual en todas las comunas. La arquitectura queda lista para datos más finos (por ejemplo, la red de estaciones de la UNAL [1]).
 - Es un **ejercicio académico**: no reemplaza los sistemas de alerta oficiales de la ciudad.

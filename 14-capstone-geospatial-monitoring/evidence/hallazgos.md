@@ -198,6 +198,9 @@ Columnas creadas con la **calculadora de campos** (Ctrl + I) en `comunas_suscept
 
 Si se pregunta por qué solo un nivel: el mapa oficial no muestra tanta área de alta susceptibilidad en esas comunas; el ajuste complementa el dato, no lo reemplaza.
 
+### Problema: el GeoPackage subió sin las columnas nuevas
+El primer `push` de `comunas_susceptibilidad_hist.gpkg` llegó a GitHub sin `pct_alta`, `nivel_sgc`, `nivel` ni `ajuste`, aunque en QGIS se veían guardadas. Causa: un GeoPackage es una base de datos SQLite; al guardar, SQLite escribe los cambios primero en un archivo `.gpkg-wal` (*Write-Ahead Log*) y solo los pasa al `.gpkg` principal cuando QGIS cierra la capa. El `.gitignore` ignora `*.gpkg-wal` (correcto: es temporal), así que se subió el archivo principal sin los cambios. Solución: **cerrar QGIS antes de subir un GeoPackage editado**; `git status` muestra entonces el `.gpkg` como *modified*. Verificado leyendo el archivo de GitHub: las 12 comunas tienen sus cuatro columnas.
+
 ### Archivos generados
 | Archivo | Qué es | ¿Final? |
 |---|---|---|

@@ -122,7 +122,7 @@ Salida: [`data/susc_manizales_clases.tif`](../data/susc_manizales_clases.tif).
 
 ![Log de la reclasificación](14.3-reclasificacion-log.png)
 
-- El Log lista una regla por código (`9977 ≤ x ≤ 9977 → 5`). *"Message log truncated"* (en rojo) **no es un error**: QGIS dejó de mostrar las 15.230 reglas en pantalla, pero las aplicó todas.
+- El Log lista una regla por código (`9977 ≤ x ≤ 9977 → 5`).
 - **Error evitado:** en la primera configuración *Maximum class value field* quedó en `Suscep`; la regla habría sido "de 8.814 a 4" y ningún código habría coincidido. Se corrigió a `Value` antes de ejecutar.
 
 ![Bandas del raster reclasificado](14.3-reclasificado-bandas.png)

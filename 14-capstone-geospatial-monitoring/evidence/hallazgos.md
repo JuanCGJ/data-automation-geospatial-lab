@@ -213,3 +213,68 @@ Si se pregunta por qué solo un nivel: el mapa oficial no muestra tanta área de
 | `data/susc_manizales_clases.tif` | Raster reclasificado, clases 2–5 | Sí (para el mapa) |
 | `data/comunas_susceptibilidad.gpkg` | Comunas con estadística zonal (8a) | Intermedio |
 | `data/comunas_susceptibilidad_hist.gpkg` | Comunas con histograma, `pct_alta`, `nivel_sgc`, `nivel` y `ajuste` | **Sí: se carga a PostGIS en el 14.4** |
+
+## 14.4 — Esquema `plataforma` y modelo de datos
+
+Script: [`sql/plataforma.sql`](../sql/plataforma.sql). Se puede ejecutar varias veces sin errores ni duplicados (`IF NOT EXISTS`, `ON CONFLICT`). Requiere lo creado en el Proyecto 9: EPSG:6256 registrado en `spatial_ref_sys` y `monitoreo.comunas` cargada.
+
+### Modelo de datos
+```
+umbrales ◄── comunas_riesgo ◄── lluvia_a25
+                    ▲
+                    ├────────── alertas
+                    │
+brigadas ◄── posiciones ──► (comuna donde está la brigada)
+```
+
+| Tabla | Qué guarda | La llena |
+|---|---|---|
+| `umbrales` | Umbral A25 por nivel (alta 150, media 200, baja 250 mm) y su fuente | Script (14.4) |
+| `comunas_riesgo` | Nivel de cada comuna (resultado del 14.3) y su geometría | Script (14.4) |
+| `brigadas` | 4 brigadas ficticias: Norte, Centro, Occidente, Oriente | Script (14.4) |
+| `posiciones` | Cada posición reportada por una brigada (`Point`, 6256) | n8n (14.7) |
+| `lluvia_a25` | A25 diario de cada comuna | n8n (14.5) |
+| `alertas` | Alertas `riesgo_lluvia` y `sin_cobertura` | n8n (14.5 y 14.8) |
+
+![Esquema plataforma](14.4-esquema-plataforma.png)
+
+![Tablas del esquema](14.4-tablas-plataforma.png)
+
+### Decisiones de diseño
+- **Esquema propio:** el capstone queda separado de `monitoreo`, que solo se lee.
+- **Normalización:** el umbral vive en `umbrales`, no repetido por comuna; cambiar un umbral es editar una fila. Excepción deliberada: `alertas` guarda el umbral **vigente** al momento de la alerta, para conservar el historial aunque el umbral cambie después.
+- **`comunas_riesgo` con su propia geometría** (copiada de `monitoreo.comunas`): el capstone es independiente y QGIS puede pintar el riesgo directamente desde esta tabla.
+- **Calidad del dato en la base:** `CHECK` limita los valores permitidos (`nivel IN ('alta','media','baja')`, `pct_alta BETWEEN 0 AND 100`, `tipo IN ('riesgo_lluvia','sin_cobertura')`); las **llaves foráneas** impiden, por ejemplo, una comuna con un nivel sin umbral o una posición de una brigada inexistente.
+- **Sin duplicados:** `UNIQUE (id_comuna, fecha)` en `lluvia_a25` y `UNIQUE (tipo, id_comuna, fecha)` en `alertas`; si n8n se ejecuta dos veces el mismo día, la base no duplica registros.
+- **Índices:** GiST en las geometrías (`ST_Contains`, `ST_DWithin`) y `(id_brigada, registrado_en DESC)` para consultar la última posición de cada brigada. El índice de la llave primaria (B-tree) se crea solo y sirve para buscar por valor (por ejemplo, la comuna 7); el GiST organiza las geometrías por su rectángulo envolvente y sirve para buscar por ubicación, porque las geometrías no tienen un orden natural.
+- **Tipos:** `BIGSERIAL` en las tablas que crecen sin parar (`posiciones`, `lluvia_a25`, `alertas`); `posiciones.id_comuna` admite `NULL` (brigada fuera de las comunas).
+- **Nombres:** `riesgo_lluvia` en lugar de `lluvia` (ambiguo) o `riesgo_x_lluvia` (abreviatura informal): snake_case con palabras completas.
+
+![Umbrales](14.4-umbrales.png)
+
+![Brigadas](14.4-brigadas.png)
+
+### Carga de `comunas_riesgo`
+**Problema:** al importar `comunas_susceptibilidad_hist.gpkg` con DB Manager a una tabla de paso (*staging*), QGIS respondió `AddGeometryColumn() - SRID must be <= 998999`. Es el mismo problema del 9.5 ([`09-postgis/problemas-srid.md`](../../09-postgis/problemas-srid.md)): el GeoPackage guarda el SRID 6256 con definición `undefined` (el método *Colombia Urban* no cabe en WKT1), QGIS lo trata como CRS personalizado con un número interno muy alto y PostGIS lo rechaza.
+
+**Solución:** no importar el GeoPackage. La geometría ya estaba en PostGIS (`monitoreo.comunas`, SRID 6256); del 14.3 solo hacían falta los atributos. El script los escribe en una tabla temporal dentro de la consulta (`WITH resultado_14_3 AS (VALUES ...)`, leídos del GeoPackage) y los une con la geometría por `id_comuna`:
+
+```
+GeoPackage del 14.3 ──► solo atributos (12 filas) ──┐
+                                                   ├──► plataforma.comunas_riesgo
+monitoreo.comunas ────► geometría (SRID 6256) ─────┘
+```
+
+- La carga queda **reproducible** dentro del script, sin pasos manuales en QGIS.
+- `ON CONFLICT (id_comuna) DO UPDATE ... EXCLUDED` (*upsert*): si la comuna ya existe, actualiza sus valores en lugar de fallar.
+
+![Comunas con nivel y umbral](14.4-comunas-riesgo.png)
+
+- 12 comunas, cada una con su nivel, su umbral (vía `JOIN` con `umbrales`) y SRID 6256.
+
+### Verificación en QGIS
+`plataforma.comunas_riesgo` cargada desde PostGIS, con el estilo copiado de la capa del 14.3 (*Styles → Copy Style / Paste Style*): coincide con el mapa del 14.3 en ubicación, colores y etiquetas.
+
+![comunas_riesgo en QGIS](14.4-qgis-comunas-riesgo.png)
+
+- Las etiquetas de las comunas 1, 5 y 11 cambian ligeramente de posición entre las dos capas: QGIS no guarda la posición de las etiquetas, la calcula al dibujar, y en polígonos irregulares o con varias partes puede elegir otro lugar. No es una diferencia en los datos.

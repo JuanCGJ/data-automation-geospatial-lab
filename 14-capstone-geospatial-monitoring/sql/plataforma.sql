@@ -3,6 +3,8 @@
 -- Esquema plataforma: modelo de datos del sistema
 -- Base de datos: gisdb | CRS: EPSG:6256
 -- Lee (sin modificar): monitoreo.comunas, monitoreo.comunas_centroides
+-- Requisitos (Proyecto 9): EPSG:6256 registrado en spatial_ref_sys y
+-- monitoreo.comunas cargada (09-postgis/sql/). Sin ellos, este script falla.
 -- =========================================================
 
 
@@ -40,7 +42,6 @@ CREATE TABLE IF NOT EXISTS plataforma.comunas_riesgo (
 -- Índice espacial (Proyecto 9): acelera ST_Contains y ST_DWithin
 CREATE INDEX IF NOT EXISTS idx_comunas_riesgo_geom
     ON plataforma.comunas_riesgo USING GIST (geom);
-
 
 
 -- ===== 14.4 Brigadas de emergencia =====
@@ -106,7 +107,6 @@ CREATE TABLE IF NOT EXISTS plataforma.alertas (
 );
 
 
-
 -- ===== 14.4 Carga del nivel por comuna (resultado del 14.3) =====
 -- Atributos: data/comunas_susceptibilidad_hist.gpkg (14.3).
 -- Geometría y nombre: monitoreo.comunas (ya en PostGIS con SRID 6256).
@@ -146,7 +146,6 @@ SELECT cr.id_comuna, cr.nombre, cr.pct_alta, cr.nivel_sgc, cr.nivel, u.umbral_mm
 FROM plataforma.comunas_riesgo cr
 JOIN plataforma.umbrales u ON u.nivel = cr.nivel
 ORDER BY cr.id_comuna;
-
 
 
 -- ===== 14.4 Verificación: tablas del esquema plataforma (esperado: 6) =====

@@ -83,7 +83,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 ## Problemas encontrados y solución
 **14.1 — No se pudo buscar la capa de amenaza de la Alcaldía.** El directorio de servicios ArcGIS REST respondió `403: The administrator has disabled the Services Directory`. Solución: usar el Mapa Nacional de Susceptibilidad del SGC, oficial y descargable.
 
-**14.4 — `SRID must be <= 998999` al importar el GeoPackage del 14.3 con DB Manager.** El GeoPackage guarda el 6256 sin definición y QGIS lo trata como CRS personalizado (mismo problema del 9.5). Solución: tomar la geometría de `monitoreo.comunas`, ya en PostGIS, y cargar solo los atributos con un `INSERT ... SELECT` en el script.
+**14.4 — `SRID must be <= 998999` al importar el GeoPackage del 14.3 con DB Manager.** El GeoPackage guarda el SRID 6256 sin definición y QGIS lo trata como un CRS personalizado con un número interno que PostGIS no acepta. Solución: tomar la geometría de `monitoreo.comunas`, ya en PostGIS, y cargar solo los atributos con un `INSERT ... SELECT` en el script.
 
 ## Preguntas de entrevista
 - **¿Cómo explicarías este proyecto de principio a fin en una entrevista?**

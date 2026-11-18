@@ -22,7 +22,7 @@ Para las otras 9 comunas no se encontró evidencia publicada verificable. Las fu
 Se descargó el **Mapa Nacional de Susceptibilidad por Movimientos en Masa del SGC** (versión 2, 2019, escala 1:100.000) [4]: un **raster** (`SuscMM_100k.tif`, ~180 MB, todo el país) en el que cada celda tiene una clase de susceptibilidad, descrita en su tabla de valores (`.vat.dbf`). Con **estadística zonal** en QGIS se obtiene la clase predominante de cada una de las 12 comunas. Así **todas** las comunas quedan clasificadas con un dato oficial, sin asumir niveles, y las 3 comunas con evidencia publicada (sección 2) sirven para **validar** el resultado.
 
 ## 4. Cómo lo usaremos
-**Riesgo = detonante (lluvia) × condición del terreno (susceptibilidad).** La lluvia es casi igual en toda la ciudad; lo que diferencia a las comunas es su terreno. Por eso el umbral es **inverso** a la susceptibilidad: un terreno más frágil se desliza con menos lluvia acumulada.
+**Riesgo = detonante (lluvia) × condición del terreno (susceptibilidad).** La lluvia varía entre zonas de la ciudad, pero cada comuna responde distinto a la misma lluvia según su terreno. Por eso el umbral es **inverso** a la susceptibilidad: un terreno más frágil se desliza con menos lluvia acumulada.
 
 | Nivel de la comuna | Umbral A25 |
 |---|---|
@@ -40,7 +40,7 @@ Se descargó el **Mapa Nacional de Susceptibilidad por Movimientos en Masa del S
 ## 5. Limitaciones
 - Solo el umbral de 200 mm es oficial; los de 150 y 250 mm y los cortes de 20 % y 40 % son **supuestos del proyecto**, y el ajuste por evidencia local es un criterio propio, documentado.
 - El mapa del SGC es **regional** (1:100.000): sirve para comparar comunas entre sí, no para evaluar el riesgo de un predio o una cuadra.
-- Open-Meteo entrega datos en una cuadrícula de varios kilómetros: la lluvia será casi igual en todas las comunas. La arquitectura queda lista para datos más finos (por ejemplo, la red de estaciones de la UNAL [1]).
+- Open-Meteo entrega datos en una cuadrícula de varios kilómetros: las comunas que caen en la misma celda reciben el mismo valor (en la primera ejecución, 5 valores distintos para 12 comunas). La arquitectura queda lista para datos más finos (por ejemplo, la red de estaciones de la UNAL [1]).
 - Es un **ejercicio académico**: no reemplaza los sistemas de alerta oficiales de la ciudad.
 
 ## Fuentes

@@ -55,7 +55,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [x] **14.2** — Diseñar el diagrama de arquitectura que muestre las fuentes de datos (Open-Meteo, raster del SGC y simulador de brigadas), los procesos (n8n y Python), la base de datos (PostGIS) y la visualización (QGIS), y cómo fluyen los datos entre ellos. Evidencia: [arquitectura](docs/arquitectura.md), [hallazgos](evidence/hallazgos.md)
 - [x] **14.3** — Calcular la susceptibilidad de cada comuna: recortar el raster del SGC a Manizales, aplicar estadística zonal en QGIS para obtener la clase predominante por comuna y compararla con las comunas que señala la literatura. Evidencia: [GeoPackage final](data/comunas_susceptibilidad_hist.gpkg), [hallazgos](evidence/hallazgos.md)
 - [x] **14.4** — Crear el esquema `plataforma` en PostGIS con sus tablas (susceptibilidad y umbral por comuna, brigadas, posiciones, lluvia y alertas) y cargar la susceptibilidad calculada en el 14.3. Evidencia: [script](sql/plataforma.sql), [hallazgos](evidence/hallazgos.md)
-- [ ] **14.5** — Construir el workflow de lluvia en n8n: consultar en Open-Meteo la lluvia diaria de los últimos 25 días en el punto interior de cada comuna, calcular el A25, guardarlo y registrar una alerta cuando supere el umbral de la comuna. Evidencia: pendiente
+- [x] **14.5** — Construir el workflow de lluvia en n8n: consultar en Open-Meteo la lluvia diaria de los últimos 25 días en el punto interior de cada comuna, calcular el A25, guardarlo y registrar una alerta cuando supere el umbral de la comuna. Evidencia: [script](sql/lluvia_a25.sql), [workflow](workflows/lluvia-a25.json), [hallazgos](evidence/hallazgos.md)
 - [ ] **14.6** — Programar en Python un simulador de brigadas: generar recorridos por la ciudad y enviar cada posición al webhook de n8n, como lo haría un GPS real. Evidencia: pendiente
 - [ ] **14.7** — Construir el workflow de posiciones en n8n: recibir cada posición por webhook, identificar con `ST_Contains` en qué comuna está la brigada y guardarla. Evidencia: pendiente
 - [ ] **14.8** — Detectar las comunas en alerta sin cobertura: identificar con `ST_DWithin` las comunas en alerta que no tienen ninguna brigada a menos de X km y registrarlas como alerta de cobertura. Evidencia: pendiente
@@ -65,7 +65,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [ ] **14.12** — Consolidar en `docs/interview-questions.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
 
 ## Qué aprendí
-*Ejercicios 14.1 a 14.4; se completa al cerrar el proyecto.*
+*Ejercicios 14.1 a 14.5; se completa al cerrar el proyecto.*
 
 - A definir un escenario con fuentes verificables antes de construir: el indicador oficial A25 de Manizales (200 mm en 25 días), las comunas con evidencia publicada y qué datos son supuestos del proyecto.
 - A diferenciar **susceptibilidad** (condición del terreno) de **amenaza** (que ya incluye detonantes como la lluvia), y por qué el umbral de lluvia es inverso a la susceptibilidad.
@@ -81,11 +81,17 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - A proteger la calidad del dato desde la base de datos con `CHECK`, `UNIQUE` y llaves foráneas, y a escribir scripts re-ejecutables con `IF NOT EXISTS`, `ON CONFLICT DO NOTHING` y *upsert* (`ON CONFLICT DO UPDATE`).
 - La diferencia entre el índice de la llave primaria (B-tree, búsqueda por valor) y un índice espacial GiST (búsqueda por ubicación).
 - A cargar datos uniendo atributos de un archivo con geometrías que ya están en la base, evitando un problema de CRS en lugar de pelear con él.
+- A construir un workflow programado en n8n que procesa una lista de comunas: un item por comuna, una llamada a la API por item y `$('Nodo').item.json` para recuperar datos de un nodo anterior.
+- A calcular rangos de fechas con Luxon en la zona horaria correcta y a sumar una lista con `reduce`, tratando los días sin dato como 0.
+- A guardar resultados con consultas parametrizadas y *upsert*, para que el workflow se pueda ejecutar varias veces sin duplicar datos.
+- A verificar un dato de una API contra una prueba manual, y que una API en cuadrícula da el mismo valor a los puntos que caen en la misma celda.
 
 ## Problemas encontrados y solución
 **14.1 — No se pudo buscar la capa de amenaza de la Alcaldía.** El directorio de servicios ArcGIS REST respondió `403: The administrator has disabled the Services Directory`. Solución: usar el Mapa Nacional de Susceptibilidad del SGC, oficial y descargable.
 
 **14.4 — `SRID must be <= 998999` al importar el GeoPackage del 14.3 con DB Manager.** El GeoPackage guarda el SRID 6256 sin definición y QGIS lo trata como un CRS personalizado con un número interno que PostGIS no acepta. Solución: tomar la geometría de `monitoreo.comunas`, ya en PostGIS, y cargar solo los atributos con un `INSERT ... SELECT` en el script.
+
+**14.5 — `Inserts were batched` en los nodos Postgres.** n8n enviaba todos los items en una sola operación y la salida no se podía emparejar con cada comuna. Solución: *Query Batching* = **Independently**, una consulta por item.
 
 ## Preguntas de entrevista
 - **¿Cómo explicarías este proyecto de principio a fin en una entrevista?**
@@ -103,3 +109,7 @@ En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (captur
 - `14.3-reclasificacion-log.png`, `14.3-reclasificado-bandas.png`, `14.3-susceptibilidad-clases.png`: reclasificación código → clase y raster por clases.
 - `14.3-estadistica-zonal.png`, `14.3-histograma-zonal.png`, `14.3-nivel-por-comuna.png`, `14.3-mapa-nivel.png`: estadística e histograma zonal, nivel final y mapa por comuna.
 - `14.4-esquema-plataforma.png`, `14.4-tablas-plataforma.png`, `14.4-umbrales.png`, `14.4-brigadas.png`, `14.4-comunas-riesgo.png`, `14.4-qgis-comunas-riesgo.png`: esquema y tablas del modelo de datos, datos cargados y verificación en QGIS.
+- `14.5-puntos-interiores.png`, `14.5-open-meteo-respuesta.png`: punto interior de cada comuna en lat/lon y prueba de la API.
+- `14.5-nodo-leer-comunas.png`, `14.5-nodo-open-meteo.png`, `14.5-nodo-calcular-a25.png`, `14.5-nodo-guardar-a25.png`, `14.5-nodo-if.png`, `14.5-nodo-registrar-alerta.png`, `14.5-workflow-completo.png`: nodos del workflow y ejecución completa.
+- `14.5-dbeaver-lluvia.png`, `14.5-dbeaver-alertas.png`: lluvia A25 y alertas guardadas, verificadas en DBeaver.
+- `sql/plataforma.sql`, `sql/lluvia_a25.sql`, `workflows/lluvia-a25.json`: scripts SQL y workflow exportado (fuera de `evidence/`).

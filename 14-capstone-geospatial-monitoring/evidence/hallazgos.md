@@ -278,3 +278,100 @@ monitoreo.comunas ────► geometría (SRID 6256) ─────┘
 ![comunas_riesgo en QGIS](14.4-qgis-comunas-riesgo.png)
 
 - Las etiquetas de las comunas 1, 5 y 11 cambian ligeramente de posición entre las dos capas: QGIS no guarda la posición de las etiquetas, la calcula al dibujar, y en polígonos irregulares o con varias partes puede elegir otro lugar. No es una diferencia en los datos.
+
+## 14.5 — Workflow de lluvia A25 en n8n
+
+Workflow **Lluvia A25 por comuna**: cada día a las 6 a. m. consulta la lluvia de los últimos 25 días en cada comuna, calcula el A25, lo guarda y registra una alerta si supera el umbral de la comuna.
+
+![Workflow completo](14.5-workflow-completo.png)
+
+```
+Schedule Trigger → Leer comunas → Consultar Open-Meteo → Calcular A25 → Guardar A25 → Supera umbral? ─true→ Registrar alerta
+   (6 a. m.)        (12 items)      (1 llamada x comuna)                  (upsert)                    └false→ (nada)
+```
+
+Scripts: [`sql/lluvia_a25.sql`](../sql/lluvia_a25.sql) · Workflow exportado: [`workflows/lluvia-a25.json`](../workflows/lluvia-a25.json)
+
+### Paso 1 — Un punto por comuna en latitud/longitud
+Open-Meteo pide coordenadas WGS 84 (EPSG:4326). Se usa el **punto interior** de cada comuna (Proyecto 13), que siempre cae dentro del polígono, transformado de EPSG:6256 a 4326. La misma consulta trae el nivel y el umbral de cada comuna (`JOIN` con `umbrales`).
+
+![Puntos interiores](14.5-puntos-interiores.png)
+
+### Paso 2 — Probar la API antes de usarla
+Se probó la URL de Open-Meteo en el navegador con el punto de una comuna: devuelve `daily.precipitation_sum`, una lista con la lluvia de cada día (mm).
+
+![Respuesta de Open-Meteo](14.5-open-meteo-respuesta.png)
+
+### Paso 3 — Nodos del workflow
+
+| Nodo | Tipo | Qué hace |
+|---|---|---|
+| Schedule Trigger | Schedule | Ejecuta el workflow todos los días a las 6:00 |
+| Leer comunas | Postgres (*Execute Query*) | Devuelve 12 items: comuna, nivel, umbral, lat, lon |
+| Consultar Open-Meteo | HTTP Request (GET) | Una llamada por comuna con su lat/lon y el rango de 25 días |
+| Calcular A25 | Edit Fields | Suma la lluvia diaria y arma los campos a guardar |
+| Guardar A25 | Postgres | *Upsert* en `plataforma.lluvia_a25` |
+| Supera umbral? | IF | `a25_mm > umbral_mm` |
+| Registrar alerta | Postgres | *Upsert* en `plataforma.alertas` con tipo `riesgo_lluvia` |
+
+![Leer comunas](14.5-nodo-leer-comunas.png)
+
+**Rango de fechas (Luxon).** El A25 suma los **25 días completos anteriores a hoy**: desde hoy − 25 hasta ayer (hoy aún no termina). Las fechas se calculan en hora de Colombia:
+
+```
+start_date = {{ $now.setZone('America/Bogota').minus({ days: 25 }).toFormat('yyyy-MM-dd') }}
+end_date   = {{ $now.setZone('America/Bogota').minus({ days: 1 }).toFormat('yyyy-MM-dd') }}
+```
+
+![Consultar Open-Meteo](14.5-nodo-open-meteo.png)
+
+**Cálculo del A25.** `reduce` recorre la lista de 25 valores y los suma; `?? 0` trata un día sin dato como 0 mm; el resultado se redondea a 1 decimal:
+
+```
+{{ Math.round($json.daily.precipitation_sum.reduce((suma, mm) => suma + (mm ?? 0), 0) * 10) / 10 }}
+```
+
+- Los datos de la comuna (id, nombre, umbral) se leen de un nodo anterior con `$('Leer comunas').item.json`, porque la salida del HTTP Request solo trae la respuesta de la API.
+- PostgreSQL devuelve los `NUMERIC` como texto; `Number(...)` convierte `umbral_mm` a número para poder compararlo.
+- El campo `dias` (cantidad de valores recibidos) permite verificar que llegaron 25 días.
+
+![Calcular A25](14.5-nodo-calcular-a25.png)
+
+**Guardar con *upsert* y parámetros.** Los valores van como parámetros (`$1`, `$2`, `$3`), no pegados dentro del SQL. `ON CONFLICT (id_comuna, fecha) DO UPDATE` hace que ejecutar el workflow dos veces el mismo día actualice la fila en lugar de duplicarla o fallar.
+
+![Guardar A25](14.5-nodo-guardar-a25.png)
+
+**Comparar y alertar.** El IF compara `a25_mm` con `umbral_mm`; solo la rama *true* llega a *Registrar alerta*, que también usa *upsert* (`UNIQUE (tipo, id_comuna, fecha)`).
+
+![Supera umbral?](14.5-nodo-if.png)
+
+![Registrar alerta](14.5-nodo-registrar-alerta.png)
+
+### Paso 4 — Verificación en DBeaver
+Las consultas filtran por la fecha **en hora de Colombia** (`(now() AT TIME ZONE 'America/Bogota')::date`): PostgreSQL corre en UTC y, de noche, `CURRENT_DATE` ya sería el día siguiente.
+
+![Lluvia A25 guardada](14.5-dbeaver-lluvia.png)
+
+![Alertas registradas](14.5-dbeaver-alertas.png)
+
+Resultado del 17-nov-2026: 12 filas en `lluvia_a25` y 12 alertas `riesgo_lluvia`; todas las comunas superan su umbral. El caso más ajustado son las comunas 3 y 10 (nivel bajo): 288.7 mm contra 250 mm.
+
+### Hallazgo: la lluvia varía entre comunas
+Se esperaba casi el mismo valor en toda la ciudad, pero Open-Meteo devolvió **5 valores distintos**:
+
+| A25 (mm) | Comunas |
+|---|---|
+| 288.7 | 1, 2, 3, 10 |
+| 311.2 | 5 |
+| 457.4 | 4, 6, 7, 8, 12 |
+| 467.4 | 11 |
+| 527.7 | 9 |
+
+Open-Meteo entrega la lluvia en una **cuadrícula** (celdas de varios kilómetros): las comunas cuyo punto cae en la misma celda reciben el mismo valor. El valor de la comuna 3 (288.7 mm) coincidió con la prueba manual en el navegador.
+
+### Problema: inserciones en lote
+Al probar *Guardar A25*, n8n avisó *Inserts were batched*: por defecto envía todos los items en una sola operación, y la salida ya no se puede emparejar item por item con la entrada. Solución: en *Options → Query Batching*, elegir **Independently** (una consulta por item), en *Guardar A25* y en *Registrar alerta*.
+
+### Workflow exportado
+- [`workflows/lluvia-a25.json`](../workflows/lluvia-a25.json), exportado desde el menú ⋯ → *Download*.
+- Se revisó antes de subirlo: los tres nodos Postgres solo guardan la referencia a la credencial (`gisdb-local` y su id), sin contraseña.

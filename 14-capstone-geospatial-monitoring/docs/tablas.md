@@ -2,13 +2,33 @@
 
 Descripción simple de cada tabla del sistema. Script de creación: [`sql/plataforma.sql`](../sql/plataforma.sql).
 
+Las 6 tablas se agrupan en tres bloques según **cada cuánto cambian**. Cada flecha se lee como una frase:
+
+```mermaid
+flowchart LR
+    subgraph T["🗺️ Territorio (fijo)"]
+        U["<b>umbrales</b><br/>3 niveles con su<br/>lluvia máxima"]
+        C["<b>comunas_riesgo</b><br/>12 comunas<br/>con su nivel"]
+    end
+
+    subgraph M["🌧️ Lluvia y alertas (diario)"]
+        L["<b>lluvia_a25</b><br/>lluvia de 25 días<br/>por comuna"]
+        A["<b>alertas</b><br/>alertas generadas"]
+    end
+
+    subgraph B["🚑 Brigadas (tiempo real)"]
+        BR["<b>brigadas</b><br/>4 brigadas"]
+        P["<b>posiciones</b><br/>dónde ha estado<br/>cada brigada"]
+    end
+
+    U -->|"el nivel de cada comuna<br/>define su umbral"| C
+    C -->|"cada día se guarda<br/>su lluvia"| L
+    C -->|"si la lluvia supera<br/>el umbral → alerta"| A
+    BR -->|"cada brigada reporta<br/>muchas posiciones"| P
+    P -->|"cada posición cae<br/>en una comuna"| C
 ```
-umbrales ◄── comunas_riesgo ◄── lluvia_a25
-                    ▲
-                    ├────────── alertas
-                    │
-brigadas ◄── posiciones
-```
+
+La tabla central es **`comunas_riesgo`**: la lluvia, las alertas y las posiciones se refieren siempre a una comuna.
 
 ## `umbrales`
 **Cuánta lluvia aguanta cada nivel de riesgo.** 3 filas. La llena el script.

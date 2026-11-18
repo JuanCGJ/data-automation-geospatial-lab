@@ -1,0 +1,281 @@
+{
+  "name": "Lluvia A25 por comuna",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "996584b2-f295-409a-9d50-7643ee9ff153",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT cr.id_comuna,\n       cr.nombre,\n       cr.nivel,\n       u.umbral_mm,\n       ROUND(ST_Y(ST_Transform(cc.geom, 4326))::numeric, 4) AS lat,\n       ROUND(ST_X(ST_Transform(cc.geom, 4326))::numeric, 4) AS lon\nFROM plataforma.comunas_riesgo cr\nJOIN plataforma.umbrales u          ON u.nivel = cr.nivel\nJOIN monitoreo.comunas_centroides cc ON cc.id_comuna = cr.id_comuna\n                                    AND cc.tipo = 'punto_interior'\nORDER BY cr.id_comuna;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        224,
+        0
+      ],
+      "id": "ca589536-09e1-4cc1-bdf8-8d60c3152974",
+      "name": "Leer comunas",
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.open-meteo.com/v1/forecast?latitude={{ $json.lat }}&longitude={{ $json.lon }}&daily=precipitation_sum&start_date={{ $now.setZone('America/Bogota').minus({ days: 25 }).toFormat('yyyy-MM-dd') }}&end_date={{ $now.setZone('America/Bogota').minus({ days: 1 }).toFormat('yyyy-MM-dd') }}&timezone=America/Bogota",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        448,
+        0
+      ],
+      "id": "50205516-f498-44d1-befd-f4848af2eef1",
+      "name": "Consultar Open-Meteo."
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5be32878-a98f-4911-9dca-1cf39f443b27",
+              "name": "id_comuna",
+              "value": "={{ $('Leer comunas').item.json.id_comuna }}",
+              "type": "number"
+            },
+            {
+              "id": "c369301e-fb35-468b-aac9-5d568aa2bfab",
+              "name": "nombre",
+              "value": "={{ $('Leer comunas').item.json.nombre }}",
+              "type": "string"
+            },
+            {
+              "id": "27b0b5e2-4d16-4d22-ae2a-f3fae4efb23a",
+              "name": "umbral_mm",
+              "value": "={{ Number($('Leer comunas').item.json.umbral_mm) }}",
+              "type": "number"
+            },
+            {
+              "id": "71245bcf-783f-4b68-a6d1-49ec4ede20b4",
+              "name": "fecha",
+              "value": "={{ $now.setZone('America/Bogota').toFormat('yyyy-MM-dd') }}",
+              "type": "string"
+            },
+            {
+              "id": "53eea374-d498-4639-9952-2c61ca5c3f6f",
+              "name": "dias",
+              "value": "={{ $json.daily.precipitation_sum.length }}",
+              "type": "number"
+            },
+            {
+              "id": "5370923a-7a45-492c-9e60-ec1c184fc42f",
+              "name": "a25_mm",
+              "value": "={{ Math.round($json.daily.precipitation_sum.reduce((suma, mm) => suma + (mm ?? 0), 0) * 10) / 10 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        0
+      ],
+      "id": "69b8740e-4463-4434-ae4c-97e45dd45be5",
+      "name": "Calcular A25"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO plataforma.lluvia_a25 (id_comuna, fecha, a25_mm)\nVALUES ($1::integer, $2::date, $3::numeric)\nON CONFLICT (id_comuna, fecha) DO UPDATE\n    SET a25_mm        = EXCLUDED.a25_mm,\n        consultado_en = now()\nRETURNING id_comuna, fecha, a25_mm;",
+        "options": {
+          "queryBatching": "independently",
+          "queryReplacement": "={{ $json.id_comuna }},{{ $json.fecha }},{{ $json.a25_mm }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        896,
+        0
+      ],
+      "id": "5fb1aa45-06f6-4385-83af-976d8c00ad95",
+      "name": "Guardar A25",
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "b3774646-2e19-4623-82f7-40497bb6da97",
+              "leftValue": "={{ $('Calcular A25').item.json.a25_mm }}",
+              "rightValue": "={{ $('Calcular A25').item.json.umbral_mm }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "e65adde4-99c7-4dd3-8987-caafd943c889",
+      "name": "Supera umbral?"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO plataforma.alertas (tipo, id_comuna, fecha, a25_mm, umbral_mm)\nVALUES ('riesgo_lluvia', $1::integer, $2::date, $3::numeric, $4::numeric)\nON CONFLICT (tipo, id_comuna, fecha) DO UPDATE\n    SET a25_mm    = EXCLUDED.a25_mm,\n        umbral_mm = EXCLUDED.umbral_mm\nRETURNING id, id_comuna, fecha, a25_mm, umbral_mm;",
+        "options": {
+          "queryBatching": "independently",
+          "queryReplacement": "={{ $('Calcular A25').item.json.id_comuna }},{{ $('Calcular A25').item.json.fecha }},{{ $('Calcular A25').item.json.a25_mm }},{{ $('Calcular A25').item.json.umbral_mm }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        1344,
+        -96
+      ],
+      "id": "4982e7c1-0720-4727-8e4e-41657486274b",
+      "name": "Registrar alerta",
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Leer comunas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer comunas": {
+      "main": [
+        [
+          {
+            "node": "Consultar Open-Meteo.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Open-Meteo.": {
+      "main": [
+        [
+          {
+            "node": "Calcular A25",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular A25": {
+      "main": [
+        [
+          {
+            "node": "Guardar A25",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar A25": {
+      "main": [
+        [
+          {
+            "node": "Supera umbral?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supera umbral?": {
+      "main": [
+        [
+          {
+            "node": "Registrar alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "90369271-fd35-412e-bb6c-dd275a21a642",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f2698b05857ee29b36fdf58fb62890bf41ab0d404653fdadd2d81c62cd51d881"
+  },
+  "nodeGroups": [],
+  "id": "MWus6qmTF93HPjra",
+  "tags": []
+}

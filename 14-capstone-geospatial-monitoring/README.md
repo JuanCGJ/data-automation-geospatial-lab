@@ -18,6 +18,8 @@ Integrar todo lo aprendido en un proyecto final: un sistema que, a partir de la 
 
 **Arquitectura:** [`docs/arquitectura.md`](docs/arquitectura.md).
 
+**Tablas de la base de datos:** [`docs/tablas.md`](docs/tablas.md).
+
 ## Entregable
 Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el flujo funcionando de principio a fin.
 

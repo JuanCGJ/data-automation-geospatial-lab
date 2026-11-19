@@ -14,16 +14,22 @@ Cómo ejecutarlo (PowerShell):
            .\\.venv\\Scripts\\Activate.ps1
        Debe aparecer (.venv) al inicio de la línea.
     4. Ejecutar en modo prueba (solo imprime, no envía nada):
-           python scripts\\simulador_brigadas.py --prueba --rondas 12
+           python scripts\\simulador_brigadas.py --prueba --pasos 12
        Ejecutar enviando al webhook (cuando exista el workflow del 14.7):
-           python scripts\\simulador_brigadas.py --rondas 30
+           python scripts\\simulador_brigadas.py --pasos 30
     5. Para detenerlo antes de tiempo: Ctrl + C.
 
 Opciones:
     --prueba        Solo imprime las posiciones; no las envía al webhook.
-    --rondas N      Cantidad de rondas (en cada ronda, las 4 brigadas avanzan un paso).
+    --pasos N       Cantidad de pasos a simular. En cada paso, las 4 brigadas avanzan
+                    al mismo tiempo y envían su posición.
                     0 = sin límite, hasta Ctrl + C. Por defecto: 12.
-    --intervalo S   Segundos de espera entre rondas. Por defecto: 5.
+    --intervalo S   Segundos de espera entre un paso y el siguiente. Por defecto: 5.
+
+Vocabulario:
+    paso   → un avance de cada brigada (todas avanzan al mismo tiempo).
+    tramo  → camino de una comuna a la siguiente = 10 pasos.
+    vuelta → recorrido completo de la ruta = 3 tramos = 30 pasos.
 
 Credenciales y configuración:
     Se leen del archivo .env en la raíz del repo (POSTGRES_USER,
@@ -35,10 +41,10 @@ Credenciales y configuración:
 # =====================================================================
 # 14.6.1 Librerías
 # =====================================================================
-import argparse                       # argparse: lee las opciones de la línea de comandos (--prueba, --rondas)
+import argparse                       # argparse: lee las opciones de la línea de comandos (--prueba, --pasos)
 import os                             # os.environ: lee variables de entorno (las del .env)
 import random                         # random: genera el "ruido" del GPS
-import time                           # time.sleep: espera entre rondas
+import time                           # time.sleep: espera entre un paso y el siguiente
 from datetime import datetime         # datetime: fecha y hora de cada posición
 from pathlib import Path              # Path: maneja rutas de archivos sin importar el sistema operativo
 from zoneinfo import ZoneInfo         # ZoneInfo: zona horaria de Colombia (usa el paquete tzdata)
@@ -160,8 +166,8 @@ def main():
     # ----- Opciones de la línea de comandos -----
     parser = argparse.ArgumentParser(description="Simulador de GPS de las brigadas (14.6)")
     parser.add_argument("--prueba", action="store_true", help="solo imprime, no envía al webhook")
-    parser.add_argument("--rondas", type=int, default=12, help="rondas a simular (0 = sin límite)")
-    parser.add_argument("--intervalo", type=float, default=5, help="segundos entre rondas")
+    parser.add_argument("--pasos", type=int, default=12, help="pasos a simular (0 = sin límite)")
+    parser.add_argument("--intervalo", type=float, default=5, help="segundos entre pasos")
     args = parser.parse_args()
 
     # ----- Webhook: solo hace falta si se va a enviar -----
@@ -175,12 +181,12 @@ def main():
     print("Modo prueba: solo se imprime." if args.prueba else f"Enviando a: {url}")
     print("Ctrl + C para detener.\n")
 
-    # ----- Rondas -----
-    ronda = 0
+    # ----- Pasos: en cada paso, las 4 brigadas avanzan y envían su posición -----
+    paso = 0
     try:
-        while args.rondas == 0 or ronda < args.rondas:
+        while args.pasos == 0 or paso < args.pasos:
             for id_brigada, nombre in brigadas.items():
-                lat, lon = posicion(RUTAS[id_brigada], ronda, puntos)
+                lat, lon = posicion(RUTAS[id_brigada], paso, puntos)
 
                 # Mensaje que enviaría el GPS. La hora va con zona explícita (-05:00),
                 # para que PostgreSQL la guarde bien en una columna TIMESTAMPTZ (Proyecto 11).
@@ -192,17 +198,17 @@ def main():
                 }
 
                 resultado = "no enviado (prueba)" if args.prueba else enviar(url, datos)
-                print(f"Ronda {ronda + 1:>3} | {nombre:<17} | {lat:.6f}, {lon:.6f} | {resultado}")
+                print(f"Paso {paso + 1:>3} | {nombre:<17} | {lat:.6f}, {lon:.6f} | {resultado}")
 
-            ronda += 1
+            paso += 1
             print()
-            if args.rondas == 0 or ronda < args.rondas:   # no esperar después de la última ronda
+            if args.pasos == 0 or paso < args.pasos:   # no esperar después del último paso
                 time.sleep(args.intervalo)
 
     except KeyboardInterrupt:                             # Ctrl + C: terminar sin mostrar un error
         print("\nSimulador detenido por el usuario.")
 
-    print(f"Rondas completadas: {ronda}")
+    print(f"Pasos completados: {paso}")
 
 
 # Solo se ejecuta main() si el archivo se corre directamente (python simulador_brigadas.py),

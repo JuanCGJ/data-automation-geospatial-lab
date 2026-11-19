@@ -86,7 +86,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - A guardar resultados con consultas parametrizadas y *upsert*, para que el workflow se pueda ejecutar varias veces sin duplicar datos.
 - A verificar un dato de una API contra una prueba manual, y que una API en cuadrícula da el mismo valor a los puntos que caen en la misma celda.
 - A simular una fuente de datos en tiempo real: interpolación lineal entre puntos, ruido aleatorio y rutas en círculo con el residuo (`%`).
-- A dar opciones a un script con `argparse` (`--prueba`, `--rondas`, `--intervalo`) para cambiar su comportamiento sin editar el código, y a incluir un modo prueba que no envía nada.
+- A dar opciones a un script con `argparse` (`--prueba`, `--pasos`, `--intervalo`) para cambiar su comportamiento sin editar el código, y a incluir un modo prueba que no envía nada.
 - A separar entornos virtuales por proyecto, con solo las librerías que cada uno necesita.
 
 ## Problemas encontrados y solución

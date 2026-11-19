@@ -385,7 +385,7 @@ El simulador hace de GPS de las 4 brigadas: cada brigada recorre en círculo 3 c
 ```
 PostGIS ──► simulador_brigadas.py ──► webhook de n8n (14.7)
  punto interior     mueve cada brigada       recibe cada posición
- de cada comuna     un paso por ronda
+ de cada comuna     un paso cada 5 s
 ```
 
 ### Entorno virtual propio
@@ -421,6 +421,7 @@ El trayecto entre dos comunas es una línea recta, así que una brigada puede cr
 | Hora | Con zona explícita (`-05:00`) | Se guarda bien en una columna `TIMESTAMPTZ` |
 
 - **Interpolación lineal:** `lat = lat_A + (lat_B − lat_A) × avance`, con `avance` de 0.0 a 0.9.
+- **Paso, tramo y vuelta:** en cada paso las 4 brigadas avanzan al mismo tiempo; un tramo (de una comuna a la siguiente) son 10 pasos y una vuelta completa son 3 tramos = 30 pasos (~2.5 min cada 5 s).
 - **Ruta en círculo:** el residuo (`%`) reinicia la vuelta; después de la última comuna, vuelve a la primera.
 - **Si el envío falla**, el script imprime el error y sigue con la siguiente posición, como un GPS real.
 
@@ -435,18 +436,18 @@ Con `argparse`, el comportamiento cambia sin editar el código:
 | Opción | Qué hace | Por defecto |
 |---|---|---|
 | `--prueba` | Solo imprime; no envía al webhook | Envía (requiere `N8N_WEBHOOK_URL` en el `.env`) |
-| `--rondas N` | Cantidad de rondas (0 = sin límite, hasta Ctrl + C) | 12 |
-| `--intervalo S` | Segundos entre rondas | 5 |
+| `--pasos N` | Cantidad de pasos; en cada paso las 4 brigadas avanzan (0 = sin límite, hasta Ctrl + C) | 12 |
+| `--intervalo S` | Segundos entre pasos | 5 |
 
 ### Prueba sin webhook
 ```powershell
-python scripts\simulador_brigadas.py --prueba --rondas 3 --intervalo 1
+python scripts\simulador_brigadas.py --prueba --pasos 3 --intervalo 1
 ```
 
 ![Simulador en modo prueba](14.6-simulador-prueba.png)
 
 - Leyó 12 comunas y 4 brigadas activas.
-- Cada brigada sale de su primera comuna y avanza ~250 m por ronda. Ejemplo, Brigada Norte (comuna 2 → 5): la longitud pasa de −75.5144 a −75.5121 y −75.5098 (hacia el oriente) y la latitud sube (hacia el norte).
+- Cada brigada sale de su primera comuna y avanza ~250 m por paso. Ejemplo, Brigada Norte (comuna 2 → 5): la longitud pasa de −75.5144 a −75.5121 y −75.5098 (hacia el oriente) y la latitud sube (hacia el norte).
 - Los decimales finales cambian en cada ejecución por el ruido GPS.
 
 ### Problema: `requirements.txt` en UTF-16

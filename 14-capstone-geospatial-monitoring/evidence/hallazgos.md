@@ -375,3 +375,82 @@ Al probar *Guardar A25*, n8n avisó *Inserts were batched*: por defecto envía t
 ### Workflow exportado
 - [`workflows/lluvia-a25.json`](../workflows/lluvia-a25.json), exportado desde el menú ⋯ → *Download*.
 - Se revisó antes de subirlo: los tres nodos Postgres solo guardan la referencia a la credencial (`gisdb-local` y su id), sin contraseña.
+
+## 14.6 — Simulador de brigadas en Python
+
+Script: [`scripts/simulador_brigadas.py`](../scripts/simulador_brigadas.py) · Consulta de apoyo: [`sql/simulador_brigadas.sql`](../sql/simulador_brigadas.sql) · Librerías: [`requirements.txt`](../requirements.txt)
+
+El simulador hace de GPS de las 4 brigadas: cada brigada recorre en círculo 3 comunas de su zona y, en cada paso, envía su posición (lat/lon) al webhook de n8n (14.7), como lo haría un GPS real.
+
+```
+PostGIS ──► simulador_brigadas.py ──► webhook de n8n (14.7)
+ punto interior     mueve cada brigada       recibe cada posición
+ de cada comuna     un paso por ronda
+```
+
+### Entorno virtual propio
+El proyecto 14 tiene su propio `.venv`, separado del Proyecto 13: el simulador necesita otras librerías y así lo que se instala aquí no cambia el otro proyecto. Sin geopandas, porque el simulador solo mueve puntos.
+
+| Librería | Para qué |
+|---|---|
+| `psycopg[binary]` | Leer de PostGIS los puntos de las comunas y las brigadas |
+| `python-dotenv` | Leer usuario, contraseña y URL del webhook del `.env` de la raíz |
+| `requests` | Enviar cada posición al webhook con un POST |
+
+### Reparto de comunas entre brigadas
+Se ordenaron los puntos interiores de occidente a oriente (longitud) para repartir 3 comunas a cada brigada según su ubicación:
+
+![Puntos por longitud](14.6-puntos-por-longitud.png)
+
+| Brigada | Ruta (en círculo) | Criterio |
+|---|---|---|
+| Norte (1) | 2 San José → 5 Ciudadela del Norte → 12 Nuevo Horizonte | Latitud más alta |
+| Centro (2) | 4 Estación → 10 La Fuente → 9 Universitaria | Franja central |
+| Occidente (3) | 1 Atardeceres → 3 Cumanday → 11 La Macarena | Las más al occidente |
+| Oriente (4) | 8 Palogrande → 6 Cerro de Oro → 7 Tesorito | Las más al oriente |
+
+El trayecto entre dos comunas es una línea recta, así que una brigada puede cruzar otra comuna en el camino; en el 14.7, `ST_Contains` dirá en qué comuna está cada posición.
+
+### Cómo se mueve una brigada
+
+| Decisión | Valor | Por qué |
+|---|---|---|
+| Movimiento | Línea recta de una comuna a la siguiente, en 10 pasos | Simple y visible como recorrido en QGIS |
+| Ruido GPS | Hasta ±0.0002° (≈ 20 m) al azar en cada eje | Un GPS real nunca da una línea perfecta |
+| Frecuencia | Cada 5 s, las 4 brigadas avanzan un paso | Para la demo; un GPS real enviaría cada 30-60 s |
+| Hora | Con zona explícita (`-05:00`) | Se guarda bien en una columna `TIMESTAMPTZ` |
+
+- **Interpolación lineal:** `lat = lat_A + (lat_B − lat_A) × avance`, con `avance` de 0.0 a 0.9.
+- **Ruta en círculo:** el residuo (`%`) reinicia la vuelta; después de la última comuna, vuelve a la primera.
+- **Si el envío falla**, el script imprime el error y sigue con la siguiente posición, como un GPS real.
+
+Mensaje que envía cada brigada:
+```json
+{"id_brigada": 1, "lat": 5.075534, "lon": -75.512116, "registrado_en": "2026-11-18T21:50:12-05:00"}
+```
+
+### Opciones de la línea de comandos
+Con `argparse`, el comportamiento cambia sin editar el código:
+
+| Opción | Qué hace | Por defecto |
+|---|---|---|
+| `--prueba` | Solo imprime; no envía al webhook | Envía (requiere `N8N_WEBHOOK_URL` en el `.env`) |
+| `--rondas N` | Cantidad de rondas (0 = sin límite, hasta Ctrl + C) | 12 |
+| `--intervalo S` | Segundos entre rondas | 5 |
+
+### Prueba sin webhook
+```powershell
+python scripts\simulador_brigadas.py --prueba --rondas 3 --intervalo 1
+```
+
+![Simulador en modo prueba](14.6-simulador-prueba.png)
+
+- Leyó 12 comunas y 4 brigadas activas.
+- Cada brigada sale de su primera comuna y avanza ~250 m por ronda. Ejemplo, Brigada Norte (comuna 2 → 5): la longitud pasa de −75.5144 a −75.5121 y −75.5098 (hacia el oriente) y la latitud sube (hacia el norte).
+- Los decimales finales cambian en cada ejecución por el ruido GPS.
+
+### Problema: `requirements.txt` en UTF-16
+`pip freeze > requirements.txt` en Windows PowerShell 5 guarda el archivo en **UTF-16**, y GitHub lo mostraba como binario (letras separadas por espacios). Solución: convertirlo a UTF-8. Para la próxima vez, generarlo con:
+```powershell
+pip freeze | Out-File -Encoding ascii requirements.txt
+```

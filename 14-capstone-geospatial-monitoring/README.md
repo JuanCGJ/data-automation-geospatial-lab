@@ -56,7 +56,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [x] **14.3** — Calcular la susceptibilidad de cada comuna: recortar el raster del SGC a Manizales, aplicar estadística zonal en QGIS para obtener la clase predominante por comuna y compararla con las comunas que señala la literatura. Evidencia: [GeoPackage final](data/comunas_susceptibilidad_hist.gpkg), [hallazgos](evidence/hallazgos.md)
 - [x] **14.4** — Crear el esquema `plataforma` en PostGIS con sus tablas (susceptibilidad y umbral por comuna, brigadas, posiciones, lluvia y alertas) y cargar la susceptibilidad calculada en el 14.3. Evidencia: [script](sql/plataforma.sql), [hallazgos](evidence/hallazgos.md)
 - [x] **14.5** — Construir el workflow de lluvia en n8n: consultar en Open-Meteo la lluvia diaria de los últimos 25 días en el punto interior de cada comuna, calcular el A25, guardarlo y registrar una alerta cuando supere el umbral de la comuna. Evidencia: [script](sql/lluvia_a25.sql), [workflow](workflows/lluvia-a25.json), [hallazgos](evidence/hallazgos.md)
-- [ ] **14.6** — Programar en Python un simulador de brigadas: generar recorridos por la ciudad y enviar cada posición al webhook de n8n, como lo haría un GPS real. Evidencia: pendiente
+- [x] **14.6** — Programar en Python un simulador de brigadas: generar recorridos por la ciudad y enviar cada posición al webhook de n8n, como lo haría un GPS real. Evidencia: [script](scripts/simulador_brigadas.py), [requirements](requirements.txt), [hallazgos](evidence/hallazgos.md)
 - [ ] **14.7** — Construir el workflow de posiciones en n8n: recibir cada posición por webhook, identificar con `ST_Contains` en qué comuna está la brigada y guardarla. Evidencia: pendiente
 - [ ] **14.8** — Detectar las comunas en alerta sin cobertura: identificar con `ST_DWithin` las comunas en alerta que no tienen ninguna brigada a menos de X km y registrarlas como alerta de cobertura. Evidencia: pendiente
 - [ ] **14.9** — Diseñar el mapa de monitoreo en QGIS: comunas por susceptibilidad y estado de alerta, posiciones de las brigadas y comunas sin cobertura. Evidencia: pendiente
@@ -65,7 +65,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [ ] **14.12** — Consolidar en `docs/interview-questions.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
 
 ## Qué aprendí
-*Ejercicios 14.1 a 14.5; se completa al cerrar el proyecto.*
+*Ejercicios 14.1 a 14.6; se completa al cerrar el proyecto.*
 
 - A definir un escenario con fuentes verificables antes de construir: el indicador oficial A25 de Manizales (200 mm en 25 días), las comunas con evidencia publicada y qué datos son supuestos del proyecto.
 - A diferenciar **susceptibilidad** (condición del terreno) de **amenaza** (que ya incluye detonantes como la lluvia), y por qué el umbral de lluvia es inverso a la susceptibilidad.
@@ -85,6 +85,9 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - A calcular rangos de fechas con Luxon en la zona horaria correcta y a sumar una lista con `reduce`, tratando los días sin dato como 0.
 - A guardar resultados con consultas parametrizadas y *upsert*, para que el workflow se pueda ejecutar varias veces sin duplicar datos.
 - A verificar un dato de una API contra una prueba manual, y que una API en cuadrícula da el mismo valor a los puntos que caen en la misma celda.
+- A simular una fuente de datos en tiempo real: interpolación lineal entre puntos, ruido aleatorio y rutas en círculo con el residuo (`%`).
+- A dar opciones a un script con `argparse` (`--prueba`, `--rondas`, `--intervalo`) para cambiar su comportamiento sin editar el código, y a incluir un modo prueba que no envía nada.
+- A separar entornos virtuales por proyecto, con solo las librerías que cada uno necesita.
 
 ## Problemas encontrados y solución
 **14.1 — No se pudo buscar la capa de amenaza de la Alcaldía.** El directorio de servicios ArcGIS REST respondió `403: The administrator has disabled the Services Directory`. Solución: usar el Mapa Nacional de Susceptibilidad del SGC, oficial y descargable.
@@ -92,6 +95,8 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 **14.4 — `SRID must be <= 998999` al importar el GeoPackage del 14.3 con DB Manager.** El GeoPackage guarda el SRID 6256 sin definición y QGIS lo trata como un CRS personalizado con un número interno que PostGIS no acepta. Solución: tomar la geometría de `monitoreo.comunas`, ya en PostGIS, y cargar solo los atributos con un `INSERT ... SELECT` en el script.
 
 **14.5 — `Inserts were batched` en los nodos Postgres.** n8n enviaba todos los items en una sola operación y la salida no se podía emparejar con cada comuna. Solución: *Query Batching* = **Independently**, una consulta por item.
+
+**14.6 — `requirements.txt` aparecía como binario en GitHub.** `pip freeze > requirements.txt` en Windows PowerShell 5 guarda en UTF-16. Solución: convertirlo a UTF-8; en adelante, `pip freeze | Out-File -Encoding ascii requirements.txt`.
 
 ## Preguntas de entrevista
 - **¿Cómo explicarías este proyecto de principio a fin en una entrevista?**
@@ -112,4 +117,5 @@ En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (captur
 - `14.5-puntos-interiores.png`, `14.5-open-meteo-respuesta.png`: punto interior de cada comuna en lat/lon y prueba de la API.
 - `14.5-nodo-leer-comunas.png`, `14.5-nodo-open-meteo.png`, `14.5-nodo-calcular-a25.png`, `14.5-nodo-guardar-a25.png`, `14.5-nodo-if.png`, `14.5-nodo-registrar-alerta.png`, `14.5-workflow-completo.png`: nodos del workflow y ejecución completa.
 - `14.5-dbeaver-lluvia.png`, `14.5-dbeaver-alertas.png`: lluvia A25 y alertas guardadas, verificadas en DBeaver.
-- `sql/plataforma.sql`, `sql/lluvia_a25.sql`, `workflows/lluvia-a25.json`: scripts SQL y workflow exportado (fuera de `evidence/`).
+- `14.6-puntos-por-longitud.png`, `14.6-simulador-prueba.png`: reparto de comunas entre brigadas y simulador en modo prueba.
+- `sql/plataforma.sql`, `sql/lluvia_a25.sql`, `sql/simulador_brigadas.sql`, `scripts/simulador_brigadas.py`, `requirements.txt`, `workflows/lluvia-a25.json`: scripts, librerías y workflow exportado (fuera de `evidence/`).

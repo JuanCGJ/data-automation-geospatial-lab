@@ -48,7 +48,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 9. Diseñar el mapa de monitoreo en QGIS: comunas por susceptibilidad y estado de alerta, posiciones de las brigadas y comunas sin cobertura.
 10. Programar en Python un reporte automático que resuma por comuna la lluvia A25, las alertas generadas y la cobertura de brigadas.
 11. Reproducir un periodo histórico real de lluvias con los datos de Open-Meteo y grabar un video corto (1-2 min) del sistema funcionando de principio a fin.
-12. Consolidar en `docs/interview-questions.md` 2-3 preguntas clave por proyecto, con sus respuestas.
+12. Consolidar en `docs/preguntas-de-aprendizaje.md` 2-3 preguntas clave por proyecto, con sus respuestas.
 
 ## Progreso (checklist)
 - [x] **14.1** — Definir el escenario del sistema de alerta: documentar el problema, los datos que se usarán, la regla de alerta y sus fuentes en `docs/escenario-y-fuentes.md`. Evidencia: [escenario y fuentes](docs/escenario-y-fuentes.md)
@@ -62,7 +62,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [ ] **14.9** — Diseñar el mapa de monitoreo en QGIS: comunas por susceptibilidad y estado de alerta, posiciones de las brigadas y comunas sin cobertura. Evidencia: pendiente
 - [ ] **14.10** — Programar en Python un reporte automático que resuma por comuna la lluvia A25, las alertas generadas y la cobertura de brigadas. Evidencia: pendiente
 - [ ] **14.11** — Reproducir un periodo histórico real de lluvias con los datos de Open-Meteo y grabar un video corto (1-2 min) del sistema funcionando de principio a fin. Evidencia: pendiente
-- [ ] **14.12** — Consolidar en `docs/interview-questions.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
+- [ ] **14.12** — Consolidar en `docs/preguntas-de-aprendizaje.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
 
 ## Qué aprendí
 *Ejercicios 14.1 a 14.7; se completa al cerrar el proyecto.*
@@ -104,8 +104,8 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 
 **14.7 — Filas de prueba repetidas.** Al ejecutar el script SQL completo (Alt + X), la prueba de San José se insertaba otra vez en cada ejecución. Solución: ejecutar cada bloque por separado (seleccionarlo y Ctrl + Enter), con una advertencia en el encabezado del script, y limpiar con `TRUNCATE ... RESTART IDENTITY`.
 
-## Preguntas de entrevista
-- **¿Cómo explicarías este proyecto de principio a fin en una entrevista?**
+## Preguntas de aprendizaje
+- **¿Cómo explicarías este proyecto de principio a fin?**
 - **¿Por qué el umbral de lluvia depende de la susceptibilidad de cada comuna?**
 - **¿Cómo convertiste un mapa raster nacional en un atributo por comuna?**
 - **¿Por qué simulaste las brigadas y cómo conectarías una fuente real?**

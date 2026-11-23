@@ -44,7 +44,7 @@ Workflow exportado (JSON) + captura de los datos guardados en la tabla.
 
 **11.4 — Las filas nuevas iban a quedar 5 horas corridas.** n8n enviaba `fecha_hora` sin zona y, en una columna `TIMESTAMPTZ`, PostgreSQL la interpretaba en UTC. Solución: en *Edit Fields*, `DateTime.fromISO($json.current.time, { zone: $json.timezone }).toISO()`, que envía la hora con su zona (`-05:00`).
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué ventaja tiene automatizar el guardado de datos con n8n en vez de hacerlo manualmente?** Elimina el trabajo repetitivo, reduce el error humano y garantiza que los datos se recolecten de forma consistente incluso sin supervisión.
 - **¿Qué pasaría si la API externa falla? ¿Cómo lo manejarías en el workflow?** Se puede agregar manejo de errores (nodo de error / retry) para reintentar la llamada o registrar el fallo, en vez de dejar que el workflow se detenga silenciosamente.
 - **¿Por qué n8n no se conecta a PostgreSQL usando `localhost`?** Cada contenedor tiene su propia red; `localhost` dentro de n8n es el contenedor de n8n. Docker Compose crea una red compartida donde cada servicio se resuelve por su nombre, así que el host es el nombre del servicio y el puerto el interno.

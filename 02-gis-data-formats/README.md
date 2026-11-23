@@ -54,7 +54,7 @@ El mismo dataset en shapefile, GeoJSON y GeoPackage, más capturas de cada conve
 
 **2.3 / 2.5 — CRS personalizado sin definición.** El servicio reportaba `Spatial Reference: 0` y el shapefile exportado quedó sin `.prj`. Le asigné el CRS que QGIS tomó del servicio (`CartManizalesMAGNA`), pero al cargar el CSV en WGS 84 los puntos cayeron lejos de la ciudad: QGIS no podía transformar ese CRS porque le faltaba la definición matemática. Solución: identifiqué el CRS oficial del IGAC, **EPSG:6256 (MAGNA-SIRGAS / Manizales urban grid)**, cuyo origen coincide con las coordenadas del servicio. Lo asigné al shapefile con *Define Projection*, cambié el CRS del proyecto y regeneré el GeoJSON y el GeoPackage.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Cuándo usarías GeoPackage en vez de shapefile?** Cuando necesitas guardar varias capas en un solo archivo, evitar las limitaciones del shapefile (nombres de campo cortos, múltiples archivos asociados) o trabajar con un formato más moderno y abierto recomendado por OGC.
 - **¿Qué diferencia hay entre GeoJSON y KML?** GeoJSON está pensado para intercambio de datos y aplicaciones web (estructura JSON estándar); KML está pensado para visualización en Google Earth, con soporte para estilos y elementos visuales que GeoJSON no maneja de forma nativa.
 

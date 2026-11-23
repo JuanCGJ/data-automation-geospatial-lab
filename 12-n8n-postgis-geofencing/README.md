@@ -52,7 +52,7 @@ Workflow completo + demo en gif o video corto.
 
 **12.5 — Se subió una grabación de prueba.** El primer video subido era un intento anterior, en el que la segunda llamada falló con `404 ... not registered` por no hacer clic en *Execute workflow* antes. Solución: reemplazarlo por la toma final, verificando el contenido del video antes de subirlo.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué es geofencing y en qué casos de uso reales se aplica?** Es detectar si una ubicación entra o sale de una zona definida; se usa en logística (activos que salen de una ruta), seguridad (perímetros), marketing (notificaciones al entrar a una tienda), entre otros.
 - **¿Por qué usar un webhook en vez de un trigger schedule para este caso?** Porque la validación debe ocurrir en el momento en que llega la coordenada (tiempo real), no esperar a un intervalo programado que podría llegar tarde para generar la alerta.
 - **¿Por qué transformas la coordenada antes de usar `ST_Contains`?** Porque el GPS envía WGS 84 (EPSG:4326, grados) y las comunas están en EPSG:6256 (metros). Las funciones espaciales comparan coordenadas tal cual; con sistemas distintos el resultado sería incorrecto. Con `ST_SetSRID(..., 4326)` declaro el sistema del punto y con `ST_Transform(..., 6256)` lo llevo al de las zonas.

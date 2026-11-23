@@ -14,7 +14,7 @@ Captura de `docker ps` con ambos contenedores corriendo + este README actualizad
 ## Conceptos
 **Control de versiones (Git):** sistema que guarda el historial de cambios de un proyecto como una serie de "fotos" (commits). Permite volver atrás, comparar versiones y trabajar sin miedo a romper algo, porque todo cambio queda registrado y es reversible.
 
-**GitHub:** el repo remoto donde vive ese historial en la nube. Aquí cumple dos funciones: (1) **showcase/documentación** — cada carpeta con su README y evidencia sirve como portafolio visible para quien revise el proyecto; (2) **trabajo en equipo** — aunque hoy es un proyecto individual, GitHub está pensado para colaborar vía ramas (branches), pull requests e issues, así que documentar bien desde ahora deja el hábito listo para ese escenario.
+**GitHub:** el repo remoto donde vive ese historial en la nube. Aquí cumple dos funciones: (1) **documentación** — cada carpeta con su README y evidencia deja visible el trabajo realizado para quien revise el proyecto; (2) **trabajo en equipo** — aunque hoy es un proyecto individual, GitHub está pensado para colaborar vía ramas (branches), pull requests e issues, así que documentar bien desde ahora deja el hábito listo para ese escenario.
 
 **Terminal básica:** la forma de dar instrucciones al sistema operativo por texto en vez de clics (navegar carpetas, ejecutar git, levantar contenedores). Es la interfaz común entre Git, Docker y casi cualquier herramienta de este stack.
 
@@ -47,7 +47,7 @@ Captura de `docker ps` con ambos contenedores corriendo + este README actualizad
 
 ## Problemas encontrados y solución
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Por qué usar Docker para este stack?** Porque permite tener PostgreSQL/PostGIS y n8n corriendo de forma reproducible y aislada, sin instalarlos nativamente en el sistema operativo. Cualquiera puede clonar el repo, correr `docker-compose up` y tener el mismo entorno, sin depender de versiones instaladas manualmente ni de trials en la nube con fecha de vencimiento.
 - **¿Diferencia entre PostgreSQL y PostGIS?** PostgreSQL es el motor de base de datos relacional (tablas, SQL, transacciones). PostGIS es una extensión que se instala sobre PostgreSQL para agregar tipos de datos y funciones espaciales (geometry/geography, `ST_Distance`, `ST_Contains`, etc.), permitiendo guardar y consultar información geográfica directamente en la base de datos.
 

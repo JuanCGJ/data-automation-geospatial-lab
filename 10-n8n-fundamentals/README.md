@@ -52,7 +52,7 @@ Exportar (JSON) los 2 workflows creados + capturas de su ejecución.
 ## Problemas encontrados y solución
 **10.2 — n8n usaba la zona horaria de Nueva York.** El Schedule Trigger mostraba `America/New_York` (valor por defecto). Solución: variables `GENERIC_TIMEZONE` y `TZ` en `America/Bogota` en `docker-compose.yml` y `docker compose up -d`.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué diferencia hay entre un trigger de tipo schedule y uno de tipo webhook?** Schedule dispara el workflow en intervalos de tiempo definidos (ej. cada hora); webhook lo dispara en el momento en que llega una petición HTTP externa, en tiempo real.
 - **¿Para qué sirven las expressions en n8n?** Para referenciar y transformar datos que vienen de un nodo anterior dentro de la configuración de otro nodo, sin necesidad de código adicional.
 - **¿Cómo probarías un webhook antes de ponerlo en producción?** Con la URL de prueba: pongo el workflow a escuchar con *Execute workflow* y le envío una petición desde la terminal (`Invoke-RestMethod` o `curl`) con datos de ejemplo. Reviso lo que llegó en `body` y la respuesta; cuando funciona, lo publico y uso la URL de producción.

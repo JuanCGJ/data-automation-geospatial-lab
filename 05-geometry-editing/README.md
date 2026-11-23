@@ -49,7 +49,7 @@ Capa editada + capturas antes/después.
 
 **Commit — Las ediciones no llegaban a GitHub.** El primer push subió `activos_manizales.gpkg` vacío y `comunas_editadas.gpkg` sin dividir. Causa: con la capa abierta, QGIS escribe los cambios del GeoPackage en un archivo temporal `.gpkg-wal` (ignorado por `.gitignore`) y solo los pasa al `.gpkg` al cerrar la capa. Solución: cerrar QGIS antes de hacer commit de un GeoPackage editado.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué es el "modo edición" en QGIS y por qué es importante guardar los cambios?** Es el estado que habilita modificar geometrías y atributos. Mientras está activo, los cambios quedan en memoria; si no se guardan explícitamente, se pierden. Protege los datos contra modificaciones accidentales.
 - **¿Qué diferencia hay entre dividir (split) y unir (merge) entidades?** Son operaciones inversas: *split* corta una entidad en varias partes que copian los atributos de la original; *merge* combina varias entidades en una sola y obliga a decidir qué atributos se conservan.
 - **¿Qué riesgo tiene editar geometrías en una capa con campos calculados?** Que esos campos queden desactualizados, porque no se recalculan solos. Al dividir una comuna, cada parte heredó el área total; si no se recalcula, cualquier suma o análisis posterior cuenta el área varias veces.

@@ -49,7 +49,7 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 
 **13.4 — `to_postgis` necesitaba GeoAlchemy2.** Solución: instalarla y regenerar `requirements.txt`.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué es un GeoDataFrame y en qué se diferencia de un DataFrame normal de pandas?** Es un DataFrame con una columna de geometría y operaciones espaciales nativas (área, distancia, intersección), mientras que un DataFrame normal solo maneja datos tabulares sin noción de ubicación.
 - **¿Por qué conectarías Python directamente a PostgreSQL en vez de exportar/importar archivos manualmente?** Porque automatiza el flujo de punta a punta (leer, procesar, guardar) sin pasos manuales intermedios, reduciendo errores y permitiendo integrarlo en un pipeline más grande.
 - **¿Por qué usas un entorno virtual y un `requirements.txt`?** Para que cada proyecto tenga sus propias librerías y versiones sin chocar con otros, y para que cualquiera recree exactamente el mismo entorno con `pip install -r requirements.txt`. El `.venv` no se versiona; la receta sí.

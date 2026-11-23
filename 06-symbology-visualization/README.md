@@ -45,7 +45,7 @@ Mapa exportado como imagen usando el diseñador de impresión (layout) de QGIS.
 ## Problemas encontrados y solución
 **6.4 — Los elementos del layout no eran proporcionales a la hoja.** Solución: fijar el tamaño de la página en *Page Properties* (A4, horizontal) antes de acomodar los elementos.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Cuándo usarías simbología graduada en vez de categorizada?** Graduada cuando el campo es numérico y quieres mostrar magnitud (como el área de las comunas, de claro a oscuro); categorizada cuando el campo es una categoría (como el tipo de activo: cámara, poste, sensor). Usar una por la otra produce un mapa engañoso.
 - **¿Para qué sirve una consulta de definición (definition query)?** Para mostrar solo un subconjunto de entidades de una capa sin crear una capa nueva ni modificar los datos originales.
 - **¿Qué elementos debe tener un mapa para presentarlo?** Título, leyenda, escala, flecha de norte y fuente de los datos con su CRS. Sin la fuente y el CRS, quien lo lee no puede verificarlo ni reutilizarlo.

@@ -54,6 +54,6 @@ Evidencia: `evidence/9.5-diag-0` a `evidence/9.5-diag-5` y `evidence/9.5-activos
 
 Evidencia: `evidence/9.5-dbmanager-1-import.png`, `evidence/9.5-dbmanager-2-error.png`, `evidence/9.5-comunas-cargadas.png` y `evidence/9.5-verificacion-contains.png`.
 
-## Para la entrevista
+## Explicación corta
 
 > "El SRID es solo un número; su significado vive en `spatial_ref_sys`. El CRS local de Manizales no venía registrado porque su método no cabe en WKT1, así que lo registré con su definición WKT2 y PROJ y lo validé reproyectando un punto conocido. Para cargar las comunas evité la conversión de QGIS y generé un script SQL con el SRID explícito, que además deja la carga reproducible."

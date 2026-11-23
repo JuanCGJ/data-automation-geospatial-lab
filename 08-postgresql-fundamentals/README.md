@@ -54,7 +54,7 @@ Script `.sql` con la creación de tablas, las queries, y capturas de los resulta
 
 **8.3 — Columna que no tenía sentido para todos los activos.** `bateria_pct` no aplicaba a postes ni cámaras. Solución: renombrarla a `senal_pct` con `ALTER TABLE ... RENAME COLUMN` y usar el tipo `poste_inteligente`.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué es una llave foránea y para qué sirve?** Es una columna que referencia la llave primaria de otra tabla, y sirve para mantener la integridad relacional entre ambas (ej. que una lectura no pueda existir sin un activo asociado).
 - **¿Cuál es la diferencia entre INNER JOIN y LEFT JOIN?** INNER JOIN devuelve solo las filas que tienen coincidencia en ambas tablas; LEFT JOIN devuelve todas las filas de la tabla izquierda, con NULL en las columnas de la derecha cuando no hay coincidencia.
 - **¿Cuál es la diferencia entre WHERE y HAVING?** WHERE filtra filas antes de agrupar; HAVING filtra los grupos después de agrupar, así que puede usar funciones como `MAX()` o `AVG()`. Por ejemplo, para encontrar activos cuya señal cayó más de 10 puntos hace falta HAVING, porque la caída solo existe después de agrupar por activo.

@@ -54,7 +54,7 @@ Explicación detallada de estos dos problemas: [problemas-srid.md](problemas-sri
 
 **9.3 — El script no tenía conexión en DBeaver.** Al guardarlo como archivo quedó sin base de datos asociada. Solución: `Ctrl + 9` y elegir `gisdb`.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué es un índice espacial y por qué mejora el rendimiento de las consultas?** Es una estructura (típicamente GiST) que permite descartar rápidamente las geometrías que claramente no cumplen una condición espacial, evitando comparar cada fila una por una.
 - **¿Cuándo usarías geography en vez de geometry?** Cuando necesitas cálculos de distancia o área precisos sobre grandes extensiones (a nivel país o mundial), donde la curvatura de la Tierra afecta el resultado; para áreas pequeñas y mejor rendimiento, geometry con una proyección adecuada suele ser preferible.
 - **¿Qué harías si PostGIS no reconoce el SRID de tus datos?** Revisaría `spatial_ref_sys`. En Manizales, EPSG:6256 no venía registrado porque su método de proyección no cabe en WKT1; lo registré con su definición WKT2 y PROJ, y lo validé reproyectando un punto conocido a WGS 84 y comparándolo con sus coordenadas originales.

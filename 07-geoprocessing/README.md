@@ -47,7 +47,7 @@ Capa resultado de la intersección + explicación escrita de qué hace cada herr
 
 **7.3 — No se encontraba *Fix geometries* en el menú.** En esta versión de QGIS no aparece en *Vector → Geometry Tools*. Solución: buscarla en la *Processing Toolbox* (*Processing → Toolbox*, escribir `fix`).
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Cuál es la diferencia entre intersect y union?** Intersect devuelve solo las áreas donde ambas capas se superponen; union devuelve todas las áreas de ambas capas, se superpongan o no, combinando sus atributos.
 - **¿Para qué sirve un spatial join?** Para transferir atributos de una capa a otra basándose en su relación espacial (ej. asignar el nombre del barrio a cada punto que cae dentro de él), sin necesidad de un campo en común.
 - **¿Qué haces si una herramienta de geoprocesamiento falla por geometría inválida?** Identifico qué entidades son inválidas y por qué (en este caso, autointersecciones en dos comunas), las corrijo con *Fix geometries* sobre una copia, sin tocar el original, y repito la operación. Luego valido el resultado, por ejemplo comparando la suma de áreas con el valor esperado.

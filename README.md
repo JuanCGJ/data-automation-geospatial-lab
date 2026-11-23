@@ -1,8 +1,8 @@
 # Data Automation & Geospatial Systems
 
-Curso propio de preparación técnica en **sistemas GIS, automatización de workflows y bases de datos geoespaciales**, documentado como showcase práctico para una vacante relacionada con automatización (n8n), georreferenciación/GIS y datos.
+Curso propio de preparación técnica en **sistemas GIS, automatización de workflows y bases de datos geoespaciales**, documentado paso a paso con ejercicios prácticos de automatización (n8n), georreferenciación/GIS y datos.
 
-Cada carpeta es un proyecto independiente con teoría, ejercicios, entregable y preguntas de entrevista ya practicadas.
+Cada carpeta es un proyecto independiente con teoría, ejercicios, entregable y preguntas de aprendizaje con su respuesta.
 
 ## Stack tecnológico (100% gratuito)
 
@@ -13,7 +13,7 @@ Cada carpeta es un proyecto independiente con teoría, ejercicios, entregable y 
 | [PostgreSQL](https://www.postgresql.org/) + [PostGIS](https://postgis.net/) (Docker) | Base de datos y análisis espacial |
 | Python (geopandas, shapely, psycopg) | Procesamiento geoespacial con código |
 | Docker Desktop | Entorno reproducible, instalación mínima en la máquina local |
-| Git + GitHub | Versionado y showcase |
+| Git + GitHub | Versionado y documentación |
 
 ## Estructura del repositorio
 
@@ -34,9 +34,9 @@ Cada carpeta es un proyecto independiente con teoría, ejercicios, entregable y 
 | `12-n8n-postgis-geofencing` | n8n + PostGIS (Geofencing) |
 | `13-python-geospatial` | Python + datos geoespaciales |
 | `14-capstone-geospatial-monitoring` | Capstone: Geospatial Asset Monitoring & Automation Platform |
-| `docs/` | Preguntas de entrevista recopiladas por proyecto |
+| `docs/` | Preguntas de aprendizaje recopiladas por proyecto y guía rápida de git |
 
-Cada proyecto sigue la misma plantilla: **Objective, Concepts, Requirements, Setup, Exercises, Deliverable, What I learned, Problems encountered & solution, Evidence, Interview questions**.
+Cada proyecto sigue la misma plantilla: **Objetivo, Requisitos, Entregable, Conceptos, Ejercicios, Progreso, Qué aprendí, Problemas encontrados y solución, Preguntas de aprendizaje, Evidencia**.
 
 ## Cómo correr el entorno
 

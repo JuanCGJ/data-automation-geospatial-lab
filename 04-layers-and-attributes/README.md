@@ -41,7 +41,7 @@ Capa exportada con el nuevo campo calculado.
 - La selección por expresión es el equivalente en QGIS a un `SELECT ... WHERE`, y exportar la selección crea un subconjunto como capa nueva.
 ## Problemas encontrados y solución
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué es un campo calculado y para qué sirve?** Es un campo nuevo generado a partir de una expresión sobre otros campos existentes (ej. densidad = población/área), útil para no tener que calcular manualmente valores derivados.
 - **¿Cuál es la diferencia entre seleccionar y filtrar en QGIS?** Seleccionar resalta entidades que cumplen una condición sin ocultar las demás; filtrar (consulta de definición) oculta del todo las entidades que no cumplen la condición.
 

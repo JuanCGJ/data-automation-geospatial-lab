@@ -45,7 +45,7 @@ README con el glosario propio de términos GIS + el diagrama capa–atributo–g
 
 ## Problemas encontrados y solución
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué es un CRS y por qué importa?** Es el sistema que define cómo las coordenadas de una capa se ubican en el mundo real. Importa porque si dos capas tienen CRS distintos, no van a alinearse correctamente en el mapa aunque los datos sean correctos — hay que reproyectarlas a un mismo CRS antes de compararlas o cruzarlas.
 - **¿Cuál es la diferencia entre datos vector y raster?** Vector representa el mundo con geometrías discretas (puntos, líneas, polígonos) y es ideal para entidades bien definidas (calles, lotes, edificios). Raster representa el mundo como una grilla continua de celdas/píxeles, ideal para fenómenos continuos (elevación, temperatura, imágenes satelitales).
 

@@ -43,7 +43,7 @@ Captura de la interfaz de QGIS, tablas de atributos de las 3 capas y notas sobre
 ## Problemas encontrados y solución
 3.1 — La capa no aparecía en el mapa. Estaba encendida pero la vista estaba en otro lugar. Solución: clic derecho → *Zoom to Layer(s)*.
 
-## Preguntas de entrevista
+## Preguntas de aprendizaje
 - **¿Qué diferencia hay entre el CRS de un proyecto y el CRS de una capa en QGIS?** El CRS de la capa es el sistema en el que fue creado/guardado el dato original; el CRS del proyecto es el sistema en el que QGIS muestra todas las capas en pantalla, reproyectándolas al vuelo si no coinciden.
 - **¿Para qué sirve la tabla de atributos?** Para ver y editar la información no geométrica asociada a cada entidad de una capa (nombres, categorías, valores numéricos), y para filtrar o seleccionar entidades según esos valores.
 - **¿Por qué una capa se ve deformada al cambiar el CRS del proyecto?** Porque cada proyección conserva unas propiedades (área, forma, distancia) a costa de otras, y está pensada para una región. Usada lejos de su zona, como LAEA Europe aplicada a Manizales, deforma las formas aunque los datos no cambien.

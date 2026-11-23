@@ -455,3 +455,106 @@ python scripts\simulador_brigadas.py --prueba --pasos 3 --intervalo 1
 ```powershell
 pip freeze | Out-File -Encoding ascii requirements.txt
 ```
+
+## 14.7 — Workflow de posiciones en n8n
+
+Workflow **Posiciones de brigadas**: recibe cada posición del simulador (14.6) por webhook, identifica con `ST_Contains` en qué comuna está la brigada, la guarda en `plataforma.posiciones` y responde con la comuna.
+
+```
+simulador_brigadas.py ──POST──► Webhook ──► Guardar posición ──► Respond to Webhook
+                                (n8n)       ST_Contains + INSERT     {"comuna": "...", "dentro": true}
+```
+
+Script: [`sql/simulador_brigadas.sql`](../sql/simulador_brigadas.sql) · Workflow exportado: [`workflows/posiciones-brigadas.json`](../workflows/posiciones-brigadas.json)
+
+### Paso 1 — Probar la consulta en DBeaver
+Antes de n8n, la consulta se probó con valores fijos:
+- **Punto del GPS:** `ST_MakePoint(lon, lat)` (primero la longitud) → `ST_SetSRID(..., 4326)` → `ST_Transform(..., 6256)`, el CRS de las comunas.
+- **`LEFT JOIN ... ON ST_Contains(comuna, punto)`:** una posición fuera de todas las comunas **igual se guarda**, con `id_comuna` NULL. Con `INNER JOIN` se perdería.
+- **`LIMIT 1`:** si un punto cae justo en el borde de dos comunas, se guarda una sola fila.
+- **`INSERT ... RETURNING`:** devuelve lo guardado sin otra consulta.
+
+| Prueba | Punto | Resultado |
+|---|---|---|
+| Dentro | Brigada Norte en San José (5.0748, −75.5144) | `id_comuna = 2` |
+| Fuera | Brigada Centro en el parque de Villamaría (5.0447, −75.5145) | `id_comuna = NULL` |
+
+![Prueba dentro](14.7-prueba-dentro.png)
+
+![Prueba fuera](14.7-prueba-fuera.png)
+
+El punto devuelto (`-75.51439999997157`) difiere del enviado (`-75.5144`) en millonésimas de milímetro: es el redondeo de transformar 4326 → 6256 → 4326.
+
+![Posiciones de prueba](14.7-posiciones-prueba.png)
+
+Las filas de prueba se borraron con `TRUNCATE plataforma.posiciones RESTART IDENTITY` (borra todas las filas y reinicia el `id` en 1).
+
+### Paso 2 — Webhook
+| Campo | Valor | Por qué |
+|---|---|---|
+| HTTP Method | POST | El simulador **entrega** datos; GET es para **pedirlos** |
+| Path | `posiciones-brigadas` | Dice qué recibe |
+| Respond | *Using 'Respond to Webhook' Node* | Responder después de guardar |
+
+![Nodo Webhook](14.7-nodo-webhook.png)
+
+Primero se conectó el *Respond to Webhook* directo al Webhook (eco) y se envió una posición desde PowerShell con `Invoke-RestMethod`, en el mismo formato del simulador. Los datos llegan en `$json.body`.
+
+![Webhook recibido](14.7-webhook-recibido.png)
+
+![Eco en PowerShell](14.7-powershell-eco.png)
+
+### Paso 3 — Nodo *Guardar posición*
+Postgres, *Execute a SQL query*, con la consulta probada en DBeaver y tres cambios:
+- Los valores fijos pasan a **parámetros** `$1..$4` (*Query Parameters*: `{{ $json.body.id_brigada }},{{ $json.body.lat }},{{ $json.body.lon }},{{ $json.body.registrado_en }}`), que PostgreSQL trata siempre como datos y nunca como código.
+- El `INSERT` va dentro de un `WITH` (`nueva AS (INSERT ... RETURNING ...)`) y el `SELECT` final le agrega el **nombre** de la comuna.
+- Devuelve `dentro` (`id_comuna IS NOT NULL`), como en el Proyecto 12.
+
+![Nodo Guardar posición](14.7-nodo-guardar-posicion.png)
+
+![Workflow con una posición dentro](14.7-workflow-dentro.png)
+
+| Prueba | Respuesta en PowerShell |
+|---|---|
+| Brigada Norte en San José | `comuna : Comuna san José`, `dentro : True` |
+| Brigada Centro en Villamaría | `comuna` vacía, `dentro : False` |
+
+![Respuesta dentro](14.7-powershell-dentro.png)
+
+![Respuesta fuera](14.7-powershell-fuera.png)
+
+### Paso 4 — Publicar y usar la Production URL
+| | Test URL | Production URL |
+|---|---|---|
+| Dirección | `/webhook-test/posiciones-brigadas` | `/webhook/posiciones-brigadas` |
+| Escucha | Una llamada por cada clic en *Execute workflow* | Siempre, mientras el workflow esté publicado |
+| Ejecuciones | En el lienzo | En la pestaña **Executions** |
+
+El simulador envía 4 posiciones por paso, así que necesita la Production URL. Se publicó el workflow como versión **v1 - recibir y guardar posiciones** (n8n guarda cada publicación como una versión) y la URL se agregó al `.env` de la raíz como `N8N_WEBHOOK_URL`, con `127.0.0.1` en lugar de `localhost`.
+
+![Workflow publicado](14.7-workflow-publicado.png)
+
+### Paso 5 — Simulador conectado
+```powershell
+python scripts\simulador_brigadas.py --pasos 3 --intervalo 2
+```
+
+![Simulador enviando](14.7-simulador-enviando.png)
+
+Las 12 posiciones respondieron `HTTP 200`. En **Executions** aparece una ejecución por posición, todas *Succeeded* en unos 100-200 ms.
+
+![Ejecuciones de producción](14.7-executions.png)
+
+![Posiciones guardadas](14.7-dbeaver-posiciones.png)
+
+- Cada brigada aparece en su primera comuna: Norte en San José, Centro en Estación, Occidente en Atardeceres, Oriente en Palogrande.
+- **Fila 13:** la Brigada Occidente ya está en Cumanday en el paso 3. Atardeceres y Cumanday son vecinas: la comuna se calcula para cada posición, no se copia de la ruta.
+- **Fila 11:** la Brigada Norte queda en `NULL` en el paso 3, en (5.0763, −75.5098). El trayecto recto entre San José y Ciudadela del Norte cruza una zona que no pertenece a ninguna de las 12 comunas; gracias al `LEFT JOIN` la posición no se perdió.
+- Las 4 posiciones de un paso tienen 1-2 s de diferencia: el simulador las envía una tras otra y espera cada respuesta.
+
+### Problema: el script completo repetía las pruebas
+Al ejecutar `simulador_brigadas.sql` completo (Alt + X), cada vez se volvía a correr la prueba de San José, y la tabla terminó con 6 filas idénticas. Solución: ejecutar cada bloque por separado, seleccionándolo con el mouse y **Ctrl + Enter**, y dejar una advertencia en el encabezado del script. Las filas repetidas se borraron con `TRUNCATE`.
+
+### Workflow exportado
+- [`workflows/posiciones-brigadas.json`](../workflows/posiciones-brigadas.json), exportado desde el menú ⋯ → *Download*.
+- Se revisó antes de subirlo: el nodo Postgres solo guarda la referencia a la credencial (`gisdb-local` y su id), sin contraseña. La URL del webhook va en el `.env`, fuera del repo.

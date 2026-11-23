@@ -68,6 +68,34 @@ RETURNING id, id_brigada, id_comuna,
           registrado_en;
 
 
+-- ===== 14.7 Consulta del nodo "Guardar posición" (n8n) =====
+-- Es la consulta que ejecuta n8n por cada posición recibida en el webhook.
+-- NO se ejecuta en DBeaver: $1..$4 los llena n8n con Query Parameters:
+--   {{ $json.body.id_brigada }},{{ $json.body.lat }},{{ $json.body.lon }},{{ $json.body.registrado_en }}
+-- 1) Arma el punto con los datos del GPS: grados (4326) → metros (6256)
+WITH punto AS (
+    SELECT $1::smallint AS id_brigada,
+           ST_Transform(ST_SetSRID(ST_MakePoint($3::float8, $2::float8), 4326), 6256) AS geom,  -- (lon, lat)
+           $4::timestamptz AS registrado_en
+),
+-- 2) Guarda la posición con la comuna que la contiene (NULL si está fuera)
+nueva AS (
+    INSERT INTO plataforma.posiciones (id_brigada, id_comuna, geom, registrado_en)
+    SELECT p.id_brigada, cr.id_comuna, p.geom, p.registrado_en
+    FROM punto p
+    LEFT JOIN plataforma.comunas_riesgo cr ON ST_Contains(cr.geom, p.geom)
+    LIMIT 1
+    RETURNING id, id_brigada, id_comuna, registrado_en
+)
+-- 3) Devuelve lo guardado, con el nombre de la comuna y si está dentro o fuera
+SELECT n.id, n.id_brigada, n.id_comuna,
+       c.nombre AS comuna,
+       (n.id_comuna IS NOT NULL) AS dentro,
+       n.registrado_en
+FROM nueva n
+LEFT JOIN plataforma.comunas_riesgo c ON c.id_comuna = n.id_comuna;
+
+
 -- ===== 14.7 Ver las posiciones guardadas =====
 -- Solo lectura: muestra cada posición con el nombre de la brigada y de la comuna.
 -- LEFT JOIN con comunas para mostrar también las posiciones fuera (comuna vacía).

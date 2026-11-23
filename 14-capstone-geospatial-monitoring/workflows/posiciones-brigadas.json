@@ -1,0 +1,96 @@
+{
+  "name": "Posiciones de brigadas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "posiciones-brigadas",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "2bc75faf-f41a-4774-9861-48966cafaf70",
+      "name": "Webhook",
+      "webhookId": "ac27d517-8631-4ede-a25f-623d279d3c9b"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "da706fa7-5aeb-49e8-98c2-680ced19dc34",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- 1) Arma el punto con los datos del GPS: grados (4326) → metros (6256)\nWITH punto AS (\n    SELECT $1::smallint AS id_brigada,\n           ST_Transform(ST_SetSRID(ST_MakePoint($3::float8, $2::float8), 4326), 6256) AS geom,  -- (lon, lat)\n           $4::timestamptz AS registrado_en\n),\n-- 2) Guarda la posición con la comuna que la contiene (NULL si está fuera)\nnueva AS (\n    INSERT INTO plataforma.posiciones (id_brigada, id_comuna, geom, registrado_en)\n    SELECT p.id_brigada, cr.id_comuna, p.geom, p.registrado_en\n    FROM punto p\n    LEFT JOIN plataforma.comunas_riesgo cr ON ST_Contains(cr.geom, p.geom)\n    LIMIT 1\n    RETURNING id, id_brigada, id_comuna, registrado_en\n)\n-- 3) Devuelve lo guardado, con el nombre de la comuna y si está dentro o fuera\nSELECT n.id, n.id_brigada, n.id_comuna,\n       c.nombre AS comuna,\n       (n.id_comuna IS NOT NULL) AS dentro,\n       n.registrado_en\nFROM nueva n\nLEFT JOIN plataforma.comunas_riesgo c ON c.id_comuna = n.id_comuna;",
+        "options": {
+          "queryReplacement": "={{ $json.body.id_brigada }},{{ $json.body.lat }},{{ $json.body.lon }},{{ $json.body.registrado_en }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        48,
+        0
+      ],
+      "id": "a3b36928-6089-4fd9-8353-56637836cf5f",
+      "name": "Guardar posición",
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Guardar posición",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar posición": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "f0c8da91-d43b-4770-a829-66bf86c0ed12",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f2698b05857ee29b36fdf58fb62890bf41ab0d404653fdadd2d81c62cd51d881"
+  },
+  "nodeGroups": [],
+  "id": "3BM5GKR2aO1i8mZT",
+  "tags": []
+}

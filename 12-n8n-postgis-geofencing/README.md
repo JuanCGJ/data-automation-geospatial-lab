@@ -33,15 +33,15 @@ Workflow completo + demo en gif o video corto.
 - [x] **12.5** — Grabar un gif o video corto mostrando el workflow funcionando de principio a fin. Evidencia: [GIF](evidence/12.5-demo-geofencing.gif), [video](evidence/12.5-demo-geofencing.mp4), [hallazgos](evidence/hallazgos.md)
 
 ## Aprendizajes
-- A probar un geofencing con casos dentro, fuera y **de borde** (Villamaría, pegada a Manizales), con una columna `esperado` para verificar el resultado.
-- Que un GPS envía coordenadas en WGS 84 (EPSG:4326) y hay que transformarlas al CRS de las zonas (`ST_Transform` a EPSG:6256) antes de usar `ST_Contains`; y que `ST_MakePoint` recibe primero la longitud (x) y luego la latitud (y).
-- A guardar la contraseña de PostgreSQL en QGIS con el gestor de autenticación (cifrada), en vez de la pestaña *Basic* (texto plano que se copia en las capas y en el proyecto).
-- A recibir datos por webhook con POST y leerlos en `$json.body`, y que un webhook con *Using 'Respond to Webhook' Node* necesita ese nodo para responder.
-- A usar `LEFT JOIN` + `IS NOT NULL` para que una consulta espacial siempre devuelva una fila con un booleano `dentro`, y a validar varios puntos a la vez con `WITH ... AS (VALUES ...)`.
-- A usar **parámetros de consulta** (`$1`, `$2`) en n8n para evitar inyección SQL, y `$('Nombre del nodo')` para leer datos de un nodo anterior que no es el inmediato.
-- A ramificar un workflow con el nodo IF y hacer que las dos ramas terminen en el mismo *Respond to Webhook*.
-- A insertar geometrías calculadas con `INSERT ... RETURNING`, a leerlas con `ST_AsText` (WKT en lugar del binario EWKB) y a limpiar datos de prueba con `TRUNCATE ... RESTART IDENTITY`.
-- Que la Test URL de un webhook acepta una sola llamada por cada clic en *Execute workflow*.
+- Probar un geofencing con casos dentro, fuera y **de borde** (Villamaría, pegada a Manizales), con una columna `esperado` para verificar el resultado.
+- Un GPS envía coordenadas en WGS 84 (EPSG:4326) y hay que transformarlas al CRS de las zonas (`ST_Transform` a EPSG:6256) antes de usar `ST_Contains`; `ST_MakePoint` recibe primero la longitud (x) y luego la latitud (y).
+- Guardar la contraseña de PostgreSQL en QGIS con el gestor de autenticación (cifrada), en vez de la pestaña *Basic* (texto plano que se copia en las capas y en el proyecto).
+- Recibir datos por webhook con POST y leerlos en `$json.body`; un webhook con *Using 'Respond to Webhook' Node* necesita ese nodo para responder.
+- Usar `LEFT JOIN` + `IS NOT NULL` para que una consulta espacial siempre devuelva una fila con un booleano `dentro`, y validar varios puntos a la vez con `WITH ... AS (VALUES ...)`.
+- Usar **parámetros de consulta** (`$1`, `$2`) en n8n para evitar inyección SQL, y `$('Nombre del nodo')` para leer datos de un nodo anterior que no es el inmediato.
+- Ramificar un workflow con el nodo IF y hacer que las dos ramas terminen en el mismo *Respond to Webhook*.
+- Insertar geometrías calculadas con `INSERT ... RETURNING`, leerlas con `ST_AsText` (WKT en lugar del binario EWKB) y limpiar datos de prueba con `TRUNCATE ... RESTART IDENTITY`.
+- La Test URL de un webhook acepta una sola llamada por cada clic en *Execute workflow*.
 
 ## Problemas encontrados y solución
 **12.1 — El CSV se leía como una sola columna en QGIS.** Causa probable: el archivo se guardó desde Excel, que en español agrega comillas a cada línea o usa `;`. Solución: volver a crear el CSV en un editor de texto plano (UTF-8).

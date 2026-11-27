@@ -41,13 +41,13 @@ Exportar (JSON) los 2 workflows creados + capturas de su ejecución.
 - [x] **10.4** — Exportar ambos workflows como JSON. Evidencia: [hallazgos](evidence/hallazgos.md)
 
 ## Aprendizajes
-- A construir workflows en n8n conectando nodos: un trigger que inicia, nodos que traen o transforman datos y un nodo que responde.
-- A consumir una API pública (Open-Meteo) con el nodo HTTP Request y a leer su respuesta en JSON.
-- A transformar un JSON anidado en un item plano con *Edit Fields* y expressions (`{{ $json.current.temperature_2m }}`), dejando los datos con la forma de una fila de base de datos.
+- Construir workflows en n8n conectando nodos: un trigger que inicia, nodos que traen o transforman datos y un nodo que responde.
+- Consumir una API pública (Open-Meteo) con el nodo HTTP Request y leer su respuesta en JSON.
+- Transformar un JSON anidado en un item plano con *Edit Fields* y expressions (`{{ $json.current.temperature_2m }}`), dejando los datos con la forma de una fila de base de datos.
 - La diferencia entre un trigger por tiempo (schedule, *pull*) y uno por evento (webhook, *push*), y entre las URL de prueba y de producción del webhook.
-- A probar un webhook desde la terminal con `Invoke-RestMethod` y a responderle con *Respond to Webhook*.
-- Que al integrar sistemas hay que fijar la zona horaria en cada uno, y que se configura en Docker con variables de entorno sin perder datos gracias a los volúmenes.
-- A exportar los workflows como JSON para versionarlos en GitHub.
+- Probar un webhook desde la terminal con `Invoke-RestMethod` y responderle con *Respond to Webhook*.
+- Al integrar sistemas hay que fijar la zona horaria en cada uno, y se configura en Docker con variables de entorno sin perder datos gracias a los volúmenes.
+- Exportar los workflows como JSON para versionarlos en GitHub.
 
 ## Problemas encontrados y solución
 **10.2 — n8n usaba la zona horaria de Nueva York.** El Schedule Trigger mostraba `America/New_York` (valor por defecto). Solución: variables `GENERIC_TIMEZONE` y `TZ` en `America/Bogota` en `docker-compose.yml` y `docker compose up -d`.

@@ -32,13 +32,13 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 
 ## Aprendizajes
 - Qué hace cada librería del stack geoespacial de Python: psycopg (driver), SQLAlchemy (conexión), shapely (geometrías, con GEOS) y geopandas (tablas con geometría y CRS); y GeoAlchemy2 para escribir geometrías en PostGIS.
-- A instalar Python eligiendo la versión según el soporte de las librerías (3.14 y no la 3.15 recién publicada), a crear y activar un entorno virtual y a congelar sus versiones en `requirements.txt`.
-- A mantener en D todo lo que crece (`.venv` dentro del proyecto, caché de pip en `D:\AppsData\pip-cache`) y a permitir los scripts de PowerShell con `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`.
-- A configurar VS Code para Python: extensión de Microsoft, *Workspace Trust* e intérprete del `.venv`.
-- A leer una tabla de PostGIS con `read_postgis` y credenciales desde `.env`, sin contraseñas en el código.
-- Que `.area` en un CRS métrico da m², que el área plana de GeoPandas difiere ~0,07 % del `$area` de QGIS por una diferencia de método, y que el centroide puede caer fuera de un polígono irregular (`representative_point()` siempre cae dentro).
-- A escribir un GeoDataFrame en PostGIS con `to_postgis` y a agregar una llave primaria compuesta con SQL desde Python.
-- A diagnosticar una demora midiendo por partes (`Measure-Command`): la causa no era el antivirus sino `localhost` resolviendo primero a IPv6.
+- Instalar Python eligiendo la versión según el soporte de las librerías (3.14 y no la 3.15 recién publicada), crear y activar un entorno virtual y congelar sus versiones en `requirements.txt`.
+- Mantener en D todo lo que crece (`.venv` dentro del proyecto, caché de pip en `D:\AppsData\pip-cache`) y permitir los scripts de PowerShell con `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`.
+- Configurar VS Code para Python: extensión de Microsoft, *Workspace Trust* e intérprete del `.venv`.
+- Leer una tabla de PostGIS con `read_postgis` y credenciales desde `.env`, sin contraseñas en el código.
+- `.area` en un CRS métrico da m², el área plana de GeoPandas difiere ~0,07 % del `$area` de QGIS por una diferencia de método, y el centroide puede caer fuera de un polígono irregular (`representative_point()` siempre cae dentro).
+- Escribir un GeoDataFrame en PostGIS con `to_postgis` y agregar una llave primaria compuesta con SQL desde Python.
+- Diagnosticar una demora midiendo por partes (`Measure-Command`): la causa no era el antivirus sino `localhost` resolviendo primero a IPv6.
 
 ## Problemas encontrados y solución
 **13.2 — `Activate.ps1 cannot be loaded because running scripts is disabled on this system`.** Windows bloquea los scripts de PowerShell por defecto. Solución: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`.

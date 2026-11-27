@@ -37,11 +37,11 @@ README con el glosario propio de términos GIS + el diagrama capa–atributo–g
 - [x] **1.4** — Hacer un diagrama simple de cómo se relacionan capa–atributo–geometría–CRS. Evidencia: `evidence/glosario.md`, `evidence/mapa-ficticio.svg`
 
 ## Aprendizajes
-- A definir en mis propias palabras los conceptos base de GIS: dato espacial vs no espacial, capa, atributo y coordenadas.
-- Qué es un CRS, para qué sirve el código EPSG, y a reconocer varios CRS comunes (WGS84, Web Mercator, MAGNA-SIRGAS, UTM, entre otros) con su código correspondiente.
+- Definir en mis propias palabras los conceptos base de GIS: dato espacial vs no espacial, capa, atributo y coordenadas.
+- Qué es un CRS, para qué sirve el código EPSG y cómo reconocer varios CRS comunes (WGS84, Web Mercator, MAGNA-SIRGAS, UTM, entre otros) con su código correspondiente.
 - La diferencia entre los tres tipos de geometría vectorial (punto, línea, polígono) y entre datos vector y raster.
-- A ilustrar estos conceptos gráficamente: un mapa ficticio mostrando una capa con sus entidades, atributos y una coordenada, y una comparación visual vector vs raster.
-- A documentar todo en Markdown, incluyendo diagramas Mermaid e imágenes SVG que se renderizan directamente en GitHub.
+- Ilustrar estos conceptos gráficamente: un mapa ficticio mostrando una capa con sus entidades, atributos y una coordenada, y una comparación visual vector vs raster.
+- Documentar todo en Markdown, incluyendo diagramas Mermaid e imágenes SVG que se renderizan directamente en GitHub.
 
 ## Problemas encontrados y solución
 

@@ -67,35 +67,35 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 ## Aprendizajes
 *Ejercicios 14.1 a 14.8; se completa al cerrar el proyecto.*
 
-- A definir un escenario con fuentes verificables antes de construir: el indicador oficial A25 de Manizales (200 mm en 25 días), las comunas con evidencia publicada y qué datos son supuestos del proyecto.
-- A diferenciar **susceptibilidad** (condición del terreno) de **amenaza** (que ya incluye detonantes como la lluvia), y por qué el umbral de lluvia es inverso a la susceptibilidad.
-- A diseñar y documentar una arquitectura por capas (fuentes, procesamiento, almacenamiento, salidas) con un diagrama en Mermaid versionado como texto.
-- A organizar datos pesados: los crudos en `data/raw/` ignorados por Git (límite de 100 MB de GitHub) y solo los procesados en el repo.
-- A leer la ficha técnica de un raster antes de usarlo: tamaño de celda, CRS y rango de valores, y a descubrir que sus valores eran **códigos** que una tabla de valores (`.vat.dbf`) traduce a clases.
-- A recortar y reproyectar un raster en un solo paso, con remuestreo por **vecino más cercano** para datos categóricos, y a verificar el resultado (el área con datos coincidió con la suma de las comunas).
-- A reclasificar un raster con una tabla (*Reclassify by layer*) y a simbolizar un raster categórico (*Paletted/Unique values*).
-- A convertir un raster en un atributo por polígono con **estadística zonal** e **histograma zonal**, y que en datos categóricos se usa la mayoría y no el promedio, aunque la mayoría puede esconder la variación interna.
-- A construir un criterio de nivel defendible: dato oficial (% del área en alta + muy alta) más un ajuste conservador por evidencia local, separado en columnas para que se vea qué viene de cada fuente.
-- A asignar el CRS del proyecto de QGIS: el primer raster cargado tenía un CRS sin código EPSG y el proyecto quedó como *Unknown CRS*; se fijó en EPSG:6256.
-- A diseñar un modelo de datos antes de escribir SQL: tablas, llaves primarias y foráneas, normalización (y cuándo romperla a propósito para conservar historial).
-- A proteger la calidad del dato desde la base de datos con `CHECK`, `UNIQUE` y llaves foráneas, y a escribir scripts re-ejecutables con `IF NOT EXISTS`, `ON CONFLICT DO NOTHING` y *upsert* (`ON CONFLICT DO UPDATE`).
+- Definir un escenario con fuentes verificables antes de construir: el indicador oficial A25 de Manizales (200 mm en 25 días), las comunas con evidencia publicada y qué datos son supuestos del proyecto.
+- Diferenciar **susceptibilidad** (condición del terreno) de **amenaza** (que ya incluye detonantes como la lluvia), y por qué el umbral de lluvia es inverso a la susceptibilidad.
+- Diseñar y documentar una arquitectura por capas (fuentes, procesamiento, almacenamiento, salidas) con un diagrama en Mermaid versionado como texto.
+- Organizar datos pesados: los crudos en `data/raw/` ignorados por Git (límite de 100 MB de GitHub) y solo los procesados en el repo.
+- Leer la ficha técnica de un raster antes de usarlo: tamaño de celda, CRS y rango de valores, y descubrir que sus valores eran **códigos** que una tabla de valores (`.vat.dbf`) traduce a clases.
+- Recortar y reproyectar un raster en un solo paso, con remuestreo por **vecino más cercano** para datos categóricos, y verificar el resultado (el área con datos coincidió con la suma de las comunas).
+- Reclasificar un raster con una tabla (*Reclassify by layer*) y simbolizar un raster categórico (*Paletted/Unique values*).
+- Convertir un raster en un atributo por polígono con **estadística zonal** e **histograma zonal**; en datos categóricos se usa la mayoría y no el promedio, aunque la mayoría puede esconder la variación interna.
+- Construir un criterio de nivel defendible: dato oficial (% del área en alta + muy alta) más un ajuste conservador por evidencia local, separado en columnas para que se vea qué viene de cada fuente.
+- Asignar el CRS del proyecto de QGIS: el primer raster cargado tenía un CRS sin código EPSG y el proyecto quedó como *Unknown CRS*; se fijó en EPSG:6256.
+- Diseñar un modelo de datos antes de escribir SQL: tablas, llaves primarias y foráneas, normalización (y cuándo romperla a propósito para conservar historial).
+- Proteger la calidad del dato desde la base de datos con `CHECK`, `UNIQUE` y llaves foráneas, y escribir scripts re-ejecutables con `IF NOT EXISTS`, `ON CONFLICT DO NOTHING` y *upsert* (`ON CONFLICT DO UPDATE`).
 - La diferencia entre el índice de la llave primaria (B-tree, búsqueda por valor) y un índice espacial GiST (búsqueda por ubicación).
-- A cargar datos uniendo atributos de un archivo con geometrías que ya están en la base, evitando un problema de CRS en lugar de pelear con él.
-- A construir un workflow programado en n8n que procesa una lista de comunas: un item por comuna, una llamada a la API por item y `$('Nodo').item.json` para recuperar datos de un nodo anterior.
-- A calcular rangos de fechas con Luxon en la zona horaria correcta y a sumar una lista con `reduce`, tratando los días sin dato como 0.
-- A guardar resultados con consultas parametrizadas y *upsert*, para que el workflow se pueda ejecutar varias veces sin duplicar datos.
-- A verificar un dato de una API contra una prueba manual, y que una API en cuadrícula da el mismo valor a los puntos que caen en la misma celda.
-- A simular una fuente de datos en tiempo real: interpolación lineal entre puntos, ruido aleatorio y rutas en círculo con el residuo (`%`).
-- A dar opciones a un script con `argparse` (`--prueba`, `--pasos`, `--intervalo`) para cambiar su comportamiento sin editar el código, y a incluir un modo prueba que no envía nada.
-- A separar entornos virtuales por proyecto, con solo las librerías que cada uno necesita.
-- A recibir datos en tiempo real con un webhook POST y a guardarlos en PostGIS con `ST_Contains`, usando `LEFT JOIN` para no perder las posiciones que caen fuera de las comunas.
-- A combinar `INSERT ... RETURNING` dentro de un `WITH` para guardar y devolver en una sola consulta datos de otra tabla (el nombre de la comuna).
-- La diferencia entre la Test URL y la Production URL de un webhook, y que un workflow publicado deja sus ejecuciones en la pestaña *Executions*.
-- Que GET y POST describen lo que hace quien envía la petición: GET pide datos, POST los entrega.
-- A cruzar dos fuentes en el espacio con `ST_DWithin` (alertas de lluvia y posiciones de brigadas), quedándome con la última posición de cada brigada con `DISTINCT ON` y descartando las viejas con una ventana de tiempo.
-- A usar `NOT EXISTS` para encontrar lo que no tiene pareja (comunas sin ninguna brigada cerca).
-- A probar una alerta creando un caso real (una brigada fuera de servicio) en lugar de cambiar la regla que se quiere probar.
-- A ejecutar un nodo de n8n una sola vez aunque reciba varios items, con *Execute Once*.
+- Cargar datos uniendo atributos de un archivo con geometrías que ya están en la base, evitando un problema de CRS en lugar de pelear con él.
+- Construir un workflow programado en n8n que procesa una lista de comunas: un item por comuna, una llamada a la API por item y `$('Nodo').item.json` para recuperar datos de un nodo anterior.
+- Calcular rangos de fechas con Luxon en la zona horaria correcta y sumar una lista con `reduce`, tratando los días sin dato como 0.
+- Guardar resultados con consultas parametrizadas y *upsert*, para que el workflow se pueda ejecutar varias veces sin duplicar datos.
+- Verificar un dato de una API contra una prueba manual; una API en cuadrícula da el mismo valor a los puntos que caen en la misma celda.
+- Simular una fuente de datos en tiempo real: interpolación lineal entre puntos, ruido aleatorio y rutas en círculo con el residuo (`%`).
+- Dar opciones a un script con `argparse` (`--prueba`, `--pasos`, `--intervalo`) para cambiar su comportamiento sin editar el código, y incluir un modo prueba que no envía nada.
+- Separar entornos virtuales por proyecto, con solo las librerías que cada uno necesita.
+- Recibir datos en tiempo real con un webhook POST y guardarlos en PostGIS con `ST_Contains`, usando `LEFT JOIN` para no perder las posiciones que caen fuera de las comunas.
+- Combinar `INSERT ... RETURNING` dentro de un `WITH` para guardar y devolver en una sola consulta datos de otra tabla (el nombre de la comuna).
+- La diferencia entre la Test URL y la Production URL de un webhook; un workflow publicado deja sus ejecuciones en la pestaña *Executions*.
+- GET y POST describen lo que hace quien envía la petición: GET pide datos, POST los entrega.
+- Cruzar dos fuentes en el espacio con `ST_DWithin` (alertas de lluvia y posiciones de brigadas), quedándome con la última posición de cada brigada con `DISTINCT ON` y descartando las viejas con una ventana de tiempo.
+- Usar `NOT EXISTS` para encontrar lo que no tiene pareja (comunas sin ninguna brigada cerca).
+- Probar una alerta creando un caso real (una brigada fuera de servicio) en lugar de cambiar la regla que se quiere probar.
+- Ejecutar un nodo de n8n una sola vez aunque reciba varios items, con *Execute Once*.
 
 ## Problemas encontrados y solución
 **14.1 — No se pudo buscar la capa de amenaza de la Alcaldía.** El directorio de servicios ArcGIS REST respondió `403: The administrator has disabled the Services Directory`. Solución: usar el Mapa Nacional de Susceptibilidad del SGC, oficial y descargable.

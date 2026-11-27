@@ -39,11 +39,11 @@ Captura de `docker ps` con ambos contenedores corriendo + este README actualizad
 - [x] **0.6** — Conexión a PostgreSQL desde DBeaver confirmada (PostgreSQL 16.4). Evidencia: `evidence/0.6-dbeaver-conectado.png`
 
 ## Aprendizajes
-- A instalar y configurar Git, Docker Desktop y DBeaver desde cero en Windows.
-- Que Docker permite correr PostgreSQL/PostGIS y n8n en contenedores aislados, sin instalarlos directamente en el sistema operativo.
-- A levantar un stack completo (base de datos + automatización) con un solo `docker-compose.yml`, y a verificar que los contenedores están corriendo con `docker ps`.
-- A conectar una herramienta externa (DBeaver) a una base de datos que vive dentro de un contenedor.
-- A documentar el trabajo desde el inicio (README + evidencia) en vez de dejarlo para el final.
+- Instalar y configurar Git, Docker Desktop y DBeaver desde cero en Windows.
+- Docker permite correr PostgreSQL/PostGIS y n8n en contenedores aislados, sin instalarlos directamente en el sistema operativo.
+- Levantar un stack completo (base de datos + automatización) con un solo `docker-compose.yml`, y verificar que los contenedores están corriendo con `docker ps`.
+- Conectar una herramienta externa (DBeaver) a una base de datos que vive dentro de un contenedor.
+- Documentar el trabajo desde el inicio (README + evidencia) en vez de dejarlo para el final.
 
 ## Problemas encontrados y solución
 

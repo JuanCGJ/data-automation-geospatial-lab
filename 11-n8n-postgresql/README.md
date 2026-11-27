@@ -31,13 +31,13 @@ Workflow exportado (JSON) + captura de los datos guardados en la tabla.
 - [x] **11.4** — Ejecutar el workflow y verificar en DBeaver que los datos se guardaron correctamente. Evidencia: [workflow](workflows/weather-to-postgresql.json), [hallazgos](evidence/hallazgos.md)
 
 ## Aprendizajes
-- A crear credenciales de PostgreSQL en n8n: entre contenedores el host es el nombre del servicio de Docker (`postgis`) y el puerto el interno (5432), no `localhost`.
-- Que n8n guarda las contraseñas cifradas en su propia base de datos y el workflow exportado solo referencia la credencial, por eso se puede versionar en GitHub.
-- A reutilizar un workflow duplicándolo, en lugar de reconstruirlo.
+- Crear credenciales de PostgreSQL en n8n: entre contenedores el host es el nombre del servicio de Docker (`postgis`) y el puerto el interno (5432), no `localhost`.
+- n8n guarda las contraseñas cifradas en su propia base de datos y el workflow exportado solo referencia la credencial, por eso se puede versionar en GitHub.
+- Reutilizar un workflow duplicándolo, en lugar de reconstruirlo.
 - La diferencia entre desactivar un nodo (se salta en la ejecución) y no publicar un workflow (no corre solo, pero sí a mano).
-- A diseñar la tabla destino según el JSON de n8n (`String` → `TEXT`, `Number` → `NUMERIC`) y a insertar con el nodo Postgres usando mapeo automático, que funciona cuando los nombres de los campos coinciden con las columnas.
-- La diferencia entre `TIMESTAMP` y `TIMESTAMPTZ`, y a convertir columnas existentes con `ALTER ... USING ... AT TIME ZONE` sin desplazar la hora.
-- A enviar fechas con zona explícita desde n8n con Luxon (`DateTime.fromISO(...).toISO()`).
+- Diseñar la tabla destino según el JSON de n8n (`String` → `TEXT`, `Number` → `NUMERIC`) y insertar con el nodo Postgres usando mapeo automático, que funciona cuando los nombres de los campos coinciden con las columnas.
+- La diferencia entre `TIMESTAMP` y `TIMESTAMPTZ`, y cómo convertir columnas existentes con `ALTER ... USING ... AT TIME ZONE` sin desplazar la hora.
+- Enviar fechas con zona explícita desde n8n con Luxon (`DateTime.fromISO(...).toISO()`).
 
 ## Problemas encontrados y solución
 **11.4 — Fechas en zonas distintas.** `fecha_hora` llegaba en hora de Colombia, pero `creado_en` se guardaba en UTC (zona del contenedor de PostgreSQL): la misma fila mostraba 19:15 del día 2 y 00:28 del día 3, sin ninguna marca de zona. Solución: convertir ambas columnas a `TIMESTAMPTZ` con `ALTER TABLE ... USING ... AT TIME ZONE`.

@@ -40,7 +40,7 @@ El mismo dataset en shapefile, GeoJSON y GeoPackage, más capturas de cada conve
 - [x] **2.5** — Crear o descargar un CSV con columnas de latitud y longitud, y cargarlo en QGIS como capa de puntos. Evidencia: [puntos del CSV sobre las comunas](evidence/2.5-puntos-csv.png); CSV en `data/puntos_manizales.csv`
 - [x] **2.6** — Tomar una captura de pantalla de cada formato cargado en QGIS. Evidencia: [shapefile](evidence/2.6-shapefile.png), [GeoJSON](evidence/2.6-geojson.png), [GeoPackage](evidence/2.6-geopackage.png)
 
-## Qué aprendí
+## Aprendizajes
 - Un shapefile no es un archivo sino varios (`.shp`, `.shx`, `.dbf`, `.prj`, `.cpg`); sin el `.prj`, los datos pierden su CRS.
 - La diferencia entre **definir** un CRS (declarar en qué sistema están las coordenadas, sin moverlas) y **reproyectar** (transformar las coordenadas a otro sistema).
 - GeoJSON exige WGS 84 (EPSG:4326), mientras que GeoPackage puede conservar el CRS original en un solo archivo con varias capas.

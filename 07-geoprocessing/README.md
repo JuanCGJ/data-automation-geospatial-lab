@@ -34,7 +34,7 @@ Capa resultado de la intersección + explicación escrita de qué hace cada herr
 - [x] **7.2** — Crear un buffer de 1 km alrededor de un punto de `puntos_manizales` (ej. Universidad de Caldas), trabajando en un CRS en metros (EPSG:6256). Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **7.3** — Intersectar ese buffer con la capa de comunas para identificar qué comunas quedan dentro, total o parcialmente. Evidencia: [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - El geoprocesamiento crea capas nuevas a partir de relaciones espaciales, sin modificar las capas de entrada.
 - La distancia de un buffer usa las unidades del CRS de la capa: hay que reproyectar a un CRS métrico antes de calcularlo.
 - *Selected features only* limita una herramienta a las entidades seleccionadas.

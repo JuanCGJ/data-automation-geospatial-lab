@@ -32,7 +32,7 @@ Capa editada + capturas antes/después.
 - [x] **5.2** — Activar el modo edición y crear una capa nueva de puntos desde cero (ej. "activos" ficticios de tu ciudad: postes, cámaras, etc.). Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **5.3** — Usar la herramienta de dividir entidades (split features) para dividir un polígono existente en dos, con captura antes y después de la edición. Evidencia: [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - QGIS protege las capas: hay que activar el modo edición para modificarlas, y los cambios solo se escriben en el archivo al guardar.
 - Una capa puede crearse vacía (definiendo geometría, CRS, campos y tipos) y llenarse digitalizando entidades con el mouse.
 - Escribir los valores de texto con un formato uniforme evita categorías duplicadas (`poste` vs `Poste`).

@@ -30,7 +30,7 @@ Script de Python que lea una capa, calcule área/centroides y escriba los result
 - [x] **13.3** — Escribir un script que lea la capa de comunas desde PostGIS (cargada en 9.5) con geopandas, calcule el centroide de cada comuna y compare su área con el campo `area_km2` del ejercicio 4.2. Evidencia: [script](scripts/comunas_centroides.py), [hallazgos](evidence/hallazgos.md)
 - [x] **13.4** — Escribir los centroides en una tabla nueva de PostGIS. Evidencia: [script](scripts/comunas_centroides.py), [verificación SQL](sql/verificacion.sql), [proyecto QGIS](proyecto-13.qgz), [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - Qué hace cada librería del stack geoespacial de Python: psycopg (driver), SQLAlchemy (conexión), shapely (geometrías, con GEOS) y geopandas (tablas con geometría y CRS); y GeoAlchemy2 para escribir geometrías en PostGIS.
 - A instalar Python eligiendo la versión según el soporte de las librerías (3.14 y no la 3.15 recién publicada), a crear y activar un entorno virtual y a congelar sus versiones en `requirements.txt`.
 - A mantener en D todo lo que crece (`.venv` dentro del proyecto, caché de pip en `D:\AppsData\pip-cache`) y a permitir los scripts de PowerShell con `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`.

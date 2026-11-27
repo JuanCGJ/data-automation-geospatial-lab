@@ -30,7 +30,7 @@ Workflow exportado (JSON) + captura de los datos guardados en la tabla.
 - [x] **11.3** — Agregar un nodo de PostgreSQL que inserte automáticamente los datos recibidos en una tabla. Evidencia: [script](sql/create_table.sql), [hallazgos](evidence/hallazgos.md)
 - [x] **11.4** — Ejecutar el workflow y verificar en DBeaver que los datos se guardaron correctamente. Evidencia: [workflow](workflows/weather-to-postgresql.json), [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - A crear credenciales de PostgreSQL en n8n: entre contenedores el host es el nombre del servicio de Docker (`postgis`) y el puerto el interno (5432), no `localhost`.
 - Que n8n guarda las contraseñas cifradas en su propia base de datos y el workflow exportado solo referencia la credencial, por eso se puede versionar en GitHub.
 - A reutilizar un workflow duplicándolo, en lugar de reconstruirlo.

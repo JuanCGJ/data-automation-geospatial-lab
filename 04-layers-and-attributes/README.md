@@ -32,7 +32,7 @@ Capa exportada con el nuevo campo calculado.
 - [x] **4.3** — Usar la selección por expresión para seleccionar las comunas con `area_km2` mayor a un valor dado. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **4.4** — Exportar la selección filtrada como una nueva capa. Evidencia: [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - Cada campo tiene un tipo de dato (entero, decimal, texto, fecha, booleano) que define qué operaciones admite; QGIS los muestra con los íconos 123, 1.2 y abc.
 - Los tipos pueden cambiar al convertir entre formatos (`OBJECTID` quedó como decimal), así que conviene revisarlos después de cada exportación.
 - Agregar un campo modifica el archivo original; por eso se trabajó sobre una copia.

@@ -64,7 +64,7 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [ ] **14.11** — Reproducir un periodo histórico real de lluvias con los datos de Open-Meteo y grabar un video corto (1-2 min) del sistema funcionando de principio a fin. Evidencia: pendiente
 - [ ] **14.12** — Consolidar en `docs/preguntas-de-aprendizaje.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
 
-## Qué aprendí
+## Aprendizajes
 *Ejercicios 14.1 a 14.8; se completa al cerrar el proyecto.*
 
 - A definir un escenario con fuentes verificables antes de construir: el indicador oficial A25 de Manizales (200 mm en 25 días), las comunas con evidencia publicada y qué datos son supuestos del proyecto.

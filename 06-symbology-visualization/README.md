@@ -32,7 +32,7 @@ Mapa exportado como imagen usando el diseñador de impresión (layout) de QGIS.
 - [x] **6.3** — Simbolizar la capa de comunas por valor graduado según `area_km2`, y agregar etiquetas con el nombre de cada comuna. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **6.4** — Usar el diseñador de impresión (layout) de QGIS para exportar el mapa como imagen. Evidencia: [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - La simbología cambia cómo se ven los datos, no los datos en sí.
 - Categorizado responde "¿de qué tipo es?" (campos de texto); graduado responde "¿cuánto tiene?" (campos numéricos).
 - En graduado conviene una rampa de un solo tono, de claro a oscuro, que no empiece en blanco si el fondo es blanco.

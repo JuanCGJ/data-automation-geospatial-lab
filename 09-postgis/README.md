@@ -34,7 +34,7 @@ Script `.sql` con las consultas espaciales y sus resultados.
 - [x] **9.4** — Escribir una consulta que devuelva la distancia de cada activo a la Universidad de Caldas (`ST_Distance`) y cuáles están a menos de 1 km (`ST_DWithin`). Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **9.5** — Cargar la capa de comunas (corregida en la 7.3) a PostGIS y verificarla con una consulta SQL que use `ST_Contains`. Evidencia: [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - PostGIS es una extensión de PostgreSQL: el mismo SQL, con nuevos tipos (`geometry`, `geography`) y funciones `ST_`.
 - `geometry` con una proyección local en metros (SRID 6256) es lo adecuado para una ciudad; `geography` conviene para distancias largas.
 - Una columna `geometry(Point, 6256)` restringe tipo y SRID; un índice GiST acelera las consultas espaciales.

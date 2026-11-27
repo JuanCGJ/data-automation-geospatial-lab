@@ -36,7 +36,7 @@ Cada carpeta es un proyecto independiente con teoría, ejercicios, entregable y 
 | `14-capstone-geospatial-monitoring` | Capstone: Geospatial Asset Monitoring & Automation Platform |
 | `docs/` | Preguntas de aprendizaje recopiladas por proyecto y guía rápida de git |
 
-Cada proyecto sigue la misma plantilla: **Objetivo, Requisitos, Entregable, Conceptos, Ejercicios, Progreso, Qué aprendí, Problemas encontrados y solución, Preguntas de aprendizaje, Evidencia**.
+Cada proyecto sigue la misma plantilla: **Objetivo, Requisitos, Entregable, Conceptos, Ejercicios, Progreso, Aprendizajes, Problemas encontrados y solución, Preguntas de aprendizaje, Evidencia**.
 
 ## Cómo correr el entorno
 

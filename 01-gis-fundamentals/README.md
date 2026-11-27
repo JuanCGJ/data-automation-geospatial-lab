@@ -36,7 +36,7 @@ README con el glosario propio de términos GIS + el diagrama capa–atributo–g
 - [x] **1.3** — Consultar y escribir la diferencia entre geometría de tipo punto, línea y polígono, y la diferencia entre datos vector y raster. Evidencia: `evidence/glosario.md`, `evidence/vector-vs-raster.svg`
 - [x] **1.4** — Hacer un diagrama simple de cómo se relacionan capa–atributo–geometría–CRS. Evidencia: `evidence/glosario.md`, `evidence/mapa-ficticio.svg`
 
-## Qué aprendí
+## Aprendizajes
 - A definir en mis propias palabras los conceptos base de GIS: dato espacial vs no espacial, capa, atributo y coordenadas.
 - Qué es un CRS, para qué sirve el código EPSG, y a reconocer varios CRS comunes (WGS84, Web Mercator, MAGNA-SIRGAS, UTM, entre otros) con su código correspondiente.
 - La diferencia entre los tres tipos de geometría vectorial (punto, línea, polígono) y entre datos vector y raster.

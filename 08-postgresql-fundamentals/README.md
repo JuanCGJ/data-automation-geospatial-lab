@@ -40,7 +40,7 @@ Script `.sql` con la creación de tablas, las queries, y capturas de los resulta
 - [x] **8.4** — Escribir 5 queries que incluyan al menos un JOIN, una agregación y un filtro. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **8.5** — Guardar todo en un script `.sql` y tomar capturas de los resultados de cada query. Evidencia: [script](sql/monitoreo.sql), [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - La jerarquía de PostgreSQL: servidor → base de datos → esquema → tabla.
 - Separar los datos en tablas relacionadas por PK y FK evita duplicados, y la FK impide datos huérfanos (lo comprobé insertando una lectura de un activo inexistente).
 - Escribir scripts idempotentes con `IF NOT EXISTS`, y por qué los `INSERT` no lo son.

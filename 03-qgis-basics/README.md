@@ -30,7 +30,7 @@ Captura de la interfaz de QGIS, tablas de atributos de las 3 capas y notas sobre
 - [x] **3.3** — Cambiar el CRS del proyecto y anotar qué cambia visualmente en las capas. Evidencia: [hallazgos](evidence/hallazgos.md)
 
 
-## Qué aprendí
+## Aprendizajes
 - Las zonas de QGIS: barra de herramientas, Browser (buscar datos), Layers (capas cargadas, donde la de arriba tapa a las de abajo), lienzo del mapa y barra de estado (coordenadas, escala y CRS).
 - Una capa puede estar encendida y no verse porque la vista está en otro lugar; *Zoom to Layer(s)* lo resuelve.
 - La tabla de atributos muestra los datos de cada entidad: filas = entidades, columnas = campos.

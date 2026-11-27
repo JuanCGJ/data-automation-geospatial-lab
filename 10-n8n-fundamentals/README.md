@@ -40,7 +40,7 @@ Exportar (JSON) los 2 workflows creados + capturas de su ejecución.
 - [x] **10.3** — Crear un segundo workflow con un trigger de tipo webhook que reciba datos y responda con un mensaje. Evidencia: [hallazgos](evidence/hallazgos.md)
 - [x] **10.4** — Exportar ambos workflows como JSON. Evidencia: [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - A construir workflows en n8n conectando nodos: un trigger que inicia, nodos que traen o transforman datos y un nodo que responde.
 - A consumir una API pública (Open-Meteo) con el nodo HTTP Request y a leer su respuesta en JSON.
 - A transformar un JSON anidado en un item plano con *Edit Fields* y expressions (`{{ $json.current.temperature_2m }}`), dejando los datos con la forma de una fila de base de datos.

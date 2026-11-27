@@ -32,7 +32,7 @@ Workflow completo + demo en gif o video corto.
 - [x] **12.4** — Agregar lógica (nodo IF) que genere una alerta (registro en otra tabla o mensaje simulado) cuando la coordenada esté fuera de la zona. Evidencia: [workflow](workflows/geofencing-manizales.json), [hallazgos](evidence/hallazgos.md)
 - [x] **12.5** — Grabar un gif o video corto mostrando el workflow funcionando de principio a fin. Evidencia: [GIF](evidence/12.5-demo-geofencing.gif), [video](evidence/12.5-demo-geofencing.mp4), [hallazgos](evidence/hallazgos.md)
 
-## Qué aprendí
+## Aprendizajes
 - A probar un geofencing con casos dentro, fuera y **de borde** (Villamaría, pegada a Manizales), con una columna `esperado` para verificar el resultado.
 - Que un GPS envía coordenadas en WGS 84 (EPSG:4326) y hay que transformarlas al CRS de las zonas (`ST_Transform` a EPSG:6256) antes de usar `ST_Contains`; y que `ST_MakePoint` recibe primero la longitud (x) y luego la latitud (y).
 - A guardar la contraseña de PostgreSQL en QGIS con el gestor de autenticación (cifrada), en vez de la pestaña *Basic* (texto plano que se copia en las capas y en el proyecto).

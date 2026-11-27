@@ -58,14 +58,14 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - [x] **14.5** — Construir el workflow de lluvia en n8n: consultar en Open-Meteo la lluvia diaria de los últimos 25 días en el punto interior de cada comuna, calcular el A25, guardarlo y registrar una alerta cuando supere el umbral de la comuna. Evidencia: [script](sql/lluvia_a25.sql), [workflow](workflows/lluvia-a25.json), [hallazgos](evidence/hallazgos.md)
 - [x] **14.6** — Programar en Python un simulador de brigadas: generar recorridos por la ciudad y enviar cada posición al webhook de n8n, como lo haría un GPS real. Evidencia: [script](scripts/simulador_brigadas.py), [requirements](requirements.txt), [hallazgos](evidence/hallazgos.md)
 - [x] **14.7** — Construir el workflow de posiciones en n8n: recibir cada posición por webhook, identificar con `ST_Contains` en qué comuna está la brigada y guardarla. Evidencia: [script](sql/simulador_brigadas.sql), [workflow](workflows/posiciones-brigadas.json), [hallazgos](evidence/hallazgos.md)
-- [ ] **14.8** — Detectar las comunas en alerta sin cobertura: identificar con `ST_DWithin` las comunas en alerta que no tienen ninguna brigada a menos de X km y registrarlas como alerta de cobertura. Evidencia: pendiente
+- [x] **14.8** — Detectar las comunas en alerta sin cobertura: identificar con `ST_DWithin` las comunas en alerta que no tienen ninguna brigada a menos de X km y registrarlas como alerta de cobertura. Evidencia: [script](sql/cobertura.sql), [workflow](workflows/lluvia-a25.json), [hallazgos](evidence/hallazgos.md)
 - [ ] **14.9** — Diseñar el mapa de monitoreo en QGIS: comunas por susceptibilidad y estado de alerta, posiciones de las brigadas y comunas sin cobertura. Evidencia: pendiente
 - [ ] **14.10** — Programar en Python un reporte automático que resuma por comuna la lluvia A25, las alertas generadas y la cobertura de brigadas. Evidencia: pendiente
 - [ ] **14.11** — Reproducir un periodo histórico real de lluvias con los datos de Open-Meteo y grabar un video corto (1-2 min) del sistema funcionando de principio a fin. Evidencia: pendiente
 - [ ] **14.12** — Consolidar en `docs/preguntas-de-aprendizaje.md` 2-3 preguntas clave por proyecto, con sus respuestas. Evidencia: pendiente
 
 ## Qué aprendí
-*Ejercicios 14.1 a 14.7; se completa al cerrar el proyecto.*
+*Ejercicios 14.1 a 14.8; se completa al cerrar el proyecto.*
 
 - A definir un escenario con fuentes verificables antes de construir: el indicador oficial A25 de Manizales (200 mm en 25 días), las comunas con evidencia publicada y qué datos son supuestos del proyecto.
 - A diferenciar **susceptibilidad** (condición del terreno) de **amenaza** (que ya incluye detonantes como la lluvia), y por qué el umbral de lluvia es inverso a la susceptibilidad.
@@ -92,6 +92,10 @@ Repo completo + diagrama de arquitectura + video corto (1-2 min) mostrando el fl
 - A combinar `INSERT ... RETURNING` dentro de un `WITH` para guardar y devolver en una sola consulta datos de otra tabla (el nombre de la comuna).
 - La diferencia entre la Test URL y la Production URL de un webhook, y que un workflow publicado deja sus ejecuciones en la pestaña *Executions*.
 - Que GET y POST describen lo que hace quien envía la petición: GET pide datos, POST los entrega.
+- A cruzar dos fuentes en el espacio con `ST_DWithin` (alertas de lluvia y posiciones de brigadas), quedándome con la última posición de cada brigada con `DISTINCT ON` y descartando las viejas con una ventana de tiempo.
+- A usar `NOT EXISTS` para encontrar lo que no tiene pareja (comunas sin ninguna brigada cerca).
+- A probar una alerta creando un caso real (una brigada fuera de servicio) en lugar de cambiar la regla que se quiere probar.
+- A ejecutar un nodo de n8n una sola vez aunque reciba varios items, con *Execute Once*.
 
 ## Problemas encontrados y solución
 **14.1 — No se pudo buscar la capa de amenaza de la Alcaldía.** El directorio de servicios ArcGIS REST respondió `403: The administrator has disabled the Services Directory`. Solución: usar el Mapa Nacional de Susceptibilidad del SGC, oficial y descargable.
@@ -128,4 +132,7 @@ En la carpeta `evidence/` de este proyecto se guarda la evidencia visual (captur
 - `14.7-nodo-webhook.png`, `14.7-webhook-recibido.png`, `14.7-powershell-eco.png`: webhook configurado y primera posición recibida.
 - `14.7-nodo-guardar-posicion.png`, `14.7-workflow-dentro.png`, `14.7-powershell-dentro.png`, `14.7-powershell-fuera.png`: nodo que guarda la posición y respuestas dentro y fuera.
 - `14.7-workflow-publicado.png`, `14.7-simulador-enviando.png`, `14.7-executions.png`, `14.7-dbeaver-posiciones.png`: workflow publicado, simulador conectado, ejecuciones de producción y posiciones guardadas.
-- `sql/plataforma.sql`, `sql/lluvia_a25.sql`, `sql/simulador_brigadas.sql`, `scripts/simulador_brigadas.py`, `requirements.txt`, `workflows/lluvia-a25.json`, `workflows/posiciones-brigadas.json`: scripts, librerías y workflows exportados (fuera de `evidence/`).
+- `14.8-simulador-inicio.png`, `14.8-simulador-final.png`: posiciones de la última hora enviadas por el simulador.
+- `14.8-cobertura-consulta.png`, `14.8-brigada-fuera-de-servicio.png`, `14.8-cobertura-sin-occidente.png`, `14.8-alertas-sin-cobertura.png`, `14.8-brigada-reactivada.png`: cobertura con las 4 brigadas, prueba con una brigada fuera de servicio y alertas registradas.
+- `14.8-workflow-cobertura.png`, `14.8-nodo-evaluar-cobertura.png`: nodo *Evaluar cobertura* en el workflow de lluvia A25.
+- `sql/plataforma.sql`, `sql/lluvia_a25.sql`, `sql/simulador_brigadas.sql`, `sql/cobertura.sql`, `scripts/simulador_brigadas.py`, `requirements.txt`, `workflows/lluvia-a25.json`, `workflows/posiciones-brigadas.json`: scripts, librerías y workflows exportados (fuera de `evidence/`).

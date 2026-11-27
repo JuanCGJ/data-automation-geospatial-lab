@@ -558,3 +558,90 @@ Al ejecutar `simulador_brigadas.sql` completo (Alt + X), cada vez se volvía a c
 ### Workflow exportado
 - [`workflows/posiciones-brigadas.json`](../workflows/posiciones-brigadas.json), exportado desde el menú ⋯ → *Download*.
 - Se revisó antes de subirlo: el nodo Postgres solo guarda la referencia a la credencial (`gisdb-local` y su id), sin contraseña. La URL del webhook va en el `.env`, fuera del repo.
+
+## 14.8 — Comunas en alerta sin cobertura
+
+Cruza las **alertas de lluvia** (14.5) con las **posiciones de las brigadas** (14.7): si una comuna en alerta no tiene ninguna brigada cerca, se registra una alerta de tipo `sin_cobertura`. La evaluación se agregó como último nodo del workflow de lluvia A25, como estaba en la arquitectura (14.2).
+
+```
+Comunas en alerta (riesgo_lluvia, hoy) ──┐
+                                         ├── ST_DWithin 1 km ── ninguna brigada ──► alerta "sin_cobertura"
+Última posición de cada brigada activa ──┘
+        (últimos 60 min)
+```
+
+Script: [`sql/cobertura.sql`](../sql/cobertura.sql) · Workflow actualizado: [`workflows/lluvia-a25.json`](../workflows/lluvia-a25.json)
+
+### Reglas de cobertura
+| Decisión | Valor | Por qué |
+|---|---|---|
+| Distancia | 1 km desde el borde de la comuna (`ST_DWithin(comuna, posición, 1000)`, EPSG:6256 en metros) | Manizales es compacta; una brigada a 1 km llega en pocos minutos. Una brigada dentro de la comuna tiene distancia 0 |
+| Posición válida | La **última** de cada brigada **activa**, solo si es de los últimos 60 minutos | Una posición vieja no dice dónde está la brigada hoy; una brigada que dejó de reportar no cuenta |
+
+### Paso 1 — Datos de hoy
+Se ejecutó el workflow de lluvia A25 el 26-nov-2026: **10 comunas en alerta**. Por primera vez no alertaron todas: Cumanday (3) y La Fuente (10) recibieron 211.6 mm, la misma lluvia que Atardeceres (1) y San José (2), pero su susceptibilidad es baja (umbral 250 mm). **La misma lluvia es peligrosa en una comuna y no en otra.**
+
+Luego se corrió el simulador 15 pasos para tener posiciones de la última hora; cada brigada terminó entre su segunda y su tercera comuna.
+
+![Simulador, inicio](14.8-simulador-inicio.png)
+
+![Simulador, final](14.8-simulador-final.png)
+
+### Paso 2 — Cobertura (solo lectura)
+- **`DISTINCT ON (id_brigada)`** con `ORDER BY id_brigada, registrado_en DESC` deja una sola fila por brigada: la más reciente.
+- **`LEFT JOIN ... ON ST_DWithin(...)`** + `COUNT` cuenta las brigadas a menos de 1 km; las comunas sin brigada salen con 0 en lugar de desaparecer.
+- Una columna extra muestra la distancia a la brigada más cercana, aunque esté a más de 1 km.
+
+![Cobertura con las 4 brigadas](14.8-cobertura-consulta.png)
+
+Con las 4 brigadas activas, **las 10 comunas en alerta tenían cobertura**. La más justa fue San José (2), con la Brigada Occidente a 947 m. Palogrande (8) tenía 2 brigadas cerca.
+
+### Paso 3 — Prueba: una brigada fuera de servicio
+Para probar la alerta hacía falta un caso sin cobertura. En lugar de cambiar la regla de 1 km, se simuló una situación real: la **Brigada Occidente se vara o queda atendiendo otra emergencia** (`UPDATE plataforma.brigadas SET activa = false WHERE id_brigada = 3`).
+
+![Brigada fuera de servicio](14.8-brigada-fuera-de-servicio.png)
+
+![Cobertura sin la Brigada Occidente](14.8-cobertura-sin-occidente.png)
+
+| Comuna | Nivel | Brigada más cercana |
+|---|---|---|
+| 1 Atardeceres | alta | 2244 m |
+| 2 San José | media | 1563 m |
+| 11 La Macarena | alta | 1103 m |
+
+Son las tres comunas que solo cubría la Brigada Occidente; las otras 7 siguieron cubiertas.
+
+### Paso 4 — Registrar las alertas
+- **`NOT EXISTS (SELECT 1 FROM ultimas WHERE ST_DWithin(...))`** se queda con las comunas para las que no existe ninguna brigada a menos de 1 km.
+- Cada alerta copia la lluvia y el umbral de su alerta `riesgo_lluvia` y guarda un `detalle` en texto (*"Sin brigada activa a menos de 1 km; la más cercana a 2244 m"*), para entenderse sola.
+- **Upsert** (`ON CONFLICT (tipo, id_comuna, fecha) DO UPDATE`): ejecutarla otra vez el mismo día actualiza la alerta en lugar de duplicarla.
+
+![Alertas sin cobertura](14.8-alertas-sin-cobertura.png)
+
+### Paso 5 — Nodo *Evaluar cobertura* en n8n
+Se agregó al final del workflow de lluvia A25, después de *Registrar alerta*, con la misma consulta.
+
+```
+... → Supera umbral? ─true→ Registrar alerta → Evaluar cobertura
+                            (1 vez por comuna)   (1 sola vez: Execute Once)
+```
+
+- *Registrar alerta* entrega un item por comuna en alerta (10). Sin ajustes, el nodo siguiente se ejecutaría 10 veces. Como la consulta revisa todas las comunas de una vez, se activó **Settings → Execute Once**: el nodo corre una sola vez sin importar cuántos items reciba.
+- No lleva *Query Parameters*: no usa datos del nodo anterior, lee todo de las tablas.
+- Resultado: recibió 10 items y devolvió 3 (comunas 1, 2 y 11), con los mismos `id` 35-37, porque el upsert actualizó las alertas en lugar de duplicarlas.
+
+![Workflow con Evaluar cobertura](14.8-workflow-cobertura.png)
+
+![Nodo Evaluar cobertura](14.8-nodo-evaluar-cobertura.png)
+
+### Paso 6 — Volver a activar la brigada
+Al terminar la prueba se reactivó la Brigada Occidente y la consulta de cobertura volvió a mostrar las 10 comunas cubiertas.
+
+![Brigada reactivada](14.8-brigada-reactivada.png)
+
+### Mejora posible
+Las 3 alertas `sin_cobertura` siguen en la tabla después de reactivar la brigada: `alertas` es un **registro de lo que pasó**, no del estado actual (para eso está la consulta de solo lectura). En un sistema real se agregaría una columna como `resuelta_en` para cerrar cada alerta cuando vuelve la cobertura.
+
+### Workflow exportado
+- [`workflows/lluvia-a25.json`](../workflows/lluvia-a25.json) reemplaza la versión del 14.5, con el nodo nuevo.
+- Se revisó antes de subirlo: los 4 nodos Postgres solo guardan la referencia a la credencial (`gisdb-local` y su id), sin contraseña.

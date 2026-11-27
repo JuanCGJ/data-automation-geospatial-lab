@@ -194,6 +194,28 @@
       ],
       "id": "50205516-f498-44d1-befd-f4848af2eef1",
       "name": "Consultar Open-Meteo"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- 14.8 Registrar alertas \"sin_cobertura\" (una sola ejecución: Settings → Execute Once).\n-- Comunas en alerta por lluvia HOY sin ninguna brigada activa (posición de los\n-- últimos 60 min) a menos de 1 km. Upsert: no duplica si se ejecuta otra vez el mismo día.\nWITH ultimas AS (\n    -- Última posición de cada brigada activa, si es de los últimos 60 minutos\n    SELECT DISTINCT ON (p.id_brigada)\n           p.id_brigada, p.geom\n    FROM plataforma.posiciones p\n    JOIN plataforma.brigadas b ON b.id_brigada = p.id_brigada AND b.activa\n    WHERE p.registrado_en >= now() - INTERVAL '60 minutes'\n    ORDER BY p.id_brigada, p.registrado_en DESC\n),\nsin_cobertura AS (\n    -- Comunas en alerta por lluvia hoy SIN ninguna brigada a menos de 1000 m\n    SELECT a.id_comuna, a.fecha, a.a25_mm, a.umbral_mm,\n           (SELECT ROUND(MIN(ST_Distance(cr.geom, u2.geom))::numeric)\n            FROM ultimas u2) AS m_mas_cercana\n    FROM plataforma.alertas a\n    JOIN plataforma.comunas_riesgo cr ON cr.id_comuna = a.id_comuna\n    WHERE a.tipo = 'riesgo_lluvia'\n      AND a.fecha = (now() AT TIME ZONE 'America/Bogota')::date\n      AND NOT EXISTS (SELECT 1 FROM ultimas u\n                      WHERE ST_DWithin(cr.geom, u.geom, 1000))\n)\nINSERT INTO plataforma.alertas (tipo, id_comuna, fecha, a25_mm, umbral_mm, detalle)\nSELECT 'sin_cobertura', id_comuna, fecha, a25_mm, umbral_mm,\n       CASE WHEN m_mas_cercana IS NULL\n            THEN 'Ninguna brigada activa reportó en los últimos 60 min'\n            ELSE 'Sin brigada activa a menos de 1 km; la más cercana a ' || m_mas_cercana || ' m'\n       END\nFROM sin_cobertura\nON CONFLICT (tipo, id_comuna, fecha) DO UPDATE\n    SET detalle = EXCLUDED.detalle,\n        creado_en = now()\nRETURNING id, tipo, id_comuna, fecha, a25_mm, umbral_mm, detalle;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        1568,
+        -96
+      ],
+      "id": "d2c6e3f5-dad6-408b-8446-0193a8b53a64",
+      "name": "Evaluar cobertura",
+      "executeOnce": true,
+      "credentials": {
+        "postgres": {
+          "id": "u4qNVOL4Pb1ew3Ow",
+          "name": "gisdb-local"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -263,6 +285,17 @@
           }
         ]
       ]
+    },
+    "Registrar alerta": {
+      "main": [
+        [
+          {
+            "node": "Evaluar cobertura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -270,7 +303,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "8c8f9d0d-c958-4ba9-8425-4b0383d20654",
+  "versionId": "7f1cf219-c508-45a0-890a-3f574adb6184",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f2698b05857ee29b36fdf58fb62890bf41ab0d404653fdadd2d81c62cd51d881"
